@@ -1,0 +1,20 @@
+{
+    "name": "KBP.URDT.Editor",
+    "rootNamespace": "KBP.URDT.Editor",
+    "references": [
+        "KBP.URDT"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "URDT_ENABLED"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

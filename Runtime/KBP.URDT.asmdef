@@ -1,0 +1,21 @@
+{
+    "name": "KBP.URDT",
+    "rootNamespace": "KBP.URDT",
+    "references": [
+        "Unity.InputSystem",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "URDT_ENABLED"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
