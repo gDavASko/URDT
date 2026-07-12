@@ -27,30 +27,47 @@ namespace KBP.URDT.Handlers
                 return Response.Error(command.Id, ErrorCodes.E_NOT_FOUND, "Drag needs resolvable 'from' and 'to'.");
             }
 
+            JObject fromPayload = payload["from"] as JObject;
+            if (fromPayload != null
+                && PayloadReader.HasAddressedTarget(fromPayload))
+            {
+                GameObject sourceTarget;
+                GameObject topHit;
+                if (PayloadReader.TryResolveGameObject(_runtime, fromPayload, out sourceTarget)
+                    && !PayloadReader.IsTopHitRelated(sourceTarget, _points[0], out topHit))
+                {
+                    return Response.Error(
+                        command.Id,
+                        ErrorCodes.E_NOT_HITTABLE,
+                        "Drag source is not the top EventSystem hit at the resolved point.");
+                }
+            }
+
             int steps = PayloadReader.GetInt(payload, "steps", 10);
             if (steps < 1)
             {
                 steps = 1;
             }
 
+            int pointerId = PayloadReader.GetPointerId(payload);
             int queuedFrames;
             if (_runtime.Input != null)
             {
-                queuedFrames = _runtime.Input.ScheduleDrag(_points, steps);
+                queuedFrames = _runtime.Input.ScheduleDrag(_points, steps, pointerId);
             }
             else
             {
                 Vector2 from = _points[0];
                 Vector2 to = _points[_points.Count - 1];
-                _runtime.Driver.InjectPointer(from, PointerPhase.Move);
-                _runtime.Driver.InjectPointer(from, PointerPhase.Down);
+                _runtime.Driver.InjectPointer(from, PointerPhase.Move, pointerId);
+                _runtime.Driver.InjectPointer(from, PointerPhase.Down, pointerId);
                 for (int i = 1; i <= steps; i++)
                 {
                     Vector2 point = Vector2.Lerp(from, to, (float)i / steps);
-                    _runtime.Driver.InjectPointer(point, PointerPhase.Move);
+                    _runtime.Driver.InjectPointer(point, PointerPhase.Move, pointerId);
                 }
 
-                _runtime.Driver.InjectPointer(to, PointerPhase.Up);
+                _runtime.Driver.InjectPointer(to, PointerPhase.Up, pointerId);
                 queuedFrames = steps + 3;
             }
 
@@ -59,7 +76,7 @@ namespace KBP.URDT.Handlers
                 ["dragged"] = true,
                 ["points"] = steps,
                 ["queued_frames"] = queuedFrames,
-                ["input_tier"] = "virtual_device"
+                ["input_tier"] = pointerId > 0 ? "virtual_touchscreen" : "virtual_mouse"
             });
         }
 

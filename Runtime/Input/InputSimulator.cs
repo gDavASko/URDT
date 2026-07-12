@@ -98,17 +98,33 @@ namespace KBP.URDT.Input
         /// </summary>
         public int ScheduleClick(Vector2 screenPos, int holdFrames = 0, int pointerId = 0)
         {
+            int clampedHoldFrames = Mathf.Max(0, holdFrames);
+            if (pointerId > 0)
+            {
+                EnqueuePointerStep(screenPos, PointerPhase.Down, pointerId);
+                for (int i = 0; i < clampedHoldFrames; i++)
+                {
+                    EnqueuePointerStep(screenPos, PointerPhase.Move, pointerId);
+                }
+
+                EnqueuePointerStep(screenPos, PointerPhase.Up, pointerId);
+                return 2 + clampedHoldFrames;
+            }
+
+            EnqueuePointerStep(screenPos, PointerPhase.Move, pointerId);
+            // Let the EventSystem establish hover/enter state before PointerDown.
+            // Some Selectable implementations, notably TMP_Dropdown, depend on this
+            // transition occurring on a separate input frame.
             EnqueuePointerStep(screenPos, PointerPhase.Move, pointerId);
             EnqueuePointerStep(screenPos, PointerPhase.Down, pointerId);
 
-            int clampedHoldFrames = Mathf.Max(0, holdFrames);
             for (int i = 0; i < clampedHoldFrames; i++)
             {
                 EnqueuePointerStep(screenPos, PointerPhase.Move, pointerId);
             }
 
             EnqueuePointerStep(screenPos, PointerPhase.Up, pointerId);
-            return 3 + clampedHoldFrames;
+            return 4 + clampedHoldFrames;
         }
 
         /// <summary>
@@ -215,12 +231,22 @@ namespace KBP.URDT.Input
         /// </summary>
         public int ScheduleScroll(Vector2 screenPos, Vector2 scrollDelta)
         {
+            // Force a real pointer exit before re-entering the target. A small jitter can
+            // remain within the same nested control and leave PointerEventData.pointerEnter stale.
+            EnqueuePointerStep(Vector2.zero, PointerPhase.Move, 0);
             EnqueuePointerStep(screenPos, PointerPhase.Move, 0);
             PointerFrame frame = new PointerFrame();
             frame.ScrollDelta = scrollDelta;
             frame.HasScroll = true;
             _pendingPointerFrames.Enqueue(frame);
-            return 2;
+
+            // Wheel deltas are transient. Resetting them on the following frame ensures
+            // two identical scroll commands produce two distinct Input System events.
+            PointerFrame resetFrame = new PointerFrame();
+            resetFrame.ScrollDelta = Vector2.zero;
+            resetFrame.HasScroll = true;
+            _pendingPointerFrames.Enqueue(resetFrame);
+            return 4;
         }
 
         /// <summary>
@@ -238,6 +264,25 @@ namespace KBP.URDT.Input
 
             EnqueueKeyStep(key, false);
             return 2 + clampedHoldFrames;
+        }
+
+        /// <summary>Queues Unicode text events through the virtual keyboard.</summary>
+        public int ScheduleText(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return 0;
+            }
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                PointerFrame frame = new PointerFrame();
+                frame.TextCharacter = text[i];
+                frame.HasText = true;
+                _pendingPointerFrames.Enqueue(frame);
+            }
+
+            return text.Length;
         }
 
         public bool PumpQueuedPointerStep()
@@ -262,6 +307,11 @@ namespace KBP.URDT.Input
             if (frame.HasKey)
             {
                 QueueKeyboardState(frame.Key, frame.KeyPressed);
+            }
+
+            if (frame.HasText)
+            {
+                QueueText(frame.TextCharacter);
             }
 
             return true;
@@ -318,14 +368,8 @@ namespace KBP.URDT.Input
         private void QueueMouseScroll(Vector2 scrollDelta)
         {
             BindVirtualDevicesToUiModules();
-            MouseState state = new MouseState
-            {
-                position = _mousePosition,
-                scroll = scrollDelta
-            };
-            state = state.WithButton(MouseButton.Left, _leftPressed);
             _mouse.MakeCurrent();
-            InputSystem.QueueStateEvent(_mouse, state);
+            InputSystem.QueueDeltaStateEvent(_mouse.scroll, scrollDelta);
         }
 
         private void QueueTouchState(Vector2 screenPos, PointerPhase phase, int touchId)
@@ -347,6 +391,13 @@ namespace KBP.URDT.Input
             KeyboardState state = pressed ? new KeyboardState(key) : new KeyboardState();
             _keyboard.MakeCurrent();
             InputSystem.QueueStateEvent(_keyboard, state);
+        }
+
+        private void QueueText(char character)
+        {
+            BindVirtualDevicesToUiModules();
+            _keyboard.MakeCurrent();
+            InputSystem.QueueTextEvent(_keyboard, character);
         }
 
         private void BindVirtualDevices(InputActionAsset actionsAsset)
@@ -473,6 +524,8 @@ namespace KBP.URDT.Input
             public Key Key;
             public bool KeyPressed;
             public bool HasKey;
+            public char TextCharacter;
+            public bool HasText;
         }
 
         private readonly struct PointerStep

@@ -56,16 +56,22 @@ namespace KBP.URDT.Handlers
                 holdFrames = Mathf.CeilToInt(holdMs / (1000f / 60f));
             }
 
+            // A UI click must keep the physical button state through at least one
+            // processed input frame before release. This is still device input, not
+            // a direct UI callback, and makes Button activation deterministic.
+            holdFrames = Mathf.Max(1, holdFrames);
+
+            int pointerId = PayloadReader.GetPointerId(payload);
             int queuedFrames;
             if (_runtime.Input != null)
             {
-                queuedFrames = _runtime.Input.ScheduleClick(point, holdFrames);
+                queuedFrames = _runtime.Input.ScheduleClick(point, holdFrames, pointerId);
             }
             else
             {
-                _runtime.Driver.InjectPointer(point, PointerPhase.Move);
-                _runtime.Driver.InjectPointer(point, PointerPhase.Down);
-                _runtime.Driver.InjectPointer(point, PointerPhase.Up);
+                _runtime.Driver.InjectPointer(point, PointerPhase.Move, pointerId);
+                _runtime.Driver.InjectPointer(point, PointerPhase.Down, pointerId);
+                _runtime.Driver.InjectPointer(point, PointerPhase.Up, pointerId);
                 queuedFrames = 3;
             }
 
@@ -74,7 +80,7 @@ namespace KBP.URDT.Handlers
                 ["clicked"] = true,
                 ["screenPosition"] = new JObject { ["x"] = point.x, ["y"] = point.y },
                 ["queued_frames"] = queuedFrames,
-                ["input_tier"] = "virtual_device",
+                ["input_tier"] = pointerId > 0 ? "virtual_touchscreen" : "virtual_mouse",
                 ["hit_check"] = "screen_bounds"
             });
         }

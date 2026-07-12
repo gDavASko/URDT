@@ -8,6 +8,9 @@ DavASko URDT (Unity Remote Debugging Transport) is the **reference driver** for 
 
 By running a lightweight WebSocket server inside the Unity runtime (both in-editor and in standalone builds), it enables external AI agents (like Harness or Ollama research agents) to query UI hierarchies, inspect properties, simulate high-fidelity virtual inputs, control execution ticks (pause/frame-step), and subscribe to real-time logs, exceptions, and lifecycle changes.
 
+
+> **Real UI validation:** [coverage, principles, evidence, and results](UI_REAL_INPUT_VALIDATION.md).
+
 ---
 
 ## 🧭 Table of Contents

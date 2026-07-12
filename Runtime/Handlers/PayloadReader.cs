@@ -3,6 +3,7 @@ using KBP.URDT.Driver;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace KBP.URDT.Handlers
 {
@@ -14,6 +15,7 @@ namespace KBP.URDT.Handlers
     {
         private static readonly List<RaycastResult> RAYCAST_RESULTS = new List<RaycastResult>(16);
         private static readonly List<Vector2> POINT_CANDIDATES = new List<Vector2>(9);
+        private static readonly List<Graphic> GRAPHIC_BUFFER = new List<Graphic>(16);
         private static readonly Vector3[] WORLD_CORNERS = new Vector3[4];
 
         public static JObject AsObject(object payload)
@@ -43,6 +45,18 @@ namespace KBP.URDT.Handlers
         {
             JToken token = payload?[key];
             return token != null && token.Type != JTokenType.Null ? token.Value<bool>() : fallback;
+        }
+
+        public static int GetPointerId(JObject payload)
+        {
+            int pointerId = GetInt(payload, "pointer_id", 0);
+            if (pointerId > 0)
+            {
+                return pointerId;
+            }
+
+            string inputMode = GetString(payload, "input_mode", string.Empty);
+            return string.Equals(inputMode, "touch", System.StringComparison.OrdinalIgnoreCase) ? 1 : 0;
         }
 
         public static bool TryResolveHandle(UrdtRuntime runtime, JObject payload, out Handle handle)
@@ -164,6 +178,103 @@ namespace KBP.URDT.Handlers
             return false;
         }
 
+        /// <summary>
+        /// Resolves a point whose top UGUI raycast hit is the addressed object itself.
+        /// Scroll commands use this stricter rule so nested ScrollRects cannot steal
+        /// the wheel input intended for their parent container.
+        /// </summary>
+        public static bool TryGetExactTopHitScreenPoint(UrdtRuntime runtime, JObject payload, out Vector2 point)
+        {
+            point = Vector2.zero;
+            if (runtime == null || payload == null)
+            {
+                return false;
+            }
+
+            GameObject target;
+            if (!TryResolveGameObject(runtime, payload, out target) || target == null || !target.activeInHierarchy)
+            {
+                return false;
+            }
+
+            RectTransform rectTransform = target.GetComponent<RectTransform>();
+            EventSystem eventSystem = EventSystem.current;
+            if (rectTransform == null || eventSystem == null)
+            {
+                return false;
+            }
+
+            Canvas.ForceUpdateCanvases();
+            eventSystem.UpdateModules();
+            BuildPointCandidates(rectTransform, GetCanvasCamera(target), POINT_CANDIDATES);
+            for (int i = 0; i < POINT_CANDIDATES.Count; i++)
+            {
+                Vector2 candidate = POINT_CANDIDATES[i];
+                if (IsExactTopHit(eventSystem, target, candidate))
+                {
+                    point = candidate;
+                    POINT_CANDIDATES.Clear();
+                    return true;
+                }
+            }
+
+            POINT_CANDIDATES.Clear();
+            return false;
+        }
+
+        /// <summary>
+        /// Finds a live pointer point inside an addressed ScrollRect that belongs to a
+        /// non-scrollable descendant. Wheel input then bubbles to the addressed parent
+        /// rather than being consumed by a nested ScrollRect.
+        /// </summary>
+        public static bool TryGetScrollInputPoint(UrdtRuntime runtime, JObject payload, out Vector2 point)
+        {
+            point = Vector2.zero;
+            GameObject target;
+            if (!TryResolveGameObject(runtime, payload, out target) || target == null || !target.activeInHierarchy)
+            {
+                return false;
+            }
+
+            EventSystem eventSystem = EventSystem.current;
+            if (eventSystem == null)
+            {
+                return false;
+            }
+
+            Canvas.ForceUpdateCanvases();
+            eventSystem.UpdateModules();
+            Camera camera = GetCanvasCamera(target);
+            target.GetComponentsInChildren(true, GRAPHIC_BUFFER);
+            for (int i = 0; i < GRAPHIC_BUFFER.Count; i++)
+            {
+                Graphic graphic = GRAPHIC_BUFFER[i];
+                if (graphic == null || graphic.gameObject == target || !graphic.raycastTarget || !graphic.isActiveAndEnabled)
+                {
+                    continue;
+                }
+
+                BuildPointCandidates(graphic.rectTransform, camera, POINT_CANDIDATES);
+                for (int candidateIndex = 0; candidateIndex < POINT_CANDIDATES.Count; candidateIndex++)
+                {
+                    Vector2 candidate = POINT_CANDIDATES[candidateIndex];
+                    GameObject topHit;
+                    if (TryGetTopHit(eventSystem, candidate, out topHit)
+                        && IsNonScrollableDescendant(topHit, target))
+                    {
+                        point = candidate;
+                        GRAPHIC_BUFFER.Clear();
+                        POINT_CANDIDATES.Clear();
+                        return true;
+                    }
+                }
+            }
+
+            GRAPHIC_BUFFER.Clear();
+            POINT_CANDIDATES.Clear();
+            return TryGetExactTopHitScreenPoint(runtime, payload, out point);
+        }
+
         public static bool TryResolveGameObject(UrdtRuntime runtime, JObject payload, out GameObject target)
         {
             target = null;
@@ -236,19 +347,51 @@ namespace KBP.URDT.Handlers
             eventSystem.UpdateModules();
             Camera camera = GetCanvasCamera(target);
             BuildPointCandidates(rectTransform, camera, POINT_CANDIDATES);
-
-            for (int i = 0; i < POINT_CANDIDATES.Count; i++)
+            if (TryFindRaycastableCandidate(eventSystem, target.transform, out point))
             {
-                Vector2 candidate = POINT_CANDIDATES[i];
-                if (IsRaycastableHit(eventSystem, target.transform, candidate))
+                POINT_CANDIDATES.Clear();
+                return true;
+            }
+
+            target.GetComponentsInChildren(true, GRAPHIC_BUFFER);
+            for (int i = 0; i < GRAPHIC_BUFFER.Count; i++)
+            {
+                Graphic graphic = GRAPHIC_BUFFER[i];
+                if (graphic == null || !graphic.raycastTarget || !graphic.isActiveAndEnabled)
                 {
-                    point = candidate;
+                    continue;
+                }
+
+                BuildPointCandidates(graphic.rectTransform, camera, POINT_CANDIDATES);
+                if (TryFindRaycastableCandidate(eventSystem, target.transform, out point))
+                {
+                    GRAPHIC_BUFFER.Clear();
                     POINT_CANDIDATES.Clear();
                     return true;
                 }
             }
 
+            GRAPHIC_BUFFER.Clear();
             POINT_CANDIDATES.Clear();
+            return false;
+        }
+
+        private static bool TryFindRaycastableCandidate(
+            EventSystem eventSystem,
+            Transform target,
+            out Vector2 point)
+        {
+            point = Vector2.zero;
+            for (int i = 0; i < POINT_CANDIDATES.Count; i++)
+            {
+                Vector2 candidate = POINT_CANDIDATES[i];
+                if (IsRaycastableHit(eventSystem, target, candidate))
+                {
+                    point = candidate;
+                    return true;
+                }
+            }
+
             return false;
         }
 
@@ -309,6 +452,62 @@ namespace KBP.URDT.Handlers
             return matched;
         }
 
+        private static bool IsExactTopHit(EventSystem eventSystem, GameObject target, Vector2 point)
+        {
+            RAYCAST_RESULTS.Clear();
+            PointerEventData eventData = new PointerEventData(eventSystem)
+            {
+                position = point
+            };
+            eventSystem.RaycastAll(eventData, RAYCAST_RESULTS);
+
+            bool matched = RAYCAST_RESULTS.Count > 0
+                && RAYCAST_RESULTS[0].gameObject == target;
+            RAYCAST_RESULTS.Clear();
+            return matched;
+        }
+
+        private static bool TryGetTopHit(EventSystem eventSystem, Vector2 point, out GameObject topHit)
+        {
+            topHit = null;
+            RAYCAST_RESULTS.Clear();
+            PointerEventData eventData = new PointerEventData(eventSystem)
+            {
+                position = point
+            };
+            eventSystem.RaycastAll(eventData, RAYCAST_RESULTS);
+            if (RAYCAST_RESULTS.Count > 0)
+            {
+                topHit = RAYCAST_RESULTS[0].gameObject;
+            }
+
+            RAYCAST_RESULTS.Clear();
+            return topHit != null;
+        }
+
+        private static bool IsNonScrollableDescendant(GameObject hit, GameObject target)
+        {
+            if (hit == null || target == null)
+            {
+                return false;
+            }
+
+            Transform current = hit.transform;
+            while (current != null && current != target.transform)
+            {
+                if (current.GetComponent<ScrollRect>() != null
+                    || current.GetComponent<Slider>() != null
+                    || current.GetComponent("TMP_InputField") != null)
+                {
+                    return false;
+                }
+
+                current = current.parent;
+            }
+
+            return current == target.transform;
+        }
+
         private static bool IsRelatedToTarget(Transform hit, Transform target)
         {
             if (hit == null || target == null)
@@ -316,7 +515,10 @@ namespace KBP.URDT.Handlers
                 return false;
             }
 
-            return hit == target || hit.IsChildOf(target) || target.IsChildOf(hit);
+            // A target's ancestor (for example, a window or ScrollRect background)
+            // must not validate a click. Only the target itself or a raycastable child
+            // can receive the addressed interaction.
+            return hit == target || hit.IsChildOf(target);
         }
 
         private static Camera GetCanvasCamera(GameObject target)

@@ -60,3 +60,19 @@
 - [ ] 7. Реальный прогон scroll.
 - [ ] 8. Сквозной реальный прогон всех семи сценариев.
 - [ ] 9. Машинная и независимая итоговая валидация.
+
+## Рандомизированный этап
+
+- [x] UI Suite переставляет существующие controls на каждом запуске, не меняя их types/TestId.
+- [x] Dropdown перемешивает варианты; контракт inspect возвращает текущие label/options.
+- [x] Добавлен semantic stress runner: fresh inspect перед каждым шагом, реальные input-команды, delta-oracle и JSONL trace.
+- [x] Среда пересобрана с валидным штатным InputActionAsset Unity; modal click подтвержден inspect.
+- [ ] Стабилизировать retry первого click после нового Play Mode и завершить один полный randomized run.
+- [ ] Выполнить 10 независимых randomized stress runs и записать JSONL/verdict в отчёт.
+
+## Final status (2026-07-13)
+
+- [x] Stabilized real-input mouse click and ScrollRect swipe routing in URDT.
+- [x] Completed one post-fix randomized full run and nine further runs without
+  restarting Unity Play Mode.
+- [x] Recorded final verdict: 10 / 10 PASS in `URDT_UI_Debug_Report.md` and JSONL.

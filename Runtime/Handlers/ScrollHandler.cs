@@ -25,9 +25,12 @@ namespace KBP.URDT.Handlers
 
             JObject payload = PayloadReader.AsObject(command.Payload);
             Vector2 point;
-            if (!PayloadReader.TryGetScreenPoint(_runtime, payload, out point))
+            bool resolved = PayloadReader.HasAddressedTarget(payload)
+                ? PayloadReader.TryGetScrollInputPoint(_runtime, payload, out point)
+                : PayloadReader.TryGetScreenPoint(_runtime, payload, out point);
+            if (!resolved)
             {
-                return Response.Error(command.Id, ErrorCodes.E_NOT_FOUND, "Scroll needs a target or point.");
+                return Response.Error(command.Id, ErrorCodes.E_NOT_HITTABLE, "Scroll needs an unobstructed target point or explicit point.");
             }
 
             float deltaX = PayloadReader.GetFloat(payload, "delta_x", 0f);

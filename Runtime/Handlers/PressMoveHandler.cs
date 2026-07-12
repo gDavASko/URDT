@@ -29,23 +29,24 @@ namespace KBP.URDT.Handlers
             }
 
             int steps = Mathf.Max(1, PayloadReader.GetInt(payload, "steps", 10));
+            int pointerId = PayloadReader.GetPointerId(payload);
             int queuedFrames;
             if (_runtime.Input != null)
             {
-                queuedFrames = _runtime.Input.ScheduleDrag(_points, steps);
+                queuedFrames = _runtime.Input.ScheduleDrag(_points, steps, pointerId);
             }
             else
             {
                 Vector2 from = _points[0];
                 Vector2 to = _points[_points.Count - 1];
-                _runtime.Driver.InjectPointer(from, PointerPhase.Move);
-                _runtime.Driver.InjectPointer(from, PointerPhase.Down);
+                _runtime.Driver.InjectPointer(from, PointerPhase.Move, pointerId);
+                _runtime.Driver.InjectPointer(from, PointerPhase.Down, pointerId);
                 for (int i = 1; i <= steps; i++)
                 {
-                    _runtime.Driver.InjectPointer(Vector2.Lerp(from, to, (float)i / steps), PointerPhase.Move);
+                    _runtime.Driver.InjectPointer(Vector2.Lerp(from, to, (float)i / steps), PointerPhase.Move, pointerId);
                 }
 
-                _runtime.Driver.InjectPointer(to, PointerPhase.Up);
+                _runtime.Driver.InjectPointer(to, PointerPhase.Up, pointerId);
                 queuedFrames = steps + 3;
             }
 
@@ -53,7 +54,7 @@ namespace KBP.URDT.Handlers
             {
                 ["press_moved"] = true,
                 ["queued_frames"] = queuedFrames,
-                ["input_tier"] = "virtual_device"
+                ["input_tier"] = pointerId > 0 ? "virtual_touchscreen" : "virtual_mouse"
             });
         }
     }
