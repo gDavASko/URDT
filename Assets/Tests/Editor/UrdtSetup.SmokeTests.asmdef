@@ -1,20 +1,22 @@
 {
-    "name": "KBP.URDT",
-    "rootNamespace": "KBP.URDT",
+    "name": "UrdtSetup.SmokeTests",
+    "rootNamespace": "UrdtSetup.SmokeTests",
     "references": [
-        "Unity.InputSystem",
-        "UniTask"
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Newtonsoft.Json.dll"
+        "nunit.framework.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
-        "URDT_ENABLED"
+        "UNITY_INCLUDE_TESTS"
     ],
     "versionDefines": [],
     "noEngineReferences": false

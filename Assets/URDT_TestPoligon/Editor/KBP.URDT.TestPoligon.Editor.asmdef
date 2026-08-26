@@ -1,0 +1,23 @@
+{
+    "name": "KBP.URDT.TestPoligon.Editor",
+    "rootNamespace": "KBP.URDT.TestPoligon.Editor",
+    "references": [
+        "KBP.URDT",
+        "KBP.URDT.TestPoligon",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "URDT_ENABLED"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

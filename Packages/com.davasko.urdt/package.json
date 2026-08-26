@@ -1,0 +1,15 @@
+{
+  "name": "com.davasko.urdt",
+  "version": "1.0.0",
+  "displayName": "DavASko URDT",
+  "description": "Unity Remote Debugging Transport — WebSocket protocol and virtual input simulation engine for AI-driven E2E testing of Unity applications (honest device-level input).",
+  "unity": "6000.0",
+  "author": {
+    "name": "DavASko",
+    "email": "davasko01@gmail.com"
+  },
+  "dependencies": {
+    "com.unity.inputsystem": "1.19.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.2"
+  }
+}

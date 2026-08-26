@@ -1,0 +1,55 @@
+# ============================================================
+# Unity project (root is both the git repo and the Unity project)
+# ============================================================
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emory[Cc]aptures/
+/[Rr]ecordings/
+
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
+
+# Unity3D generated file on crash reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Auto-generated solution/project files
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Gradle cache directory
+.gradle/
+
+# Rider / VS
+.idea/
+.vs/
+
+# ============================================================
+# URDT harness artifacts
+# ============================================================
+/.harness/
+/test-results.xml
+/CodeCoverage/
+node_modules/
