@@ -33,6 +33,7 @@
         public const string ACTION_SWIPE = "swipe";
         public const string ACTION_SCROLL = "scroll";
         public const string ACTION_KEY_PRESS = "key_press";
+        public const string ACTION_TYPE_TEXT = "type_text";
         public const string ACTION_MULTI_CLICK = "multi_click";
         public const string ACTION_MULTI_DRAG = "multi_drag";
         public const string ACTION_PINCH = "pinch";

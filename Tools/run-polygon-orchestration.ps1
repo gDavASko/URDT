@@ -49,6 +49,12 @@ if (Test-Port $port) {
 }
 
 $before = @(Get-EditorPids)
+# The editor is force-killed at teardown, which leaves scene backups behind. On the next launch
+# Unity would pop a blocking "Recovering Scene Backups" modal that stalls startup. Clear the
+# recovery sources so the GUI editor boots straight into the auto-play hook.
+Remove-Item (Join-Path $ProjectPath "Temp") -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $ProjectPath "Assets\_Recovery") -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $ProjectPath "Assets\_Recovery.meta") -Force -ErrorAction SilentlyContinue
 Write-Host "Launching Unity Editor GUI via 'unity open' (URDT_AUTOPLAY=1)..." -ForegroundColor Cyan
 $env:URDT_AUTOPLAY = "1"
 # unity CLI spawns the Editor and returns; the Editor runs as its own Program Files Unity.exe.

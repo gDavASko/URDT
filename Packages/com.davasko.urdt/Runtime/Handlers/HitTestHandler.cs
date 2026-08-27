@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using KBP.URDT.Driver;
 using KBP.URDT.Transport;
 using Newtonsoft.Json.Linq;
@@ -16,6 +17,7 @@ namespace KBP.URDT.Handlers
     {
         private readonly UrdtRuntime _runtime;
         private readonly List<RaycastResult> _hits = new List<RaycastResult>(16);
+        private static readonly List<Component> _textBuffer = new List<Component>(8);
 
         public HitTestHandler(UrdtRuntime runtime)
         {
@@ -56,6 +58,7 @@ namespace KBP.URDT.Handlers
                     ["index"] = i,
                     ["name"] = gameObject != null ? gameObject.name : string.Empty,
                     ["path"] = gameObject != null ? BuildPath(gameObject.transform) : string.Empty,
+                    ["text"] = ExtractText(gameObject),
                     ["module"] = hit.module != null ? hit.module.GetType().Name : string.Empty,
                     ["distance"] = hit.distance,
                     ["depth"] = hit.depth,
@@ -89,6 +92,42 @@ namespace KBP.URDT.Handlers
             }
 
             return Response.Success(command.Id, data);
+        }
+
+        // Reads the visible label of a hit: the `text` string property of any Text/TMP_Text on the
+        // object or its children (dropdown items carry their label on a child). Reflection keeps
+        // URDT core free of a hard TextMeshPro dependency while still matching UnityEngine.UI.Text.
+        private static string ExtractText(GameObject gameObject)
+        {
+            if (gameObject == null)
+            {
+                return null;
+            }
+
+            _textBuffer.Clear();
+            gameObject.GetComponentsInChildren(true, _textBuffer);
+            for (int i = 0; i < _textBuffer.Count; i++)
+            {
+                Component component = _textBuffer[i];
+                if (component == null)
+                {
+                    continue;
+                }
+
+                PropertyInfo property = component.GetType().GetProperty("text", BindingFlags.Instance | BindingFlags.Public);
+                if (property != null && property.PropertyType == typeof(string) && property.CanRead && property.GetIndexParameters().Length == 0)
+                {
+                    string value = property.GetValue(component) as string;
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        _textBuffer.Clear();
+                        return value;
+                    }
+                }
+            }
+
+            _textBuffer.Clear();
+            return null;
         }
 
         private static string BuildPath(Transform transform)

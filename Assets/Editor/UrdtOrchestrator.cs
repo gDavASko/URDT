@@ -16,7 +16,6 @@ namespace UrdtSetup
     public static class UrdtOrchestrator
     {
         private const string ScenePath = "Assets/URDT_TestPoligon/Scenes/URDT_TestPoligon_UI.unity";
-        private static bool _armed;
         private static int _settleFrames;
 
         static UrdtOrchestrator()
@@ -26,17 +25,17 @@ namespace UrdtSetup
                 return;
             }
 
-            _armed = true;
             _settleFrames = 0;
             EditorApplication.update += Tick;
         }
 
         private static void Tick()
         {
-            if (!_armed || EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isPlaying)
+            // Keep-alive diagnostic mode: while URDT_AUTOPLAY=1, re-enter Play Mode whenever the
+            // editor drops back to Edit Mode, so an external probe always has a live :7777 server.
+            if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isPlaying)
             {
-                _armed = false;
-                EditorApplication.update -= Tick;
+                _settleFrames = 0;
                 return;
             }
 
@@ -47,17 +46,26 @@ namespace UrdtSetup
             }
 
             // Let the editor settle for a few idle frames before switching scenes / entering play.
-            if (_settleFrames++ < 10)
+            if (_settleFrames++ < 15)
             {
                 return;
             }
 
-            _armed = false;
-            EditorApplication.update -= Tick;
+            _settleFrames = 0;
 
             try
             {
-                EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                if (!EditorSceneManager.GetActiveScene().path.EndsWith("URDT_TestPoligon_UI.unity", StringComparison.Ordinal))
+                {
+                    EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                }
+
+                // Pin the Game View to a fixed 1080p resolution. The free-aspect Game View
+                // otherwise matches the desktop (e.g. 4K), which pushes controls (dropdown lists,
+                // modal) out of the external runner's fixed pixel-space coordinate scans.
+                try { PlayModeWindow.SetCustomRenderingResolution(1920, 1080, "URDT 1080p"); }
+                catch (Exception resExc) { Debug.LogWarning("URDT orchestrator: could not pin Game View resolution: " + resExc.Message); }
+
                 EditorApplication.EnterPlaymode();
                 Debug.Log("URDT orchestrator: opened polygon scene and requested Play Mode.");
             }
