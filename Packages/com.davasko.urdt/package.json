@@ -9,7 +9,7 @@
     "email": "davasko01@gmail.com"
   },
   "dependencies": {
-    "com.unity.inputsystem": "1.19.0",
+    "com.unity.inputsystem": "1.18.0",
     "com.unity.nuget.newtonsoft-json": "3.2.2"
   }
 }
