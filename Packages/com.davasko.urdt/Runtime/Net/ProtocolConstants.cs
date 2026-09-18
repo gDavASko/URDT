@@ -1,4 +1,4 @@
-﻿namespace KBP.URDT.Net
+namespace KBP.URDT.Net
 {
     /// <summary>
     /// Protocol-level constants (engine-agnostic, no UnityEngine types).
@@ -45,6 +45,8 @@
         public const string ACTION_UNSUBSCRIBE = "unsubscribe";
         public const string ACTION_SET_TIME_SCALE = "set_time_scale";
         public const string ACTION_PIN_FIXED_DELTA = "pin_fixed_delta";
+        public const string ACTION_POINTER_DOWN = "pointer_down";
+        public const string ACTION_POINTER_UP = "pointer_up";
 
         /// <summary>Namespace prefix for game-provided arrange-only test seams (protocol §4.14).</summary>
         public const string CUSTOM_PREFIX = "custom:";

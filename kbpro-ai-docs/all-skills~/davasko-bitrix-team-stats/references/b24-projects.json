@@ -1,0 +1,106 @@
+{
+ "schema_version": "b24-1.0",
+ "comment": "Bitrix24 workgroup (project) id registry. Employee ids are NOT stored here — they are extracted automatically via user.get and confirmed per run. Names for ids 102/100/94/92/86/68/60/54/12 CONFIRMED by the user from the Bitrix group list (screenshots 2026-07-16); the rest inferred from task signals (scripts/b24projects.js). Bug convention: tag 'Баг'/'Bug'/'BUG' on the task (observed in groups 68/46/60) + title heuristic fallback.",
+ "groups": [
+  {
+   "groupId": 102,
+   "name": "Задачи Аниматоры Ai",
+   "repo": null,
+   "status": "confirmed"
+  },
+  {
+   "groupId": 100,
+   "name": "Ну Погоди! Роботы",
+   "repo": null,
+   "status": "confirmed"
+  },
+  {
+   "groupId": 94,
+   "name": "DavASko АИ-Песочница",
+   "repo": null,
+   "status": "confirmed",
+   "note": "гант-планирование, поле сложности UF_TASKS_TASK_1783529349965 заполнялось здесь"
+  },
+  {
+   "groupId": 92,
+   "name": "Стоматология. Оранжевая корова",
+   "repo": "iri_group/dentistry-cow",
+   "status": "confirmed"
+  },
+  {
+   "groupId": 86,
+   "name": "Кот Пломбир. Стройка",
+   "repo": "iri_group/iri_plombir_building",
+   "status": "confirmed",
+   "repo_source": "discovery 2026-07-16"
+  },
+  {
+   "groupId": 68,
+   "name": "ИРИ Железная Дорога_ Оранжевая корова",
+   "repo": "iri_group/railway-cow",
+   "status": "confirmed",
+   "repo_source": "discovery 2026-07-16"
+  },
+  {
+   "groupId": 60,
+   "name": "Почемучка 2",
+   "repo": "iri_group/pochemuchka2",
+   "status": "confirmed",
+   "note": "внутри — задачи с тегами QA/Баг (это баг-задачи проекта, не отдельная QA-группа)",
+   "repo_source": "discovery 2026-07-16"
+  },
+  {
+   "groupId": 54,
+   "name": "Веселые Старты",
+   "repo": null,
+   "status": "confirmed"
+  },
+  {
+   "groupId": 12,
+   "name": "Енотки: Музыкальный телефон",
+   "repo": null,
+   "status": "confirmed"
+  },
+  {
+   "groupId": 46,
+   "name": "Мини-игры / эпизоды (звуки, локации)",
+   "repo": null,
+   "status": "proposed",
+   "evidence": "131 задача 07-10.2025; слова: вставка звуков, мини, эпизод, локации; теги DEV/2D/АРТ"
+  },
+  {
+   "groupId": 78,
+   "name": "Проект Пашковского (сценарий/ланги/пупс)",
+   "repo": null,
+   "status": "proposed",
+   "evidence": "22 задачи, единственный ответственный Александр Пашковский"
+  },
+  {
+   "groupId": 80,
+   "name": "Мини-игры: хоккей/финал (арт+анимация)",
+   "repo": null,
+   "status": "proposed",
+   "evidence": "13 задач за 2026-01-14; слова: блок, финал, арт, анимация, хоккей"
+  },
+  {
+   "groupId": 56,
+   "name": "Яга (VK/WEB/PC, v1.3.0)",
+   "repo": null,
+   "status": "proposed",
+   "evidence": "5 задач; теги DEV/1.3.0/VK/WEB/PC; Пашковский"
+  },
+  {
+   "groupId": 44,
+   "name": "Ломоносов (отзывы в сторах)",
+   "repo": null,
+   "status": "proposed",
+   "evidence": "1 задача: отсмотр отзывов в сторах"
+  },
+  {
+   "groupId": 0,
+   "name": "(без проекта)",
+   "repo": null,
+   "status": "confirmed"
+  }
+ ]
+}

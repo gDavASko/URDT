@@ -7,25 +7,12 @@ using UnityEngine.UI;
 namespace KBP.URDT.TestPoligon
 {
     /// <summary>
-    /// Captures launcher and UI state changes for the first URDT test polygon wave.
+    /// UI Controller for the URDT test polygon launcher and interactive suites.
+    /// Pure gameplay/UI logic with zero coupling to URDT beacons (adheres strictly to SRP).
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class UrdtUiTestPoligonController : MonoBehaviour
     {
-        [SerializeField] private UrdtTestPoligonDebugTarget[] _targets = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _openUiTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _open2DTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _open3DTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _openIntegrationTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _runAllTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _primaryButtonTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _toggleTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _sliderTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _inputTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _dropdownTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _scrollTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _modalTarget = null;
-        [SerializeField] private UrdtTestPoligonDebugTarget _modalCloseTarget = null;
         [SerializeField] private GameObject _mainMenuWindow = null;
         [SerializeField] private GameObject _uiSuiteWindow = null;
         [SerializeField] private GameObject _world2DWindow = null;
@@ -57,21 +44,9 @@ namespace KBP.URDT.TestPoligon
         private readonly List<Transform> _randomizedUiControls = new List<Transform>(7);
         private int _randomizationSeed;
 
+        public static UrdtUiTestPoligonController Instance { get; private set; }
+
         public void Configure(
-            UrdtTestPoligonDebugTarget[] targets,
-            UrdtTestPoligonDebugTarget openUiTarget,
-            UrdtTestPoligonDebugTarget open2DTarget,
-            UrdtTestPoligonDebugTarget open3DTarget,
-            UrdtTestPoligonDebugTarget openIntegrationTarget,
-            UrdtTestPoligonDebugTarget runAllTarget,
-            UrdtTestPoligonDebugTarget primaryButtonTarget,
-            UrdtTestPoligonDebugTarget toggleTarget,
-            UrdtTestPoligonDebugTarget sliderTarget,
-            UrdtTestPoligonDebugTarget inputTarget,
-            UrdtTestPoligonDebugTarget dropdownTarget,
-            UrdtTestPoligonDebugTarget scrollTarget,
-            UrdtTestPoligonDebugTarget modalTarget,
-            UrdtTestPoligonDebugTarget modalCloseTarget,
             GameObject mainMenuWindow,
             GameObject uiSuiteWindow,
             GameObject world2DWindow,
@@ -98,20 +73,6 @@ namespace KBP.URDT.TestPoligon
             GameObject modalWindow,
             TMP_Text statusText)
         {
-            _targets = targets;
-            _openUiTarget = openUiTarget;
-            _open2DTarget = open2DTarget;
-            _open3DTarget = open3DTarget;
-            _openIntegrationTarget = openIntegrationTarget;
-            _runAllTarget = runAllTarget;
-            _primaryButtonTarget = primaryButtonTarget;
-            _toggleTarget = toggleTarget;
-            _sliderTarget = sliderTarget;
-            _inputTarget = inputTarget;
-            _dropdownTarget = dropdownTarget;
-            _scrollTarget = scrollTarget;
-            _modalTarget = modalTarget;
-            _modalCloseTarget = modalCloseTarget;
             _mainMenuWindow = mainMenuWindow;
             _uiSuiteWindow = uiSuiteWindow;
             _world2DWindow = world2DWindow;
@@ -139,6 +100,19 @@ namespace KBP.URDT.TestPoligon
             _statusText = statusText;
         }
 
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
         private void OnEnable()
         {
             AddListeners();
@@ -156,189 +130,91 @@ namespace KBP.URDT.TestPoligon
             RemoveListeners();
         }
 
+        private void Update()
+        {
+            if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Escape))
+            {
+                ShowMainMenu();
+            }
+        }
+
         private void AddListeners()
         {
-            if (_openUiButton != null)
-            {
-                _openUiButton.onClick.AddListener(OpenUiSuite);
-            }
+            if (_openUiButton != null) _openUiButton.onClick.AddListener(OpenUiSuite);
+            if (_open2DButton != null) _open2DButton.onClick.AddListener(Open2DSuite);
+            if (_open3DButton != null) _open3DButton.onClick.AddListener(Open3DSuite);
+            if (_openIntegrationButton != null) _openIntegrationButton.onClick.AddListener(OpenIntegrationSuite);
+            if (_runAllButton != null) _runAllButton.onClick.AddListener(RunAllSuites);
+            if (_uiBackButton != null) _uiBackButton.onClick.AddListener(ShowMainMenu);
+            if (_world2DBackButton != null) _world2DBackButton.onClick.AddListener(ShowMainMenu);
+            if (_world3DBackButton != null) _world3DBackButton.onClick.AddListener(ShowMainMenu);
+            if (_integrationBackButton != null) _integrationBackButton.onClick.AddListener(ShowMainMenu);
+            if (_primaryButton != null) _primaryButton.onClick.AddListener(OnPrimaryButton);
+            if (_resetButton != null) _resetButton.onClick.AddListener(ResetUiState);
+            if (_modalOpenButton != null) _modalOpenButton.onClick.AddListener(OpenModal);
+            if (_modalCloseButton != null) _modalCloseButton.onClick.AddListener(CloseModal);
+            if (_toggle != null) _toggle.onValueChanged.AddListener(OnToggleChanged);
+            if (_slider != null) _slider.onValueChanged.AddListener(OnSliderChanged);
+            if (_inputField != null) _inputField.onValueChanged.AddListener(OnInputChanged);
+            if (_dropdown != null) _dropdown.onValueChanged.AddListener(OnDropdownChanged);
+            if (_scrollRect != null) _scrollRect.onValueChanged.AddListener(OnScrollChanged);
 
-            if (_open2DButton != null)
+            Transform headerTitleTr = transform.Find("Header/Title");
+            if (headerTitleTr == null && transform.root != null)
             {
-                _open2DButton.onClick.AddListener(Open2DSuite);
+                headerTitleTr = transform.root.Find("Canvas/Header/Title") ?? transform.root.Find("Header/Title");
             }
-
-            if (_open3DButton != null)
+            if (headerTitleTr != null)
             {
-                _open3DButton.onClick.AddListener(Open3DSuite);
-            }
-
-            if (_openIntegrationButton != null)
-            {
-                _openIntegrationButton.onClick.AddListener(OpenIntegrationSuite);
-            }
-
-            if (_runAllButton != null)
-            {
-                _runAllButton.onClick.AddListener(RunAllSuites);
-            }
-
-            if (_uiBackButton != null)
-            {
-                _uiBackButton.onClick.AddListener(ShowMainMenu);
-            }
-
-            if (_world2DBackButton != null)
-            {
-                _world2DBackButton.onClick.AddListener(ShowMainMenu);
-            }
-
-            if (_world3DBackButton != null)
-            {
-                _world3DBackButton.onClick.AddListener(ShowMainMenu);
-            }
-
-            if (_integrationBackButton != null)
-            {
-                _integrationBackButton.onClick.AddListener(ShowMainMenu);
-            }
-
-            if (_primaryButton != null)
-            {
-                _primaryButton.onClick.AddListener(OnPrimaryButton);
-            }
-
-            if (_resetButton != null)
-            {
-                _resetButton.onClick.AddListener(ResetUiState);
-            }
-
-            if (_modalOpenButton != null)
-            {
-                _modalOpenButton.onClick.AddListener(OpenModal);
-            }
-
-            if (_modalCloseButton != null)
-            {
-                _modalCloseButton.onClick.AddListener(CloseModal);
-            }
-
-            if (_toggle != null)
-            {
-                _toggle.onValueChanged.AddListener(OnToggleChanged);
-            }
-
-            if (_slider != null)
-            {
-                _slider.onValueChanged.AddListener(OnSliderChanged);
-            }
-
-            if (_inputField != null)
-            {
-                _inputField.onValueChanged.AddListener(OnInputChanged);
-            }
-
-            if (_dropdown != null)
-            {
-                _dropdown.onValueChanged.AddListener(OnDropdownChanged);
-            }
-
-            if (_scrollRect != null)
-            {
-                _scrollRect.onValueChanged.AddListener(OnScrollChanged);
+                var btn = headerTitleTr.GetComponent<Button>();
+                if (btn == null)
+                {
+                    btn = headerTitleTr.gameObject.AddComponent<Button>();
+                    var tmp = headerTitleTr.GetComponent<TextMeshProUGUI>();
+                    if (tmp != null)
+                    {
+                        tmp.raycastTarget = true;
+                        btn.targetGraphic = tmp;
+                    }
+                }
+                btn.onClick.RemoveListener(ShowMainMenu);
+                btn.onClick.AddListener(ShowMainMenu);
             }
         }
 
         private void RemoveListeners()
         {
-            if (_openUiButton != null)
-            {
-                _openUiButton.onClick.RemoveListener(OpenUiSuite);
-            }
+            if (_openUiButton != null) _openUiButton.onClick.RemoveListener(OpenUiSuite);
+            if (_open2DButton != null) _open2DButton.onClick.RemoveListener(Open2DSuite);
+            if (_open3DButton != null) _open3DButton.onClick.RemoveListener(Open3DSuite);
+            if (_openIntegrationButton != null) _openIntegrationButton.onClick.RemoveListener(OpenIntegrationSuite);
+            if (_runAllButton != null) _runAllButton.onClick.RemoveListener(RunAllSuites);
+            if (_uiBackButton != null) _uiBackButton.onClick.RemoveListener(ShowMainMenu);
+            if (_world2DBackButton != null) _world2DBackButton.onClick.RemoveListener(ShowMainMenu);
+            if (_world3DBackButton != null) _world3DBackButton.onClick.RemoveListener(ShowMainMenu);
+            if (_integrationBackButton != null) _integrationBackButton.onClick.RemoveListener(ShowMainMenu);
+            if (_primaryButton != null) _primaryButton.onClick.RemoveListener(OnPrimaryButton);
+            if (_resetButton != null) _resetButton.onClick.RemoveListener(ResetUiState);
+            if (_modalOpenButton != null) _modalOpenButton.onClick.RemoveListener(OpenModal);
+            if (_modalCloseButton != null) _modalCloseButton.onClick.RemoveListener(CloseModal);
+            if (_toggle != null) _toggle.onValueChanged.RemoveListener(OnToggleChanged);
+            if (_slider != null) _slider.onValueChanged.RemoveListener(OnSliderChanged);
+            if (_inputField != null) _inputField.onValueChanged.RemoveListener(OnInputChanged);
+            if (_dropdown != null) _dropdown.onValueChanged.RemoveListener(OnDropdownChanged);
+            if (_scrollRect != null) _scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
 
-            if (_open2DButton != null)
+            Transform headerTitleTr = transform.Find("Header/Title");
+            if (headerTitleTr == null && transform.root != null)
             {
-                _open2DButton.onClick.RemoveListener(Open2DSuite);
+                headerTitleTr = transform.root.Find("Canvas/Header/Title") ?? transform.root.Find("Header/Title");
             }
-
-            if (_open3DButton != null)
+            if (headerTitleTr != null)
             {
-                _open3DButton.onClick.RemoveListener(Open3DSuite);
-            }
-
-            if (_openIntegrationButton != null)
-            {
-                _openIntegrationButton.onClick.RemoveListener(OpenIntegrationSuite);
-            }
-
-            if (_runAllButton != null)
-            {
-                _runAllButton.onClick.RemoveListener(RunAllSuites);
-            }
-
-            if (_uiBackButton != null)
-            {
-                _uiBackButton.onClick.RemoveListener(ShowMainMenu);
-            }
-
-            if (_world2DBackButton != null)
-            {
-                _world2DBackButton.onClick.RemoveListener(ShowMainMenu);
-            }
-
-            if (_world3DBackButton != null)
-            {
-                _world3DBackButton.onClick.RemoveListener(ShowMainMenu);
-            }
-
-            if (_integrationBackButton != null)
-            {
-                _integrationBackButton.onClick.RemoveListener(ShowMainMenu);
-            }
-
-            if (_primaryButton != null)
-            {
-                _primaryButton.onClick.RemoveListener(OnPrimaryButton);
-            }
-
-            if (_resetButton != null)
-            {
-                _resetButton.onClick.RemoveListener(ResetUiState);
-            }
-
-            if (_modalOpenButton != null)
-            {
-                _modalOpenButton.onClick.RemoveListener(OpenModal);
-            }
-
-            if (_modalCloseButton != null)
-            {
-                _modalCloseButton.onClick.RemoveListener(CloseModal);
-            }
-
-            if (_toggle != null)
-            {
-                _toggle.onValueChanged.RemoveListener(OnToggleChanged);
-            }
-
-            if (_slider != null)
-            {
-                _slider.onValueChanged.RemoveListener(OnSliderChanged);
-            }
-
-            if (_inputField != null)
-            {
-                _inputField.onValueChanged.RemoveListener(OnInputChanged);
-            }
-
-            if (_dropdown != null)
-            {
-                _dropdown.onValueChanged.RemoveListener(OnDropdownChanged);
-            }
-
-            if (_scrollRect != null)
-            {
-                _scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
+                var btn = headerTitleTr.GetComponent<Button>();
+                if (btn != null)
+                {
+                    btn.onClick.RemoveListener(ShowMainMenu);
+                }
             }
         }
 
@@ -346,66 +222,66 @@ namespace KBP.URDT.TestPoligon
         {
             RandomizeUiControls();
             ShowWindow(_uiSuiteWindow, "window_ui_suite", "ui");
-            Record(_openUiTarget, "click", "open_ui_suite");
+            SetStatus("open_ui_suite");
         }
 
         private void Open2DSuite()
         {
             ShowWindow(_world2DWindow, "window_2d_suite", "2d");
-            Record(_open2DTarget, "click", "open_2d_suite");
+            SetStatus("open_2d_suite");
         }
 
         private void Open3DSuite()
         {
             ShowWindow(_world3DWindow, "window_3d_suite", "3d");
-            Record(_open3DTarget, "click", "open_3d_suite");
+            SetStatus("open_3d_suite");
         }
 
         private void OpenIntegrationSuite()
         {
             ShowWindow(_integrationWindow, "window_integration_suite", "integration");
-            Record(_openIntegrationTarget, "click", "open_integration_suite");
+            SetStatus("open_integration_suite");
         }
 
         private void RunAllSuites()
         {
-            Record(_runAllTarget, "click", "run_all_requested");
+            SetStatus("run_all_requested");
         }
 
-        private void ShowMainMenu()
+        public void ShowMainMenu()
         {
             ShowWindow(_mainMenuWindow, "window_main_menu", "launcher");
-            Record(null, "click", "open_main_menu");
+            SetStatus("open_main_menu");
         }
 
         private void OnPrimaryButton()
         {
-            Record(_primaryButtonTarget, "click", "primary_button_clicked");
+            SetStatus("primary_button_clicked");
         }
 
         private void OnToggleChanged(bool value)
         {
-            Record(_toggleTarget, "click", value ? "toggle_on" : "toggle_off");
+            SetStatus(value ? "toggle_on" : "toggle_off");
         }
 
         private void OnSliderChanged(float value)
         {
-            Record(_sliderTarget, "drag", "slider_value=" + value.ToString("0.00"));
+            SetStatus("slider_value=" + value.ToString("0.00"));
         }
 
         private void OnInputChanged(string value)
         {
-            Record(_inputTarget, "keyboard", "input_length=" + value.Length);
+            SetStatus("input_length=" + (value != null ? value.Length : 0));
         }
 
         private void OnDropdownChanged(int value)
         {
-            Record(_dropdownTarget, "click", "dropdown_value=" + GetDropdownLabel() + ";index=" + value);
+            SetStatus("dropdown_value=" + GetDropdownLabel() + ";index=" + value);
         }
 
         private void OnScrollChanged(Vector2 value)
         {
-            Record(_scrollTarget, "scroll", "scroll_y=" + value.y.ToString("0.00"));
+            SetStatus("scroll_y=" + value.y.ToString("0.00"));
         }
 
         private void OpenModal()
@@ -414,8 +290,7 @@ namespace KBP.URDT.TestPoligon
             {
                 _modalWindow.SetActive(true);
             }
-
-            Record(_modalTarget, "click", "modal_open");
+            SetStatus("modal_open");
         }
 
         private void CloseModal()
@@ -424,8 +299,7 @@ namespace KBP.URDT.TestPoligon
             {
                 _modalWindow.SetActive(false);
             }
-
-            Record(_modalCloseTarget, "click", "modal_closed");
+            SetStatus("modal_closed");
         }
 
         private void ResetUiState()
@@ -461,17 +335,6 @@ namespace KBP.URDT.TestPoligon
             if (_modalWindow != null)
             {
                 _modalWindow.SetActive(false);
-            }
-
-            if (_targets != null)
-            {
-                for (int i = 0; i < _targets.Length; i++)
-                {
-                    if (_targets[i] != null)
-                    {
-                        _targets[i].ResetState();
-                    }
-                }
             }
 
             if (keepUiSuiteOpen)
@@ -519,7 +382,18 @@ namespace KBP.URDT.TestPoligon
             Shuffle(_randomizedUiControls, random);
             for (int i = 0; i < _randomizedUiControls.Count; i++)
             {
-                _randomizedUiControls[i].SetSiblingIndex(i);
+                _randomizedUiControls[i].SetSiblingIndex(i + 1);
+            }
+
+            Transform studio = content.Find("StickDrawingStudio");
+            if (studio != null)
+            {
+                studio.SetSiblingIndex(0);
+            }
+
+            if (content is RectTransform contentRect)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(contentRect);
             }
         }
 
@@ -567,6 +441,11 @@ namespace KBP.URDT.TestPoligon
 
         private void ShowWindow(GameObject visibleWindow, string activeWindow, string activeModule)
         {
+            if (UnityEngine.EventSystems.EventSystem.current != null)
+            {
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            }
+
             SetWindowActive(_mainMenuWindow, visibleWindow);
             SetWindowActive(_uiSuiteWindow, visibleWindow);
             SetWindowActive(_world2DWindow, visibleWindow);
@@ -575,17 +454,6 @@ namespace KBP.URDT.TestPoligon
 
             _activeWindow = string.IsNullOrEmpty(activeWindow) ? "window_main_menu" : activeWindow;
             _activeModule = string.IsNullOrEmpty(activeModule) ? "launcher" : activeModule;
-
-            if (_targets != null)
-            {
-                for (int i = 0; i < _targets.Length; i++)
-                {
-                    if (_targets[i] != null)
-                    {
-                        _targets[i].SetContext(_activeWindow, _activeModule);
-                    }
-                }
-            }
 
             SetStatus(_activeWindow);
         }
@@ -596,16 +464,6 @@ namespace KBP.URDT.TestPoligon
             {
                 window.SetActive(window == visibleWindow);
             }
-        }
-
-        private void Record(UrdtTestPoligonDebugTarget target, string action, string result)
-        {
-            if (target != null)
-            {
-                target.RecordInput(action, result);
-            }
-
-            SetStatus(result);
         }
 
         private void SetStatus(string value)

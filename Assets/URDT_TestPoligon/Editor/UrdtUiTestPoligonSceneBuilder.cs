@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using KBP.URDT;
+using KBP.URDT.Inspect;
 using KBP.URDT.TestPoligon;
 using TMPro;
 using UnityEditor;
@@ -41,77 +42,81 @@ namespace KBP.URDT.TestPoligon.Editor
             TMP_Text statusText = CreateHeader(appRoot);
             RectTransform windowHost = CreateWindowHost(appRoot);
 
-            List<UrdtTestPoligonDebugTarget> targets = new List<UrdtTestPoligonDebugTarget>();
+            List<UrdtUiTarget> targets = new List<UrdtUiTarget>();
 
             GameObject mainMenuWindow = CreateWindow(windowHost, "MainMenuWindow", true);
-            UrdtTestPoligonDebugTarget mainWindowTarget = AddTarget(
+            UrdtUiWindowTarget mainWindowTarget = AddWindowTarget(
                 mainMenuWindow,
                 canvas,
                 "window_main_menu",
-                "window",
                 "window_main_menu",
                 "launcher",
                 "inspect,query");
             targets.Add(mainWindowTarget);
 
             Button openUiButton = CreateMenuButton(mainMenuWindow.transform, "OpenUiSuiteButton", "UI");
-            UrdtTestPoligonDebugTarget openUiTarget = AddTarget(
+            UrdtUiButtonTarget openUiTarget = AddButtonTarget(
                 openUiButton.gameObject,
                 canvas,
                 "btn_open_ui_suite",
-                "button",
                 "window_main_menu",
                 "launcher",
+                "launcher",
                 COMMON_COMMANDS,
-                selectable: openUiButton);
+                selectable: openUiButton,
+                clickResult: "open_ui_suite");
             targets.Add(openUiTarget);
 
             Button open2DButton = CreateMenuButton(mainMenuWindow.transform, "Open2DSuiteButton", "2D");
-            UrdtTestPoligonDebugTarget open2DTarget = AddTarget(
+            UrdtUiButtonTarget open2DTarget = AddButtonTarget(
                 open2DButton.gameObject,
                 canvas,
                 "btn_open_2d_suite",
-                "button",
                 "window_main_menu",
                 "launcher",
+                "launcher",
                 COMMON_COMMANDS,
-                selectable: open2DButton);
+                selectable: open2DButton,
+                clickResult: "open_2d_suite");
             targets.Add(open2DTarget);
 
             Button open3DButton = CreateMenuButton(mainMenuWindow.transform, "Open3DSuiteButton", "3D");
-            UrdtTestPoligonDebugTarget open3DTarget = AddTarget(
+            UrdtUiButtonTarget open3DTarget = AddButtonTarget(
                 open3DButton.gameObject,
                 canvas,
                 "btn_open_3d_suite",
-                "button",
                 "window_main_menu",
                 "launcher",
+                "launcher",
                 COMMON_COMMANDS,
-                selectable: open3DButton);
+                selectable: open3DButton,
+                clickResult: "open_3d_suite");
             targets.Add(open3DTarget);
 
             Button openIntegrationButton = CreateMenuButton(mainMenuWindow.transform, "OpenIntegrationSuiteButton", "Integration");
-            UrdtTestPoligonDebugTarget openIntegrationTarget = AddTarget(
+            UrdtUiButtonTarget openIntegrationTarget = AddButtonTarget(
                 openIntegrationButton.gameObject,
                 canvas,
                 "btn_open_integration_suite",
-                "button",
                 "window_main_menu",
                 "launcher",
+                "launcher",
                 COMMON_COMMANDS,
-                selectable: openIntegrationButton);
+                selectable: openIntegrationButton,
+                clickResult: "open_integration_suite");
             targets.Add(openIntegrationTarget);
 
             Button runAllButton = CreateMenuButton(mainMenuWindow.transform, "RunAllSuitesButton", "Run All");
-            UrdtTestPoligonDebugTarget runAllTarget = AddTarget(
+            UrdtUiButtonTarget runAllTarget = AddButtonTarget(
                 runAllButton.gameObject,
                 canvas,
                 "btn_run_all_suites",
-                "button",
                 "window_main_menu",
                 "launcher",
+                "launcher",
                 COMMON_COMMANDS,
-                selectable: runAllButton);
+                selectable: runAllButton,
+                clickResult: "run_all_requested");
             targets.Add(runAllTarget);
 
             UiSuiteRefs uiSuite = CreateUiSuite(windowHost, canvas, targets);
@@ -120,15 +125,16 @@ namespace KBP.URDT.TestPoligon.Editor
             SuiteShellRefs integrationSuite = CreateSuiteShell(windowHost, canvas, targets, "IntegrationSuiteWindow", "window_integration_suite", "integration", "Integration");
             GameObject modalWindow = CreateModal(safeArea);
             Button modalCloseButton = modalWindow.GetComponentInChildren<Button>(true);
-            UrdtTestPoligonDebugTarget modalCloseTarget = AddTarget(
+            UrdtUiButtonTarget modalCloseTarget = AddButtonTarget(
                 modalCloseButton.gameObject,
                 canvas,
                 "ui.modal_close_button",
-                "button",
                 "window_modal",
                 "ui",
+                "ui",
                 COMMON_COMMANDS,
-                selectable: modalCloseButton);
+                selectable: modalCloseButton,
+                clickResult: "modal_closed");
             targets.Add(modalCloseTarget);
 
             CreateEventSystem();
@@ -137,20 +143,6 @@ namespace KBP.URDT.TestPoligon.Editor
             UrdtUiTestPoligonController controller =
                 new GameObject("UrdtUiTestPoligonController").AddComponent<UrdtUiTestPoligonController>();
             controller.Configure(
-                targets.ToArray(),
-                openUiTarget,
-                open2DTarget,
-                open3DTarget,
-                openIntegrationTarget,
-                runAllTarget,
-                uiSuite.PrimaryTarget,
-                uiSuite.ToggleTarget,
-                uiSuite.SliderTarget,
-                uiSuite.InputTarget,
-                uiSuite.DropdownTarget,
-                uiSuite.ScrollTarget,
-                uiSuite.ModalTarget,
-                modalCloseTarget,
                 mainMenuWindow,
                 uiSuite.Window,
                 suite2D.Window,
@@ -181,6 +173,8 @@ namespace KBP.URDT.TestPoligon.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Debug.Log("URDT Test Poligon UI scene rebuilt: " + SCENE_PATH);
+
+            UrdtMechanics2DBuilder.BuildAllAndSetup();
         }
 
         private static void EnsureFolders()
@@ -232,8 +226,8 @@ namespace KBP.URDT.TestPoligon.Editor
         {
             GameObject rootObject = CreateStretchObject("AppRoot", parent);
             VerticalLayoutGroup layout = rootObject.AddComponent<VerticalLayoutGroup>();
-            layout.padding = new RectOffset(24, 24, 20, 20);
-            layout.spacing = 14f;
+            layout.padding = new RectOffset(16, 16, 8, 8);
+            layout.spacing = 6f;
             layout.childAlignment = TextAnchor.UpperCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
@@ -244,26 +238,32 @@ namespace KBP.URDT.TestPoligon.Editor
 
         private static TMP_Text CreateHeader(Transform parent)
         {
-            GameObject headerObject = CreateLayoutObject("Header", parent, 0f, 72f);
+            GameObject headerObject = CreateLayoutObject("Header", parent, 0f, 44f);
             HorizontalLayoutGroup layout = headerObject.AddComponent<HorizontalLayoutGroup>();
             layout.spacing = 12f;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
             layout.childForceExpandWidth = false;
-            layout.childForceExpandHeight = true;
+            layout.childForceExpandHeight = false;
 
-            TMP_Text title = CreateText("Title", headerObject.transform, "URDT Test Poligon", 30, TextAlignmentOptions.Left);
+            LayoutElement headerLayout = headerObject.GetComponent<LayoutElement>();
+            headerLayout.preferredHeight = 44f;
+            headerLayout.flexibleHeight = 0f;
+
+            TMP_Text title = CreateText("Title", headerObject.transform, "URDT Test Poligon", 24, TextAlignmentOptions.Left);
             title.color = Color.white;
             LayoutElement titleLayout = title.gameObject.AddComponent<LayoutElement>();
             titleLayout.flexibleWidth = 1f;
-            titleLayout.preferredHeight = 64f;
+            titleLayout.preferredHeight = 40f;
+            titleLayout.flexibleHeight = 0f;
 
-            TMP_Text status = CreateText("StatusText", headerObject.transform, "ready", 18, TextAlignmentOptions.Right);
+            TMP_Text status = CreateText("StatusText", headerObject.transform, "ready", 16, TextAlignmentOptions.Right);
             status.color = new Color(0.72f, 0.82f, 0.9f, 1f);
             LayoutElement statusLayout = status.gameObject.AddComponent<LayoutElement>();
             statusLayout.preferredWidth = 280f;
-            statusLayout.preferredHeight = 64f;
+            statusLayout.preferredHeight = 40f;
+            statusLayout.flexibleHeight = 0f;
             return status;
         }
 
@@ -272,7 +272,7 @@ namespace KBP.URDT.TestPoligon.Editor
             GameObject hostObject = CreateLayoutObject("WindowHost", parent, 0f, 0f);
             LayoutElement layoutElement = hostObject.GetComponent<LayoutElement>();
             layoutElement.flexibleHeight = 1f;
-            layoutElement.minHeight = 240f;
+            layoutElement.minHeight = 350f;
             return hostObject.GetComponent<RectTransform>();
         }
 
@@ -282,8 +282,8 @@ namespace KBP.URDT.TestPoligon.Editor
             Image image = windowObject.AddComponent<Image>();
             image.color = new Color(0.1f, 0.12f, 0.14f, 0.96f);
             VerticalLayoutGroup layout = windowObject.AddComponent<VerticalLayoutGroup>();
-            layout.padding = new RectOffset(20, 20, 20, 20);
-            layout.spacing = 12f;
+            layout.padding = new RectOffset(12, 12, 8, 8);
+            layout.spacing = 8f;
             layout.childAlignment = TextAnchor.UpperCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
@@ -305,72 +305,218 @@ namespace KBP.URDT.TestPoligon.Editor
         private static UiSuiteRefs CreateUiSuite(
             Transform parent,
             Canvas canvas,
-            List<UrdtTestPoligonDebugTarget> targets)
+            List<UrdtUiTarget> targets)
         {
             UiSuiteRefs refs = new UiSuiteRefs();
             refs.Window = CreateWindow(parent, "UiSuiteWindow", false);
-            UrdtTestPoligonDebugTarget windowTarget = AddTarget(
+            UrdtUiWindowTarget windowTarget = AddWindowTarget(
                 refs.Window,
                 canvas,
                 "window_ui_suite",
-                "window",
                 "window_ui_suite",
                 "ui",
                 "inspect,query");
             targets.Add(windowTarget);
 
-            refs.BackButton = CreateButton(refs.Window.transform, "UiBackButton", "Main Menu", 52f);
-            targets.Add(AddTarget(refs.BackButton.gameObject, canvas, "btn_ui_back", "button", "window_ui_suite", "ui", COMMON_COMMANDS, selectable: refs.BackButton));
+            // Top Navigation Bar (Side-by-side for maximal active test zone)
+            GameObject navBar = CreateLayoutObject("UiNavBar", refs.Window.transform, 0f, 44f);
+            HorizontalLayoutGroup navLayout = navBar.AddComponent<HorizontalLayoutGroup>();
+            navLayout.spacing = 10f;
+            navLayout.childControlWidth = true;
+            navLayout.childControlHeight = true;
+            navLayout.childForceExpandWidth = true;
+            navLayout.childForceExpandHeight = false;
+            LayoutElement navLe = navBar.GetComponent<LayoutElement>();
+            navLe.preferredHeight = 44f;
+            navLe.flexibleHeight = 0f;
 
-            refs.ModalOpenButton = CreateButton(refs.Window.transform, "OpenModalButton", "Modal", 56f);
-            refs.ModalTarget = AddTarget(refs.ModalOpenButton.gameObject, canvas, "ui.modal_button", "button", "window_ui_suite", "ui", COMMON_COMMANDS, selectable: refs.ModalOpenButton);
-            targets.Add(refs.ModalTarget);
+            refs.BackButton = CreateButton(navBar.transform, "UiBackButton", "Main Menu", 44f);
+            targets.Add(AddButtonTarget(refs.BackButton.gameObject, canvas, "btn_ui_back", "window_ui_suite", "ui", "ui", COMMON_COMMANDS, selectable: refs.BackButton, clickResult: "open_main_menu"));
+
+            refs.ModalOpenButton = CreateButton(navBar.transform, "OpenModalButton", "Modal", 44f);
+            targets.Add(AddButtonTarget(refs.ModalOpenButton.gameObject, canvas, "ui.modal_button", "window_ui_suite", "ui", "ui", COMMON_COMMANDS, selectable: refs.ModalOpenButton, clickResult: "modal_open"));
 
             ScrollRect suiteScroll = CreateWindowScroll(refs.Window.transform, "UiSuiteScroll");
-            targets.Add(AddTarget(
+            targets.Add(AddScrollTarget(
                 suiteScroll.gameObject,
                 canvas,
                 "ui.suite_scroll",
-                "scroll",
                 "window_ui_suite",
+                "ui",
                 "ui",
                 "inspect,query,scroll,drag,swipe",
                 scrollRect: suiteScroll));
             Transform content = suiteScroll.content;
 
+            // --- STICK & DRAWING STUDIO (HORIZONTAL, VIEWPORT-FIT) ---
+            GameObject studioCard = CreateLayoutObject("StickDrawingStudio", content, 0f, 240f);
+            Image studioBg = studioCard.AddComponent<Image>();
+            studioBg.color = new Color(0.08f, 0.11f, 0.15f, 0.95f);
+            VerticalLayoutGroup studioLayout = studioCard.AddComponent<VerticalLayoutGroup>();
+            studioLayout.padding = new RectOffset(10, 10, 8, 8);
+            studioLayout.spacing = 6f;
+            studioLayout.childControlWidth = true;
+            studioLayout.childControlHeight = true;
+            studioLayout.childForceExpandWidth = true;
+            studioLayout.childForceExpandHeight = false;
+
+            TMP_Text studioHeader = CreateText("StudioHeader", studioCard.transform, "Stick & Drawing Studio", 16, TextAlignmentOptions.Center);
+            studioHeader.color = new Color(0.95f, 0.85f, 0.3f, 1f);
+            studioHeader.gameObject.AddComponent<LayoutElement>().preferredHeight = 20f;
+
+            GameObject studioBody = CreateLayoutObject("StudioBody", studioCard.transform, 0f, 200f);
+            HorizontalLayoutGroup bodyLayout = studioBody.AddComponent<HorizontalLayoutGroup>();
+            bodyLayout.spacing = 20f;
+            bodyLayout.childAlignment = TextAnchor.MiddleCenter;
+            bodyLayout.childControlWidth = false;
+            bodyLayout.childControlHeight = false;
+            bodyLayout.childForceExpandWidth = false;
+            bodyLayout.childForceExpandHeight = false;
+
+            // 1. Drawing Canvas Area (Left, 320x190)
+            GameObject canvasArea = CreateLayoutObject("DrawingCanvasArea", studioBody.transform, 320f, 190f);
+            canvasArea.GetComponent<RectTransform>().sizeDelta = new Vector2(320f, 190f);
+            Image canvasBorder = canvasArea.AddComponent<Image>();
+            canvasBorder.color = new Color(0.2f, 0.25f, 0.32f, 1f);
+            RawImage canvasRaw = CreateStretchObject("CanvasDisplay", canvasArea.transform).AddComponent<RawImage>();
+            Stretch(canvasRaw.rectTransform, 2f, 2f, -2f, -2f);
+
+            GameObject penCursorObj = new GameObject("PenCursor");
+            RectTransform penCursorRect = penCursorObj.AddComponent<RectTransform>();
+            penCursorRect.SetParent(canvasRaw.transform, false);
+            penCursorRect.anchorMin = new Vector2(0.5f, 0.5f);
+            penCursorRect.anchorMax = new Vector2(0.5f, 0.5f);
+            penCursorRect.pivot = new Vector2(0.5f, 0.5f);
+            penCursorRect.sizeDelta = new Vector2(10f, 10f);
+            Image penCursorImg = penCursorObj.AddComponent<Image>();
+            penCursorImg.color = new Color(0.2f, 1f, 0.3f, 0.95f);
+            penCursorImg.raycastTarget = false;
+
+            // 2. Controls Area (Right, 240x190)
+            GameObject controlsArea = CreateLayoutObject("ControlsArea", studioBody.transform, 240f, 190f);
+            controlsArea.GetComponent<RectTransform>().sizeDelta = new Vector2(240f, 190f);
+            HorizontalLayoutGroup controlsLayout = controlsArea.AddComponent<HorizontalLayoutGroup>();
+            controlsLayout.spacing = 14f;
+            controlsLayout.childAlignment = TextAnchor.MiddleCenter;
+            controlsLayout.childControlWidth = false;
+            controlsLayout.childControlHeight = false;
+            controlsLayout.childForceExpandWidth = false;
+            controlsLayout.childForceExpandHeight = false;
+
+            // 2a. Virtual Stick (100x100)
+            GameObject stickBaseObj = CreateLayoutObject("VirtualStick", controlsArea.transform, 100f, 100f);
+            stickBaseObj.GetComponent<RectTransform>().sizeDelta = new Vector2(100f, 100f);
+            Image stickBaseImg = stickBaseObj.AddComponent<Image>();
+            stickBaseImg.color = new Color(0.14f, 0.17f, 0.22f, 0.95f);
+
+            GameObject stickHandleObj = new GameObject("Handle");
+            RectTransform stickHandleRect = stickHandleObj.AddComponent<RectTransform>();
+            stickHandleRect.SetParent(stickBaseObj.transform, false);
+            stickHandleRect.sizeDelta = new Vector2(36f, 36f);
+            Image stickHandleImg = stickHandleObj.AddComponent<Image>();
+            stickHandleImg.color = new Color(0.22f, 0.55f, 0.95f, 1f);
+            stickHandleImg.raycastTarget = false;
+
+            UrdtVirtualStick virtualStick = stickBaseObj.AddComponent<UrdtVirtualStick>();
+            virtualStick.Configure(stickBaseObj.GetComponent<RectTransform>(), stickHandleRect, 36f);
+
+            UrdtUiStickTarget stickTarget = AddStickTarget(
+                stickBaseObj,
+                canvas,
+                "ui.virtual_stick",
+                "window_ui_suite",
+                "ui",
+                "ui",
+                "inspect,query,drag,press_move,swipe",
+                virtualStick);
+            targets.Add(stickTarget);
+
+            // 2b. Buttons Column (Hold to Draw + Clear Canvas)
+            GameObject btnCol = CreateLayoutObject("BtnCol", controlsArea.transform, 120f, 100f);
+            btnCol.GetComponent<RectTransform>().sizeDelta = new Vector2(120f, 100f);
+            VerticalLayoutGroup colLayout = btnCol.AddComponent<VerticalLayoutGroup>();
+            colLayout.spacing = 8f;
+            colLayout.childAlignment = TextAnchor.MiddleCenter;
+            colLayout.childControlWidth = true;
+            colLayout.childControlHeight = false;
+            colLayout.childForceExpandWidth = true;
+            colLayout.childForceExpandHeight = false;
+
+            GameObject holdBtnObj = CreateLayoutObject("HoldDrawButton", btnCol.transform, 120f, 48f);
+            holdBtnObj.GetComponent<RectTransform>().sizeDelta = new Vector2(120f, 48f);
+            Image holdBtnBg = holdBtnObj.AddComponent<Image>();
+            holdBtnBg.color = new Color(0.18f, 0.45f, 0.72f, 1f);
+            TMP_Text holdBtnLabel = CreateText("Label", holdBtnObj.transform, "Рисовать", 14, TextAlignmentOptions.Center);
+            holdBtnLabel.color = Color.white;
+            Stretch(holdBtnLabel.rectTransform);
+
+            UrdtHoldButton holdButton = holdBtnObj.AddComponent<UrdtHoldButton>();
+            holdButton.Configure(holdBtnBg, holdBtnLabel.gameObject, "Рисовать", "РИСУЕТ!");
+
+            UrdtUiButtonTarget holdBtnTarget = AddButtonTarget(
+                holdBtnObj,
+                canvas,
+                "ui.btn_draw",
+                "window_ui_suite",
+                "ui",
+                "ui",
+                COMMON_COMMANDS + ",pointer_down,pointer_up",
+                clickResult: "draw_held");
+            targets.Add(holdBtnTarget);
+
+            Button clearBtn = CreateButton(btnCol.transform, "ClearCanvasButton", "Очистить", 40f);
+            targets.Add(AddButtonTarget(
+                clearBtn.gameObject,
+                canvas,
+                "ui.btn_clear_canvas",
+                "window_ui_suite",
+                "ui",
+                "ui",
+                COMMON_COMMANDS,
+                selectable: clearBtn,
+                clickResult: "canvas_cleared"));
+
+            UrdtDrawingCanvas drawingCanvas = canvasArea.AddComponent<UrdtDrawingCanvas>();
+            drawingCanvas.Configure(canvasRaw, penCursorRect, virtualStick, holdButton, clearBtn, 320, 190, 140f);
+            clearBtn.onClick.AddListener(drawingCanvas.ClearCanvas);
+
+            UrdtUiDrawingTarget drawingTarget = AddDrawingTarget(
+                canvasArea,
+                canvas,
+                "ui.drawing_canvas",
+                "window_ui_suite",
+                "ui",
+                "ui",
+                drawingCanvas);
+            targets.Add(drawingTarget);
+
             refs.PrimaryButton = CreateButton(content, "PrimaryButton", "Primary", 56f);
-            refs.PrimaryTarget = AddTarget(refs.PrimaryButton.gameObject, canvas, "ui.primary_button", "button", "window_ui_suite", "ui", COMMON_COMMANDS, selectable: refs.PrimaryButton);
-            targets.Add(refs.PrimaryTarget);
+            targets.Add(AddButtonTarget(refs.PrimaryButton.gameObject, canvas, "ui.primary_button", "window_ui_suite", "ui", "ui", COMMON_COMMANDS, selectable: refs.PrimaryButton, clickResult: "primary_button_clicked"));
 
             refs.Dropdown = CreateDropdown(content, "ModeDropdown");
-            refs.DropdownTarget = AddTarget(refs.Dropdown.gameObject, canvas, "ui.mode_dropdown", "dropdown", "window_ui_suite", "ui", COMMON_COMMANDS, selectable: refs.Dropdown, dropdown: refs.Dropdown);
-            targets.Add(refs.DropdownTarget);
+            targets.Add(AddDropdownTarget(refs.Dropdown.gameObject, canvas, "ui.mode_dropdown", "window_ui_suite", "ui", "ui", COMMON_COMMANDS, dropdown: refs.Dropdown));
 
             refs.Toggle = CreateToggle(content, "StateToggle", "Toggle");
-            refs.ToggleTarget = AddTarget(refs.Toggle.gameObject, canvas, "ui.state_toggle", "toggle", "window_ui_suite", "ui", COMMON_COMMANDS, selectable: refs.Toggle, toggle: refs.Toggle);
-            targets.Add(refs.ToggleTarget);
+            targets.Add(AddToggleTarget(refs.Toggle.gameObject, canvas, "ui.state_toggle", "window_ui_suite", "ui", "ui", COMMON_COMMANDS, toggle: refs.Toggle));
 
             refs.Slider = CreateSlider(content, "ValueSlider");
-            refs.SliderTarget = AddTarget(refs.Slider.gameObject, canvas, "ui.value_slider", "slider", "window_ui_suite", "ui", "inspect,query,drag,press_move,swipe", selectable: refs.Slider, slider: refs.Slider);
-            targets.Add(refs.SliderTarget);
+            targets.Add(AddSliderTarget(refs.Slider.gameObject, canvas, "ui.value_slider", "window_ui_suite", "ui", "ui", "inspect,query,drag,press_move,swipe", slider: refs.Slider));
 
             refs.Input = CreateInputField(content, "TextInput");
-            refs.InputTarget = AddTarget(refs.Input.gameObject, canvas, "ui.text_input", "input", "window_ui_suite", "ui", "inspect,query,click", selectable: refs.Input, inputField: refs.Input);
-            targets.Add(refs.InputTarget);
+            targets.Add(AddInputTarget(refs.Input.gameObject, canvas, "ui.text_input", "window_ui_suite", "ui", "ui", "inspect,query,click", inputField: refs.Input));
 
             refs.ScrollRect = CreateCommandScroll(content, "CommandScroll");
-            refs.ScrollTarget = AddTarget(refs.ScrollRect.gameObject, canvas, "ui.command_scroll", "scroll", "window_ui_suite", "ui", "inspect,query,scroll,drag,swipe", scrollRect: refs.ScrollRect);
-            targets.Add(refs.ScrollTarget);
+            targets.Add(AddScrollTarget(refs.ScrollRect.gameObject, canvas, "ui.command_scroll", "window_ui_suite", "ui", "ui", "inspect,query,scroll,drag,swipe", scrollRect: refs.ScrollRect));
 
             refs.ResetButton = CreateButton(content, "ResetButton", "Reset", 56f);
-            targets.Add(AddTarget(refs.ResetButton.gameObject, canvas, "ui.reset_button", "button", "window_ui_suite", "ui", COMMON_COMMANDS, selectable: refs.ResetButton));
+            targets.Add(AddButtonTarget(refs.ResetButton.gameObject, canvas, "ui.reset_button", "window_ui_suite", "ui", "ui", COMMON_COMMANDS, selectable: refs.ResetButton, clickResult: "ready"));
             return refs;
         }
 
         private static SuiteShellRefs CreateSuiteShell(
             Transform parent,
             Canvas canvas,
-            List<UrdtTestPoligonDebugTarget> targets,
+            List<UrdtUiTarget> targets,
             string objectName,
             string windowId,
             string module,
@@ -378,20 +524,22 @@ namespace KBP.URDT.TestPoligon.Editor
         {
             SuiteShellRefs refs = new SuiteShellRefs();
             refs.Window = CreateWindow(parent, objectName, false);
-            targets.Add(AddTarget(refs.Window, canvas, windowId, "window", windowId, module, "inspect,query"));
+            targets.Add(AddWindowTarget(refs.Window, canvas, windowId, windowId, module, "inspect,query"));
 
-            refs.BackButton = CreateButton(refs.Window.transform, objectName + "_BackButton", "Main Menu", 52f);
-            targets.Add(AddTarget(refs.BackButton.gameObject, canvas, "btn_" + module + "_back", "button", windowId, module, COMMON_COMMANDS, selectable: refs.BackButton));
+            refs.BackButton = CreateButton(refs.Window.transform, objectName + "_BackButton", "Main Menu", 44f);
+            targets.Add(AddButtonTarget(refs.BackButton.gameObject, canvas, "btn_" + module + "_back", windowId, module, module, COMMON_COMMANDS, selectable: refs.BackButton));
 
-            TMP_Text title = CreateText(objectName + "_Title", refs.Window.transform, label + " Suite", 26, TextAlignmentOptions.Center);
+            TMP_Text title = CreateText(objectName + "_Title", refs.Window.transform, label + " Suite", 24, TextAlignmentOptions.Center);
             title.color = Color.white;
-            title.gameObject.AddComponent<LayoutElement>().preferredHeight = 52f;
+            LayoutElement titleLe = title.gameObject.AddComponent<LayoutElement>();
+            titleLe.preferredHeight = 36f;
+            titleLe.flexibleHeight = 0f;
 
             Button singleButton = CreateButton(refs.Window.transform, objectName + "_SingleButton", "Single", 56f);
-            targets.Add(AddTarget(singleButton.gameObject, canvas, "btn_" + module + "_single", "button", windowId, module, COMMON_COMMANDS, selectable: singleButton));
+            targets.Add(AddButtonTarget(singleButton.gameObject, canvas, "btn_" + module + "_single", windowId, module, module, COMMON_COMMANDS, selectable: singleButton));
 
             Button fullButton = CreateButton(refs.Window.transform, objectName + "_FullCycleButton", "Full Cycle", 56f);
-            targets.Add(AddTarget(fullButton.gameObject, canvas, "btn_" + module + "_full_cycle", "button", windowId, module, COMMON_COMMANDS, selectable: fullButton));
+            targets.Add(AddButtonTarget(fullButton.gameObject, canvas, "btn_" + module + "_full_cycle", windowId, module, module, COMMON_COMMANDS, selectable: fullButton));
             return refs;
         }
 
@@ -400,7 +548,7 @@ namespace KBP.URDT.TestPoligon.Editor
             GameObject scrollObject = CreateLayoutObject(name, parent, 0f, 0f);
             LayoutElement layoutElement = scrollObject.GetComponent<LayoutElement>();
             layoutElement.flexibleHeight = 1f;
-            layoutElement.minHeight = 180f;
+            layoutElement.minHeight = 300f;
             Image image = scrollObject.AddComponent<Image>();
             image.color = new Color(0.12f, 0.15f, 0.18f, 0.65f);
             ScrollRect scrollRect = scrollObject.AddComponent<ScrollRect>();
@@ -665,37 +813,207 @@ namespace KBP.URDT.TestPoligon.Editor
             return overlay;
         }
 
-        private static UrdtTestPoligonDebugTarget AddTarget(
+        private static UrdtUiWindowTarget AddWindowTarget(
             GameObject gameObject,
             Canvas canvas,
             string targetId,
-            string targetKind,
+            string activeWindow,
+            string module,
+            string commands)
+        {
+            UrdtUiWindowTarget target = gameObject.AddComponent<UrdtUiWindowTarget>();
+            target.ConfigureWindow(
+                targetId,
+                activeWindow,
+                module,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiButtonTarget AddButtonTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
             string activeWindow,
             string activeModule,
+            string module,
             string commands,
             Selectable selectable = null,
-            Toggle toggle = null,
-            Slider slider = null,
-            TMP_InputField inputField = null,
-            TMP_Dropdown dropdown = null,
-            ScrollRect scrollRect = null)
+            string clickResult = null)
         {
-            UrdtTestPoligonDebugTarget target = gameObject.AddComponent<UrdtTestPoligonDebugTarget>();
-            target.Configure(
+            UrdtUiButtonTarget target = gameObject.AddComponent<UrdtUiButtonTarget>();
+            target.ConfigureButton(
                 targetId,
-                targetKind,
                 activeWindow,
                 activeModule,
-                activeModule,
-                commands,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
+                selectable,
                 gameObject.GetComponent<RectTransform>(),
                 canvas,
-                selectable,
+                clickResult);
+            return target;
+        }
+
+        private static UrdtUiToggleTarget AddToggleTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            string commands,
+            Toggle toggle = null)
+        {
+            UrdtUiToggleTarget target = gameObject.AddComponent<UrdtUiToggleTarget>();
+            target.ConfigureToggle(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
                 toggle,
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiSliderTarget AddSliderTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            string commands,
+            Slider slider = null)
+        {
+            UrdtUiSliderTarget target = gameObject.AddComponent<UrdtUiSliderTarget>();
+            target.ConfigureSlider(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
                 slider,
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiInputTarget AddInputTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            string commands,
+            TMP_InputField inputField = null)
+        {
+            UrdtUiInputTarget target = gameObject.AddComponent<UrdtUiInputTarget>();
+            target.ConfigureInput(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
                 inputField,
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiDropdownTarget AddDropdownTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            string commands,
+            TMP_Dropdown dropdown = null)
+        {
+            UrdtUiDropdownTarget target = gameObject.AddComponent<UrdtUiDropdownTarget>();
+            target.ConfigureDropdown(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
                 dropdown,
-                scrollRect);
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiScrollTarget AddScrollTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            string commands,
+            ScrollRect scrollRect = null)
+        {
+            UrdtUiScrollTarget target = gameObject.AddComponent<UrdtUiScrollTarget>();
+            target.ConfigureScroll(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
+                scrollRect,
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiStickTarget AddStickTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            string commands,
+            UrdtVirtualStick stick = null)
+        {
+            UrdtUiStickTarget target = gameObject.AddComponent<UrdtUiStickTarget>();
+            target.ConfigureStick(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                UrdtDebugTarget.ParseCommandString(commands),
+                stick,
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
+            return target;
+        }
+
+        private static UrdtUiDrawingTarget AddDrawingTarget(
+            GameObject gameObject,
+            Canvas canvas,
+            string targetId,
+            string activeWindow,
+            string activeModule,
+            string module,
+            UrdtDrawingCanvas drawingCanvas = null)
+        {
+            UrdtUiDrawingTarget target = gameObject.AddComponent<UrdtUiDrawingTarget>();
+            target.ConfigureDrawing(
+                targetId,
+                activeWindow,
+                activeModule,
+                module,
+                drawingCanvas,
+                gameObject.GetComponent<RectTransform>(),
+                canvas);
             return target;
         }
 
@@ -744,6 +1062,10 @@ namespace KBP.URDT.TestPoligon.Editor
             rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            if (preferredWidth > 0f || preferredHeight > 0f)
+            {
+                rectTransform.sizeDelta = new Vector2(preferredWidth, preferredHeight);
+            }
             LayoutElement layoutElement = gameObject.AddComponent<LayoutElement>();
             layoutElement.preferredWidth = preferredWidth;
             layoutElement.preferredHeight = preferredHeight;
@@ -803,13 +1125,6 @@ namespace KBP.URDT.TestPoligon.Editor
             public TMP_InputField Input;
             public TMP_Dropdown Dropdown;
             public ScrollRect ScrollRect;
-            public UrdtTestPoligonDebugTarget PrimaryTarget;
-            public UrdtTestPoligonDebugTarget ToggleTarget;
-            public UrdtTestPoligonDebugTarget SliderTarget;
-            public UrdtTestPoligonDebugTarget InputTarget;
-            public UrdtTestPoligonDebugTarget DropdownTarget;
-            public UrdtTestPoligonDebugTarget ScrollTarget;
-            public UrdtTestPoligonDebugTarget ModalTarget;
         }
 
         private sealed class SuiteShellRefs

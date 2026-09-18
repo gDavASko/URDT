@@ -1,4 +1,5 @@
 using KBP.URDT;
+using KBP.URDT.Inspect;
 using KBP.URDT.Registry;
 using UnityEngine;
 
@@ -42,9 +43,16 @@ namespace KBP.URDT.TestPoligon
 
             if (_serverHost != null)
             {
-                _serverHost.RegisterSelectorRule(
-                    new HasComponentPredicate(nameof(UrdtTestPoligonDebugTarget)),
-                    TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtDebugTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiButtonTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiToggleTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiSliderTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiInputTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiDropdownTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiScrollTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiWindowTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiGenericTarget)), TEST_ID_TEMPLATE);
             }
         }
 

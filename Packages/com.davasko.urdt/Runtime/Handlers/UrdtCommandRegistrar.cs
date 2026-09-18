@@ -1,4 +1,4 @@
-﻿using KBP.URDT.Net;
+using KBP.URDT.Net;
 using KBP.URDT.Transport;
 
 namespace KBP.URDT.Handlers
@@ -38,6 +38,8 @@ namespace KBP.URDT.Handlers
             router.Register(ProtocolConstants.ACTION_UNSUBSCRIBE, new UnsubscribeHandler(runtime));
             router.Register(ProtocolConstants.ACTION_SET_TIME_SCALE, new SetTimeScaleHandler(runtime));
             router.Register(ProtocolConstants.ACTION_PIN_FIXED_DELTA, new PinFixedDeltaHandler(runtime));
+            router.Register(ProtocolConstants.ACTION_POINTER_DOWN, new PointerDownHandler(runtime));
+            router.Register(ProtocolConstants.ACTION_POINTER_UP, new PointerUpHandler(runtime));
         }
     }
 }

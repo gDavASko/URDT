@@ -348,6 +348,7 @@ namespace KBP.URDT.Input
         private void QueueMouseState(Vector2 screenPos, PointerPhase phase)
         {
             BindVirtualDevicesToUiModules();
+            EnsureValidEventSystemSelection();
             _mousePosition = screenPos;
 
             if (phase == PointerPhase.Down)
@@ -365,9 +366,19 @@ namespace KBP.URDT.Input
             InputSystem.QueueStateEvent(_mouse, state);
         }
 
+        private static void EnsureValidEventSystemSelection()
+        {
+            var es = UnityEngine.EventSystems.EventSystem.current;
+            if (es != null && es.currentSelectedGameObject != null && !es.currentSelectedGameObject.activeInHierarchy)
+            {
+                es.SetSelectedGameObject(null);
+            }
+        }
+
         private void QueueMouseScroll(Vector2 scrollDelta)
         {
             BindVirtualDevicesToUiModules();
+            EnsureValidEventSystemSelection();
             _mouse.MakeCurrent();
             InputSystem.QueueDeltaStateEvent(_mouse.scroll, scrollDelta);
         }
@@ -375,6 +386,7 @@ namespace KBP.URDT.Input
         private void QueueTouchState(Vector2 screenPos, PointerPhase phase, int touchId)
         {
             BindVirtualDevicesToUiModules();
+            EnsureValidEventSystemSelection();
             TouchState state = new TouchState
             {
                 touchId = touchId,
@@ -402,6 +414,24 @@ namespace KBP.URDT.Input
 
         private void BindVirtualDevices(InputActionAsset actionsAsset)
         {
+            if (actionsAsset.devices.HasValue)
+            {
+                var bound = actionsAsset.devices.Value;
+                bool hasMouse = _mouse == null;
+                bool hasTouch = _touchscreen == null;
+                bool hasKeyboard = _keyboard == null;
+                for (int i = 0; i < bound.Count; i++)
+                {
+                    if (bound[i] == _mouse) hasMouse = true;
+                    if (bound[i] == _touchscreen) hasTouch = true;
+                    if (bound[i] == _keyboard) hasKeyboard = true;
+                }
+                if (hasMouse && hasTouch && hasKeyboard)
+                {
+                    return;
+                }
+            }
+
             _deviceBuffer.Clear();
             if (actionsAsset.devices.HasValue)
             {

@@ -7,7 +7,14 @@ class C {
   call(a,pl){return new Promise((res,rej)=>{const id=String(++this.s);const to=setTimeout(()=>{this.p.delete(id);rej(new Error('timeout '+a));},5000);this.p.set(id,m=>{clearTimeout(to);res(m);});this.ws.send(JSON.stringify({api:1,id,a:0,action:a,payload:pl}));});}
   close(){this.ws.close();}
 }
-const sl = r => (r&&r.data&&r.data.components)?r.data.components.UrdtTestPoligonDebugTarget:null;
+const sl = r => {
+  if (!r || !r.data || !r.data.components) return null;
+  for (const k of Object.keys(r.data.components)) {
+    const c = r.data.components[k];
+    if (c && (c.TargetId || c.ScreenRect)) return c;
+  }
+  return null;
+};
 async function main(){
   const c=new C(); await c.connect();
   await c.call('set_time_scale',{scale:1});

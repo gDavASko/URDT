@@ -1,0 +1,28 @@
+{
+  "name": "kbpro-ai-docs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "KBPro AI knowledge base with RAG search engine",
+  "scripts": {
+    "test": "node --test system/tests/chunker.test.js system/tests/frontmatter.test.js system/tests/metrics.test.js system/tests/query-target.test.js system/tests/retrieval.test.js",
+    "build-index": "node system/build-index.js",
+    "build-index:force": "node system/build-index.js --force",
+    "query": "node system/query-wiki.js",
+    "lint": "node system/scripts/lint-wiki.js",
+    "validate": "node system/scripts/validate-links.js",
+    "eval-retrieval": "node system/scripts/eval-retrieval.js",
+    "check-sources": "node system/scripts/check-sources.js",
+    "staleness": "node system/scripts/check-staleness.js",
+    "sync-rules": "node system/sync-ai-rules.js",
+    "setup-model": "node system/scripts/setup-model.js"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "file:./system/vendor/huggingface-transformers.tgz",
+    "@langchain/langgraph": "1.4.9",
+    "apache-arrow": "file:./system/vendor/apache-arrow-18.1.0.tgz",
+    "argparse": "file:./system/vendor/argparse-2.0.1.tgz",
+    "googleapis": "^173.0.0",
+    "js-yaml": "file:./system/vendor/js-yaml-4.1.0.tgz",
+    "vectordb": "file:./system/vendor/vectordb.tgz"
+  }
+}

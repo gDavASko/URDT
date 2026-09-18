@@ -46,7 +46,15 @@ class Client {
 }
 
 function component(snapshot) {
-    return snapshot.data.components.UrdtTestPoligonDebugTarget;
+    if (!snapshot) return null;
+    if (snapshot.TargetId) return snapshot;
+    if (snapshot.data && snapshot.data.components) {
+        for (const key of Object.keys(snapshot.data.components)) {
+            const c = snapshot.data.components[key];
+            if (c && (c.TargetId || c.ScreenRect)) return c;
+        }
+    }
+    return null;
 }
 
 function parseRect(snapshot) {

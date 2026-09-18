@@ -4,6 +4,7 @@
     "references": [
         "KBP.URDT",
         "KBP.URDT.TestPoligon",
+        "KBP.URDT.TestPoligon.Mechanics2D",
         "Unity.TextMeshPro",
         "Unity.InputSystem"
     ],

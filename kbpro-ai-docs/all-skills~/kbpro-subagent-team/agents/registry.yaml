@@ -1,0 +1,23 @@
+version: 1
+agents:
+  - id: worker
+    context: worker.md
+    description: Performs bounded mechanical work and gathers factual evidence.
+    required_capability_tier: economy
+    allowed_model_families: [Codex, Claude Code, Antigravity]
+  - id: judge
+    context: judge.md
+    description: Independently verifies quality, constraints, and task compliance.
+    required_capability_tier: medium-to-high
+    allowed_model_families: [Codex, Claude Code, Antigravity]
+  - id: researcher
+    context: researcher.md
+    description: Investigates complex questions, sources, and solution applicability before implementation.
+    required_capability_tier: top
+    allowed_model_families: [Codex, Claude Code, Antigravity]
+
+selection_rules:
+  - Select a registered agent and read its local context before assignment.
+  - Use the cheapest available model family that meets the agent capability tier.
+  - Set reasoning effort explicitly per role (off/low for workers, medium for judges, high for reasoners/researchers); do not default to maximum. See references/model-and-reasoning-effort-selection.md.
+  - Do not encode concrete model IDs here; runtime and project configuration own them.

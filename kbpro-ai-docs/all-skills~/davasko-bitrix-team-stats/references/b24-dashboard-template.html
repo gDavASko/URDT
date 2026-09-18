@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitrix24 Team Stats — эффект нововведений</title>
+<style>
+:root{
+  --bg:#f6f8fb; --card:#ffffff; --ink:#1c2433; --muted:#5c6b81; --line:#e3e8f0;
+  --accent:#0e7490; --good:#15803d; --bad:#b91c1c; --warn:#b45309; --neutral:#64748b;
+  --chip:#eef2f9;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1420; --card:#171e2e; --ink:#e6ebf4; --muted:#93a1b8; --line:#2a3348;
+    --accent:#22d3ee; --good:#4ade80; --bad:#f87171; --warn:#fbbf24; --neutral:#94a3b8; --chip:#212b41; }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:var(--bg);color:var(--ink);
+  font:14px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:17px;margin:26px 0 10px}
+h3{font-size:15px;margin:18px 0 8px}
+.sub{color:var(--muted);margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:600}
+tr:hover td{background:rgba(14,116,144,.05)}
+.flag{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:6px;
+  padding:1px 7px;margin:1px 3px 1px 0;font-size:11px;color:var(--muted)}
+.flag.warn{color:var(--warn);border-color:var(--warn)}
+.up{color:var(--good);font-weight:600}
+.down{color:var(--bad);font-weight:600}
+.flat{color:var(--neutral)}
+.attn{background:rgba(180,83,9,.12);border-radius:4px;padding:0 4px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.tab{padding:7px 16px;border:1px solid var(--line);border-radius:20px;background:var(--card);
+  cursor:pointer;font-weight:600}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.view{display:none}
+.view.active{display:block}
+.info{display:inline-block;width:15px;height:15px;line-height:15px;text-align:center;border-radius:50%;
+  background:var(--chip);color:var(--muted);font-size:10px;font-weight:700;cursor:help;margin-left:4px;
+  border:1px solid var(--line)}
+#tip{position:fixed;display:none;max-width:340px;background:var(--ink);color:var(--bg);
+  padding:8px 10px;border-radius:8px;font-size:12px;z-index:50;pointer-events:none;line-height:1.4}
+.legend-banner{background:var(--chip);border:1px dashed var(--line);border-radius:8px;
+  padding:8px 12px;font-size:12px;color:var(--muted);margin:8px 0;cursor:help}
+.chart-wrap{overflow-x:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:12px}
+details{margin:10px 0}
+summary{cursor:pointer;font-weight:600}
+.pair .q{color:var(--muted);font-size:12px}
+.verdict{font-weight:700;padding:2px 10px;border-radius:14px;display:inline-block}
+.verdict.positive{background:rgba(21,128,61,.15);color:var(--good)}
+.verdict.negative{background:rgba(185,28,28,.15);color:var(--bad)}
+.verdict.neutral{background:var(--chip);color:var(--neutral)}
+.verdict.indeterminate{background:rgba(180,83,9,.15);color:var(--warn)}
+svg text{fill:var(--muted);font-size:10px}
+svg .axis{stroke:var(--line)}
+svg .phase-div{stroke:var(--muted);stroke-dasharray:4,4;opacity:.6}
+svg .phase-lbl{font-weight:700;font-size:11px}
+.small{font-size:12px;color:var(--muted)}
+.mixbar{display:flex;height:14px;border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.mixbar div{height:100%}
+</style>
+</head>
+<body>
+<div id="tip"></div>
+<h1>Bitrix24: статистика задач команды</h1>
+<p class="sub" id="meta"></p>
+
+<div class="card">
+<details open>
+<summary>📖 Как читать этот отчёт</summary>
+<ol>
+<li><b>Источник — задачи Bitrix24</b>, а не git: здесь видно то, чего git не видит (дедлайны, возвраты с проверки, оценки времени), и НЕ видно содержания кода. Полная картина — вместе с git-отчётом perf-audit.</li>
+<li><b>Пары «скорость ↔ качество»</b>: закрытые задачи/мес читаются только вместе с долей возвратов (reopen); цикл задачи — вместе с ней же. Ускорение при росте возвратов — не улучшение.</li>
+<li><b>Dev-задачи</b> отфильтрованы по конвенции команды: тег «Dev» или Dev в названии. Остальные задачи участвуют только в профиле типов.</li>
+<li><b>Возврат (reopen)</b> — задача, вернувшаяся из «на проверке/завершена» обратно в работу. Главный сигнал качества в этих данных.</li>
+<li><b>Все объёмы — за месяц</b>; сравнения только «сам с собой до/после»; таблица людей — не рейтинг, «Внимание» — темы для 1:1.</li>
+<li><b>Флаги</b>: PARTIAL_FIELD_* — поле заполнено не во всех задачах; BUG_RULE_HEURISTIC_UNCONFIRMED — баги определены эвристикой без подтверждения; EXCLUDED_ABSENCE — окно отпуска исключено.</li>
+</ol>
+</details>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="views"></div>
+
+<div class="card">
+<details id="glossary">
+<summary>📚 Справочник метрик</summary>
+<div id="glossary-body"></div>
+</details>
+</div>
+
+<script>
+'use strict';
+// DATA injected by the generator: { innovation, generated_at,
+//   employees: [bitrix-summary.json...], attention: {...}, verdicts: {...} }
+const DATA = /*__DATA_JSON__*/null;
+
+const GLOSSARY = {
+  'b1.closed_pm': ['Закрыто dev-задач/мес', 'Завершённые задачи разработки (тег/название Dev) за месяц. Пара качества: доля возвратов b5.'],
+  'b2.cycle_days_median': ['Цикл задачи, дней', 'Создание → закрытие, медиана. Скорость поставки на уровне задач.'],
+  'b2.start_to_close_days_median': ['В работе, дней', 'Первый переход «в работе» → закрытие, медиана (чистое время выполнения).'],
+  'b3.hit_rate': ['Дедлайны в срок', 'Доля закрытых в срок среди задач с дедлайном.'],
+  'b3.overdue_days_median': ['Просрочка, дней', 'Медиана просрочки среди просроченных.'],
+  'b4.deadline_shifts_avg': ['Переносы дедлайна', 'Среднее число переносов дедлайна на задачу — дисциплина планирования.'],
+  'b5.reopen_rate': ['Доля возвратов', 'Доля задач, вернувшихся с проверки/из завершённых обратно в работу. Ключевой сигнал качества.'],
+  'b6.estimate_ratio_median': ['Точность оценок', 'Медиана факт/оценка по задачам, где заполнены обе. 1.0 = идеально, >1 = недооценка.'],
+  'b7.wip_avg': ['WIP', 'Среднее число одновременно открытых dev-задач (приближение по датам создания/закрытия).'],
+  'b9.complexity_avg': ['Сложность (ср.)', 'Среднее поле сложности закрытых задач — заполнено не везде (см. filled_share).'],
+  'b10.self_assigned_share': ['Самопоставленные', 'Доля созданных задач, где постановщик = исполнитель. Сигнал самостоятельности.'],
+  'b11.bugs_closed_pm': ['Багов закрыто/мес', 'Баг-задачи по подтверждённому правилу (или эвристике — см. флаг).'],
+  'b11.bug_mttr_days_median': ['MTTR бага, дней', 'Создание бага → закрытие, медиана.'],
+  'b12.time_to_first_action_days_median': ['До первого действия, дней', 'Создание задачи → первое действие исполнителя (по истории статусов/дедлайнов — приближение).'],
+};
+
+const PAIRS = [
+  ['b1.closed_pm', 'b5.reopen_rate', 'Закрыто/мес ↔ возвраты'],
+  ['b2.cycle_days_median', 'b5.reopen_rate', 'Цикл ↔ возвраты'],
+  ['b3.hit_rate', 'b4.deadline_shifts_avg', 'Дедлайны в срок ↔ переносы'],
+];
+const LOWER_BETTER = new Set(['b2.cycle_days_median', 'b2.start_to_close_days_median',
+  'b3.overdue_days_median', 'b4.deadline_shifts_avg', 'b5.reopen_rate',
+  'b11.bug_mttr_days_median', 'b12.time_to_first_action_days_median', 'b7.wip_avg']);
+const NEUTRAL = new Set(['b1.closed_pm', 'b9.complexity_avg', 'b11.bugs_closed_pm', 'b6.estimate_ratio_median']);
+
+const $ = s => document.querySelector(s);
+const el = (t, cls, html) => { const e = document.createElement(t); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = v => (v == null || !isFinite(v)) ? '—' : (Math.abs(v) >= 100 ? Math.round(v) : Math.round(v * 100) / 100);
+function get(o, dotted) { let c = o; for (const p of dotted.split('.')) { if (c == null) return undefined; c = c[p]; } return typeof c === 'number' ? c : undefined; }
+const labelOf = k => (GLOSSARY[k] || [k])[0];
+const descOf = k => (GLOSSARY[k] || ['', ''])[1];
+
+const tip = $('#tip');
+document.addEventListener('mousemove', e => {
+  if (tip.style.display !== 'block') return;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - 360) + 'px';
+  tip.style.top = (e.clientY + 14) + 'px';
+});
+function bindTips(root) {
+  root.querySelectorAll('[data-tip]').forEach(n => {
+    n.addEventListener('mouseover', () => { tip.innerHTML = n.dataset.tip; tip.style.display = 'block'; });
+    n.addEventListener('mouseout', () => { tip.style.display = 'none'; });
+  });
+}
+const infoIcon = k => `<span class="info" data-tip="${esc(`<b>${labelOf(k)}</b><br>${descOf(k)}`)}">?</span>`;
+
+function deltaCell(key, d) {
+  if (d == null || !isFinite(d)) return '<span class="flat">—</span>';
+  if (Math.abs(d) < 1e-9) return '<span class="flat">0</span>';
+  const arrow = d > 0 ? '↑' : '↓';
+  let cls = 'flat';
+  if (!NEUTRAL.has(key)) cls = (LOWER_BETTER.has(key) ? d < 0 : d > 0) ? 'up' : 'down';
+  return `<span class="${cls}">${arrow} ${fmt(d)}</span>`;
+}
+const mmYY = iso => `${String(iso).slice(5, 7)}.${String(iso).slice(2, 4)}`;
+
+function trendChart(series, keys, colors, title) {
+  const W = Math.max(460, 60 + series.length * 46), H = 220, PB = 55, PL = 42, PT = 24, PR = 10;
+  const plotW = W - PL - PR, plotH = H - PT - PB;
+  let maxV = 0;
+  for (const s of series) for (const k of keys) maxV = Math.max(maxV, s.values[k] || 0);
+  if (maxV <= 0) maxV = 1;
+  const x = i => PL + (series.length === 1 ? plotW / 2 : i * plotW / (series.length - 1));
+  const y = v => PT + plotH - (v / maxV) * plotH;
+  let out = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  out += `<text x="${PL}" y="12" class="phase-lbl">${esc(title)}</text>`;
+  out += `<line class="axis" x1="${PL}" y1="${PT + plotH}" x2="${W - PR}" y2="${PT + plotH}"/>`;
+  out += `<line class="axis" x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT + plotH}"/>`;
+  out += `<text x="4" y="${y(maxV) + 4}">${fmt(maxV)}</text><text x="4" y="${PT + plotH}">0</text>`;
+  let prevPhase = null, phaseStartX = null;
+  const spans = [];
+  series.forEach((s, i) => {
+    if (s.phase !== prevPhase) {
+      if (prevPhase !== null) {
+        const divX = (x(i) + x(i - 1)) / 2;
+        out += `<line class="phase-div" x1="${divX}" y1="${PT}" x2="${divX}" y2="${PT + plotH}"/>`;
+        spans.push({ phase: prevPhase, from: phaseStartX, to: x(i - 1) });
+      }
+      prevPhase = s.phase; phaseStartX = x(i);
+    }
+  });
+  spans.push({ phase: prevPhase, from: phaseStartX, to: x(series.length - 1) });
+  for (const ps of spans) out += `<text class="phase-lbl" x="${(ps.from + ps.to) / 2}" y="${PT - 4}" text-anchor="middle">${esc(ps.phase)}</text>`;
+  series.forEach((s, i) => {
+    out += `<text x="${x(i)}" y="${PT + plotH + 14}" text-anchor="end" transform="rotate(-35 ${x(i)} ${PT + plotH + 14})">${mmYY(s.from)}</text>`;
+    if (s.excluded_absence) out += `<rect x="${x(i) - 8}" y="${PT}" width="16" height="${plotH}" fill="currentColor" opacity="0.07"/><text x="${x(i)}" y="${PT + 12}" text-anchor="middle">✈</text>`;
+  });
+  keys.forEach((k, ki) => {
+    out += `<polyline fill="none" stroke="${colors[ki]}" stroke-width="2" points="${series.map((s, i) => `${x(i)},${y(s.values[k] || 0)}`).join(' ')}"/>`;
+    series.forEach((s, i) => {
+      out += `<circle cx="${x(i)}" cy="${y(s.values[k] || 0)}" r="3" fill="${colors[ki]}"><title>${esc(labelOf(k))} · ${mmYY(s.from)}: ${fmt(s.values[k] || 0)}</title></circle>`;
+    });
+  });
+  let lx = PL;
+  keys.forEach((k, ki) => {
+    out += `<rect x="${lx}" y="${H - 12}" width="10" height="10" fill="${colors[ki]}"/><text x="${lx + 14}" y="${H - 3}">${esc(labelOf(k))}</text>`;
+    lx += 16 + labelOf(k).length * 6;
+  });
+  return `<div class="chart-wrap">${out}</svg></div>`;
+}
+
+const MIX_COLORS = ['#0e7490', '#7c3aed', '#15803d', '#b45309', '#b91c1c', '#64748b', '#2563eb', '#a21caf'];
+function mixBar(mix) {
+  const entries = Object.entries(mix || {}).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const total = entries.reduce((s, [, v]) => s + v, 0) || 1;
+  const bar = entries.map(([tag, v], i) =>
+    `<div style="width:${(v / total * 100).toFixed(1)}%;background:${MIX_COLORS[i % MIX_COLORS.length]}" data-tip="${esc(tag)}: ${v} (${Math.round(v / total * 100)}%)"></div>`).join('');
+  const legend = entries.map(([tag, v], i) =>
+    `<span class="flag" style="border-color:${MIX_COLORS[i % MIX_COLORS.length]}">${esc(tag)} ${Math.round(v / total * 100)}%</span>`).join(' ');
+  return `<div class="mixbar">${bar}</div><div style="margin-top:4px">${legend}</div>`;
+}
+
+function metricRow(key, phases) {
+  const cells = phases.map((ph, i) => {
+    const v = get(ph.metrics, key);
+    let d = '';
+    if (i > 0 && ph.metrics?.b20?.deltas_pm && key in ph.metrics.b20.deltas_pm) {
+      d = ` ${deltaCell(key, ph.metrics.b20.deltas_pm[key])}`;
+    }
+    return `<td>${fmt(v)}${d}</td>`;
+  }).join('');
+  return `<tr><td>${labelOf(key)}${infoIcon(key)}</td>${cells}</tr>`;
+}
+
+function employeeView(s, attention, verdictInfo) {
+  const phases = (s.phases || []).filter(p => p.metrics);
+  if (!phases.length) return '<div class="card">Нет данных по фазам.</div>';
+  const head = `<tr><th>Метрика</th>${phases.map(p =>
+    `<th>${esc(p.name)} <span class="small">(${esc(p.from)} — ${esc(p.to)}, ${p.months} мес)</span></th>`).join('')}</tr>`;
+  const gtable = (title, keys, note) => `
+    <h3>${title}</h3>${note ? `<div class="legend-banner">ℹ ${esc(note)}</div>` : ''}
+    <table>${head}${keys.map(k => metricRow(k, phases)).join('')}</table>`;
+
+  const pairRows = PAIRS.map(([a, q, note]) => {
+    const cells = phases.map(ph => `<td>${fmt(get(ph.metrics, a))} <span class="q">/ ${fmt(get(ph.metrics, q))}</span></td>`).join('');
+    return `<tr><td class="pair" data-tip="${esc(`${descOf(a)} · ${descOf(q)}`)}">${esc(note)}</td>${cells}</tr>`;
+  }).join('');
+
+  const series = s.window_series || [];
+  const charts = series.length ? `
+    <h3>Тренды по окнам</h3>
+    <div class="grid2">
+      ${trendChart(series, ['b1.closed_pm'], ['#0e7490'], 'Закрыто dev-задач/мес')}
+      ${trendChart(series, ['b5.reopen_rate'], ['#b91c1c'], 'Доля возвратов')}
+      ${trendChart(series, ['b2.cycle_days_median'], ['#7c3aed'], 'Цикл задачи, дней')}
+      ${trendChart(series, ['b3.hit_rate'], ['#15803d'], 'Дедлайны в срок')}
+    </div>` : '';
+
+  const mixes = phases.map(p => `<div><b>${esc(p.name)}</b>${mixBar(p.metrics.b8)}</div>`).join('');
+  const flags = (s.flags || []).map(f =>
+    `<span class="flag ${/PARTIAL|HEURISTIC|ABSENCE|ERRORS|CAP/.test(f) ? 'warn' : ''}">${esc(f)}</span>`).join('');
+  const attn = (attention && attention.length)
+    ? `<div class="legend-banner">⚠ <b>Темы для 1:1:</b> ${attention.map(a =>
+        `<span class="attn">${labelOf(a.metric)}: ${deltaCell(a.metric, a.delta)} при медиане группы ${fmt(a.groupMedian)}</span>`).join(' · ')}</div>` : '';
+  const verdict = verdictInfo
+    ? `<p>Вердикт: <span class="verdict ${esc(verdictInfo.verdict)}">${esc(verdictInfo.verdict)}</span> <span class="small">${esc(verdictInfo.reason || '')}</span></p>`
+    : '<p class="small">Вердикт появится после прохода финального аналитика.</p>';
+
+  return `<div class="card">
+    <h2>${esc(s.author?.display || 'AUTHOR')}</h2>
+    ${verdict}${attn}<div>${flags}</div>
+    <h3>Пары «скорость / качество»</h3>
+    <div class="legend-banner">ℹ Формат: <b>скорость</b> / <span class="q">качество</span> — читаются только вместе.</div>
+    <table><tr><th>Пара</th>${phases.map(p => `<th>${esc(p.name)}</th>`).join('')}</tr>${pairRows}</table>
+    ${gtable('A. Поток', ['b1.closed_pm', 'b2.cycle_days_median', 'b2.start_to_close_days_median', 'b12.time_to_first_action_days_median', 'b7.wip_avg'])}
+    ${gtable('B. Качество и дисциплина', ['b5.reopen_rate', 'b3.hit_rate', 'b3.overdue_days_median', 'b4.deadline_shifts_avg', 'b11.bugs_closed_pm', 'b11.bug_mttr_days_median'], 'Возврат = задача, вернувшаяся с проверки в работу (по истории статусов).')}
+    ${gtable('C. Оценки, сложность, самостоятельность', ['b6.estimate_ratio_median', 'b9.complexity_avg', 'b10.self_assigned_share'], 'Поля оценок и сложности заполнены не во всех задачах — смотрите флаги.')}
+    <h3>Профиль типов задач (по тегам)</h3>${mixes}
+    ${charts}
+  </div>`;
+}
+
+function lastDelta(s, key) {
+  const phases = (s.phases || []).filter(p => p.metrics);
+  const last = phases[phases.length - 1];
+  return last?.metrics?.b20?.deltas_pm?.[key];
+}
+
+function peopleView(data) {
+  const KEYS = ['b1.closed_pm', 'b2.cycle_days_median', 'b5.reopen_rate', 'b3.hit_rate', 'b10.self_assigned_share'];
+  const rows = (data.employees || []).map(s => {
+    const name = s.author?.display || 'AUTHOR';
+    const v = (data.verdicts || {})[name];
+    const attn = ((data.attention || {})[name] || []);
+    const cells = KEYS.map(k => {
+      const flagged = attn.some(a => a.metric === k);
+      return `<td>${flagged ? '<span class="attn">' : ''}${deltaCell(k, lastDelta(s, k))}${flagged ? '</span>' : ''}</td>`;
+    }).join('');
+    return `<tr>
+      <td><a href="#" data-emp="${esc(name)}"><b>${esc(name)}</b></a></td>
+      <td>${v ? `<span class="verdict ${esc(v.verdict)}">${esc(v.verdict)}</span>` : '<span class="small">ожидает</span>'}</td>
+      ${cells}
+      <td>${attn.length ? attn.map(a => `<span class="flag warn">${labelOf(a.metric)}</span>`).join('') : '<span class="small">—</span>'}</td></tr>`;
+  }).join('');
+  return `<div class="card">
+    <h2>Сводка по людям <span class="small">(дельты последней фазы; не рейтинг)</span></h2>
+    <table><tr><th>Сотрудник</th><th>Вердикт</th>${KEYS.map(k => `<th>Δ ${labelOf(k)}${infoIcon(k)}</th>`).join('')}<th>Внимание (1:1)</th></tr>${rows}</table>
+  </div>`;
+}
+
+function renderGlossary() {
+  $('#glossary-body').innerHTML = `<table><tr><th>Метрика</th><th>Что означает</th></tr>${
+    Object.entries(GLOSSARY).map(([k, [n, d]]) => `<tr><td><b>${esc(n)}</b><div class="small">${esc(k)}</div></td><td>${esc(d)}</td></tr>`).join('')
+  }</table>`;
+}
+
+function boot() {
+  // The glossary is static reference content — render it even when the file
+  // is the bare template (placeholder not yet replaced).
+  renderGlossary();
+  if (!DATA) {
+    document.body.insertAdjacentHTML('beforeend',
+      '<p class="card">Нет данных: это шаблон (плейсхолдер __DATA_JSON__ не заменён). Откройте сгенерированный b24-dashboard.html из папки отчётов.</p>');
+    bindTips(document.body);
+    return;
+  }
+  $('#meta').textContent = [
+    DATA.innovation ? `Нововведение: ${DATA.innovation.name || DATA.innovation}` : null,
+    `Сгенерировано: ${(DATA.generated_at || '').slice(0, 16).replace('T', ' ')}`,
+    `Сотрудников: ${(DATA.employees || []).length}`,
+  ].filter(Boolean).join(' · ');
+  const tabs = $('#tabs'), views = $('#views');
+  const mk = (id, label, html) => {
+    const t = el('div', 'tab', esc(label)); t.dataset.view = id; tabs.appendChild(t);
+    const v = el('div', 'view'); v.id = `view-${id}`; v.innerHTML = html; views.appendChild(v);
+  };
+  mk('people', '👥 Люди (сводка)', peopleView(DATA));
+  (DATA.employees || []).forEach((s, i) => {
+    const name = s.author?.display || `AUTHOR_${i + 1}`;
+    mk(`emp${i}`, name, employeeView(s, (DATA.attention || {})[name], (DATA.verdicts || {})[name]));
+  });
+  const activate = id => {
+    tabs.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === id));
+    views.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === `view-${id}`));
+  };
+  tabs.addEventListener('click', e => { const t = e.target.closest('.tab'); if (t) activate(t.dataset.view); });
+  views.addEventListener('click', e => {
+    const a = e.target.closest('a[data-emp]');
+    if (!a) return;
+    e.preventDefault();
+    const idx = (DATA.employees || []).findIndex(s => (s.author?.display || '') === a.dataset.emp);
+    if (idx >= 0) activate(`emp${idx}`);
+  });
+  activate('people');
+  bindTips(document.body);
+}
+boot();
+</script>
+</body>
+</html>

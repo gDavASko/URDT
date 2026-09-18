@@ -1,0 +1,182 @@
+{
+  "schema_version": "kf-1.0",
+  "comment": "Persistent local knowledge base of the audit skills (user requirement 2026-07-16): stable facts are recorded HERE once and reused by every run instead of being re-mined or re-asked. The orchestrator MUST read this file at interview start, prefill run-config from it, ask the user ONLY about missing/new facts, and APPEND newly confirmed facts after each run. Past periods never change — only extend.",
+  "employees": [
+    {
+      "slug": "marchenko",
+      "display": "Марченко Семён",
+      "git_ids": [
+        "sam.marchenko@gmail.com",
+        "SamMarchenko"
+      ],
+      "b24_name": "Семён Марченко",
+      "b24_id": null,
+      "gitlab_username": "SamMarchenko"
+    },
+    {
+      "slug": "liverko",
+      "display": "Ливерко Алексей",
+      "git_ids": [
+        "liverko.aleksey@yandex.ru",
+        "liverko"
+      ],
+      "b24_name": "Алексей Ливерко",
+      "b24_id": null,
+      "gitlab_username": "liverko"
+    },
+    {
+      "slug": "vakulin",
+      "display": "Вакулин Иван",
+      "git_ids": [
+        "vakulinivan50@gmail.com",
+        "Ivan_PC\\Ivan",
+        "Ivan"
+      ],
+      "b24_name": "Иван Вакулин",
+      "b24_id": null,
+      "gitlab_username": "IvanVakulin"
+    },
+    {
+      "slug": "davletbaev",
+      "display": "Давлетбаев Александр (лид)",
+      "git_ids": [
+        "davasko01@gmail.com",
+        "gDavASko"
+      ],
+      "b24_name": "Александр Давлетбаев",
+      "b24_id": 66,
+      "gitlab_username": "DavASko",
+      "note": "лид, автор нововведений; с прогона 2026-07 — также субъект аудита (самоаудит)"
+    },
+    {
+      "slug": "detkov",
+      "display": "Детков Евгений",
+      "git_ids": [
+        "demonpnz@gmail.com",
+        "Eugene Detkov"
+      ],
+      "b24_name": "Евгений Детков",
+      "b24_id": null,
+      "gitlab_username": "demonpnz"
+    },
+    {
+      "slug": "verein",
+      "display": "Вереин Андрей",
+      "git_ids": [
+        "thetheroez@gmail.com",
+        "Andrey V",
+        "TheThero"
+      ],
+      "b24_name": "Андрей Вереин",
+      "b24_id": null,
+      "gitlab_username": "TheThero"
+    },
+    {
+      "slug": "klyuenkov",
+      "display": "Клюенков Владислав",
+      "git_ids": [
+        "klyuenkov.vlad@mail.ru",
+        "PSYXOZ-PC\\\\Psyxoz"
+      ],
+      "b24_name": "Владислав Клюенков",
+      "b24_id": null,
+      "gitlab_username": "KlyuenkovVladislav"
+    }
+  ],
+  "absences": [
+    {
+      "slug": "marchenko",
+      "from": "2026-04-06",
+      "to": "2026-04-13",
+      "kind": "vacation",
+      "source": "график отпусков (скрины 2026-07-16), подтверждено пользователем"
+    },
+    {
+      "slug": "liverko",
+      "from": "2026-04-14",
+      "to": "2026-04-27",
+      "kind": "vacation",
+      "source": "график отпусков, подтверждено пользователем"
+    },
+    {
+      "slug": "vakulin",
+      "from": "2026-07-06",
+      "to": "2026-07-19",
+      "kind": "vacation",
+      "source": "график отпусков, подтверждено пользователем"
+    },
+    {
+      "slug": "verein",
+      "from": "2026-05-26",
+      "to": "2026-06-07",
+      "kind": "vacation",
+      "source": "график отпусков (скрины): оранжевый 26.05–31.05 + 01.06–07.06, «Отпуск взято 14»"
+    }
+  ],
+  "innovations_timeline": [
+    {
+      "date": "2026-04-01",
+      "name": "Возвращение лида в компанию",
+      "note": "граница фаз Ф1→Ф2 аудита 2026-07: до этого команда работала без лида"
+    },
+    {
+      "date": "2026-06-01",
+      "name": "Активная фаза внедрения ИИ-инструментария",
+      "note": "граница Ф2→Ф3: базы знаний, харнес-протокол, видеолекции по работе с ИИ"
+    }
+  ],
+  "known_audit_phases": [
+    {
+      "run": "2026-07",
+      "phases": [
+        {
+          "id": "P1",
+          "name": "до возвращения лида",
+          "from": "2026-02-01",
+          "to": "2026-03-31"
+        },
+        {
+          "id": "P2",
+          "name": "лид вернулся",
+          "from": "2026-04-01",
+          "to": "2026-05-31"
+        },
+        {
+          "id": "P3",
+          "name": "внедрение ИИ",
+          "from": "2026-06-01",
+          "to": "2026-07-16"
+        }
+      ],
+      "completed": "2026-07-17 (7 сотрудников)",
+      "verdicts": {
+        "marchenko": "neutral",
+        "liverko": "positive",
+        "vakulin": "neutral",
+        "klyuenkov": "neutral",
+        "detkov": "positive",
+        "verein": "positive",
+        "davletbaev": "neutral (самоаудит)",
+        "team": "см. team-report.md"
+      },
+      "correction_2026_07_18": "Убраны фантомные плановые отпуска (зелёные) Марченко/Ливерко/Вереина в Ф3; пересчёт: Марченко indeterminate→neutral (мнимое ×2 было артефактом нормировки, реально темп плоский), Ливерко остался positive (на росте мержей). Реальные отпуска: Марченко 06-13.04, Ливерко 14-27.04, Вереин 26.05-07.06, Вакулин 06-19.07."
+    }
+  ],
+  "external_registries": {
+    "b24_projects": "../davasko-bitrix-team-stats/references/b24-projects.json",
+    "note": "имена/ID проектов Bitrix24 — там; сотрудники B24 подтверждаются один раз и заносятся сюда в employees[].b24_id"
+  },
+  "environment": {
+    "gitlab_base": "https://gitlab.kbpro.ru",
+    "default_cache": "E:\\perf-audit\\cache",
+    "default_reports": "E:\\perf-audit\\reports",
+    "note": "диск C запрещён; env GITLAB_TOKEN и KBPRO_BITRIX24_WEBHOOK_BASE уже настроены у пользователя"
+  },
+  "owner_decisions": [
+    {
+      "date": "2026-07-17",
+      "decision": "m12 (качество коммит-сообщений) и m10 (типы коммитов) исключены из оценки; MR-notes не выгружаются (ИИ-ревью загрязняют сигнал) — review coverage только по approvals"
+    }
+  ],
+  "absences_rule": "ВАЖНО (поправка пользователя 2026-07-17): зелёные отрезки графика = ПЛАНОВЫЕ отпуска, НЕ состоявшиеся — НЕ исключать из анализа. Исключать только оранжевые (фактически взятые, сверяться с колонкой «Отпуск взято»)."
+}

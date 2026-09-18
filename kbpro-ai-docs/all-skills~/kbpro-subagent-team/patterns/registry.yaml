@@ -1,0 +1,47 @@
+version: 1
+patterns:
+  - id: default
+    context: default.md
+    description: Handles a bounded task when no specialized pattern applies.
+    triggers: [general task, bounded task, no specific pattern]
+  - id: research
+    context: research.md
+    description: Produces evidence-backed recommendations before a decision or implementation.
+    triggers: [research, investigate, compare approaches, choose an approach]
+  - id: development
+    context: development.md
+    description: Implements an explicitly authorized code or configuration change.
+    triggers: [implement, create code, modify code, fix code, change configuration]
+  - id: task-creation
+    context: task-creation.md
+    description: Defines, decomposes, drafts, or creates work items.
+    triggers: [create task, decompose task, backlog, work item, task planning]
+  - id: code-review
+    context: code-review.md
+    description: Independently evaluates a diff, change, pull request, or implementation.
+    triggers: [code review, review diff, review pull request, review implementation]
+  - id: information-search
+    context: information-search.md
+    description: Finds and reports factual information without changing the knowledge base.
+    triggers: [find information, lookup, factual question, search source]
+  - id: kb-search
+    context: kb-search.md
+    description: Retrieves relevant facts and patterns from the KBPro knowledge base.
+    triggers: [search knowledge base, KBPro wiki, find project pattern, architecture lookup]
+  - id: kb-maintenance
+    context: kb-maintenance.md
+    description: Updates existing KBPro knowledge-base documents, rules, or documentation.
+    triggers: [update knowledge base, edit wiki, update rules, maintain documentation]
+  - id: kb-ingestion
+    context: kb-ingestion.md
+    description: Imports new source material into the KBPro knowledge base.
+    triggers: [ingest knowledge, import documentation, add source to wiki, rebuild KB index]
+  - id: validation-and-debugging
+    context: validation-and-debugging.md
+    description: Diagnoses failures and validates runtime, build, test, or error conditions.
+    triggers: [debug, diagnose, validation, test failure, build failure, runtime error]
+
+selection_rules:
+  - Match the user task to the narrowest applicable trigger.
+  - Load only the selected pattern context and only the agent contexts it needs.
+  - Select default only when no specific pattern matches.

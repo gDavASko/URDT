@@ -27,7 +27,14 @@ class Client {
   close() { this.socket.close(); }
 }
 
-const slice = r => (r && r.data && r.data.components) ? r.data.components.UrdtTestPoligonDebugTarget : null;
+const slice = r => {
+  if (!r || !r.data || !r.data.components) return null;
+  for (const k of Object.keys(r.data.components)) {
+    const c = r.data.components[k];
+    if (c && (c.TargetId || c.ScreenRect)) return c;
+  }
+  return null;
+};
 const brief = s => s ? JSON.stringify({ vis: s.IsVisible, inter: s.IsInteractable, win: s.ActiveWindow, ic: s.InteractionCount, rect: s.ScreenRect, center: s.ScreenCenter }) : 'null';
 
 async function main() {

@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perf Audit — эффект нововведений</title>
+<style>
+:root{
+  --bg:#f6f8fb; --card:#ffffff; --ink:#1c2433; --muted:#5c6b81; --line:#e3e8f0;
+  --accent:#2563eb; --good:#15803d; --bad:#b91c1c; --warn:#b45309; --neutral:#64748b;
+  --chip:#eef2f9;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1420; --card:#171e2e; --ink:#e6ebf4; --muted:#93a1b8; --line:#2a3348;
+    --accent:#60a5fa; --good:#4ade80; --bad:#f87171; --warn:#fbbf24; --neutral:#94a3b8; --chip:#212b41; }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:var(--bg);color:var(--ink);
+  font:14px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:17px;margin:26px 0 10px}
+h3{font-size:15px;margin:18px 0 8px}
+.sub{color:var(--muted);margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:600}
+tr:hover td{background:rgba(37,99,235,.04)}
+.flag{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:6px;
+  padding:1px 7px;margin:1px 3px 1px 0;font-size:11px;color:var(--muted)}
+.flag.warn{color:var(--warn);border-color:var(--warn)}
+.up{color:var(--good);font-weight:600}
+.down{color:var(--bad);font-weight:600}
+.flat{color:var(--neutral)}
+.attn{background:rgba(180,83,9,.12);border-radius:4px;padding:0 4px}
+.conf{display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;
+  border-radius:4px;font-size:11px;font-weight:700;margin-left:4px;vertical-align:middle}
+.conf.high{background:rgba(21,128,61,.15);color:var(--good)}
+.conf.medium{background:rgba(180,83,9,.15);color:var(--warn)}
+.conf.low{background:rgba(185,28,28,.15);color:var(--bad);border-radius:50%}
+.band-bar{display:inline-block;width:50px;height:8px;background:var(--chip);border-radius:4px;
+  position:relative;vertical-align:middle;margin-right:6px}
+.band-fill{position:absolute;height:8px;background:var(--accent);border-radius:4px;opacity:.75}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.tab{padding:7px 16px;border:1px solid var(--line);border-radius:20px;background:var(--card);
+  cursor:pointer;font-weight:600}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.view{display:none}
+.view.active{display:block}
+.info{display:inline-block;width:15px;height:15px;line-height:15px;text-align:center;border-radius:50%;
+  background:var(--chip);color:var(--muted);font-size:10px;font-weight:700;cursor:help;margin-left:4px;
+  border:1px solid var(--line)}
+#tip{position:fixed;display:none;max-width:340px;background:var(--ink);color:var(--bg);
+  padding:8px 10px;border-radius:8px;font-size:12px;z-index:50;pointer-events:none;line-height:1.4}
+.legend-banner{background:var(--chip);border:1px dashed var(--line);border-radius:8px;
+  padding:8px 12px;font-size:12px;color:var(--muted);margin:8px 0;cursor:help}
+.chart-wrap{overflow-x:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:12px}
+details{margin:10px 0}
+summary{cursor:pointer;font-weight:600}
+.pair{white-space:nowrap}
+.pair .q{color:var(--muted);font-size:12px}
+.verdict{font-weight:700;padding:2px 10px;border-radius:14px;display:inline-block}
+.verdict.positive{background:rgba(21,128,61,.15);color:var(--good)}
+.verdict.negative{background:rgba(185,28,28,.15);color:var(--bad)}
+.verdict.neutral{background:var(--chip);color:var(--neutral)}
+.verdict.indeterminate{background:rgba(180,83,9,.15);color:var(--warn)}
+svg text{fill:var(--muted);font-size:10px}
+svg .axis{stroke:var(--line)}
+svg .phase-div{stroke:var(--muted);stroke-dasharray:4,4;opacity:.6}
+svg .phase-lbl{font-weight:700;font-size:11px}
+.small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="tip"></div>
+<h1>Аудит эффекта нововведений</h1>
+<p class="sub" id="meta"></p>
+
+<div class="card" id="howto-card">
+<details open>
+<summary>📖 Как читать этот отчёт (начните отсюда)</summary>
+<ol>
+<li><b>Начните со сводной таблицы по людям</b>: колонка «Вердикт» — итог по каждому, «Внимание» — метрики, где динамика человека заметно отличается от группы. Это <i>повод для разговора 1:1</i>, а не оценка.</li>
+<li><b>Пары «скорость ↔ качество» читаются только вместе.</b> Рост скорости при росте доли переделок — не улучшение. Каждая карточка показывает пару целиком.</li>
+<li><b>Все объёмные метрики нормированы «за месяц»</b> — фазы разной длины сравнимы честно.</li>
+<li><b>Сравнения только «сам с собой»</b>: дельты считаются между фазами одного человека. Таблица людей не является рейтингом.</li>
+<li><b>Качественные метрики</b> (LLM-оценки 0–10) даны полосами [min–max] с уверенностью: <span class="conf high">✓</span> высокая, <span class="conf medium">⚠</span> средняя, <span class="conf low">×</span> низкая. Тренд признаётся только если полосы фаз НЕ пересекаются.</li>
+<li><b>Флаги ограничений</b>: <span class="flag warn">ADOPTION_BY_DATE_ONLY</span> — применение нововведения определено только по датам (грубо); <span class="flag warn">LOW_SAMPLE</span> — мало данных, LLM-оценок нет; <span class="flag warn">EXCLUDED_ABSENCE</span> — окно отпуска исключено; <span class="flag warn">UNVALIDATED</span> — оценки ещё не проверены независимым судьёй.</li>
+<li><b>Чего из этого отчёта выводить НЕЛЬЗЯ</b>: зарплатные/кадровые решения, сравнение «кто лучше», оценку сложности задач между людьми. Git видит только следы работы, не её содержание.</li>
+</ol>
+</details>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="views"></div>
+
+<div class="card">
+<details id="glossary">
+<summary>📚 Справочник метрик</summary>
+<div id="glossary-body"></div>
+</details>
+</div>
+
+<script>
+'use strict';
+// DATA is injected by the generator (consolidate.js or the orchestrator):
+// { title, innovation, generated_at,
+//   employees: [metrics-summary.json, ...],
+//   attention: { "<display>": [{metric, delta, groupMedian}] },
+//   verdicts:  { "<display>": {verdict, reason} } }   // from the final analyst
+const DATA = /*__DATA_JSON__*/null;
+
+const GLOSSARY = {
+  'm2_pm': ['Коммиты в месяц', 'Число уникальных коммитов (дедуп по patch-id, без мержей), нормировано на месяц. Больше не значит лучше: смотреть в паре с ревертами.'],
+  'm5.commits_pm': ['Коммиты/мес', 'Объёмная метрика потока. Пара качества: доля исправленного другими (m9).'],
+  'm5.files_pm': ['Файлы/мес', 'Уникальные затронутые файлы за окно, в месяц. Только анализируемые типы (cs/prefab/asset/shader/code) — служебный шум исключён.'],
+  'm5.eff_loc_pm': ['Эффективные строки/мес', 'Для кода — изменённые строки; для Unity-ассетов — число затронутых YAML-объектов, не сырые строки. Пара качества: доля само-фиксов (m8).'],
+  'm8.churn_ratio': ['Доля итераций', 'Доля своих строк, переписанных СВОИМИ же не-fix коммитами в течение 21 дня. Это нормальная итеративная разработка, НЕ дефект.'],
+  'm8.self_fix_ratio': ['Доля само-фиксов', 'Доля своих строк, переписанных своими FIX-коммитами за 21 день (blame-уровень, хаб-файлы исключены). Сигнал качества. Атрибуция — к дате написания строки.'],
+  'm9.ratio': ['Исправлено другими', 'Доля своих строк, переписанных fix-коммитами ДРУГИХ за 21 день (blame). Главный сигнал качества наружу.'],
+  'm11.median_files': ['Медиана файлов/коммит', 'Гранулярность работы. Нововведения (AI-инструменты, процессы) часто меняют её первыми.'],
+  'm11.monster_share': ['Доля коммитов-монстров', 'Доля коммитов более 30 файлов. Высокая — плохая трассируемость изменений.'],
+  'm13.context_switches_pm': ['Переключения контекста/мес', 'Смены репозитория в хронологии; пары супер-проект + сабмодуль в пределах часа считаются одним контекстом.'],
+  'm15.active_share': ['Доля активных рабочих дней', 'Дни с коммитами / рабочие дни окна (выходные и праздники РФ исключены).'],
+  'm15.gini': ['Неравномерность (Gini)', 'Концентрация коммитов по рабочим дням: 0 — равномерно, 1 — всё в один день.'],
+  'm16_pm.reverted_by_others': ['Реверты другими/мес', 'Коммиты субъекта, отменённые другими. Атрибуция к дате исходного коммита.'],
+  'mr.merged_pm': ['Замержено MR/мес', 'Пара качества: покрытие ревью.'],
+  'mr.cycle_time_days_median': ['Цикл MR, дней (медиана)', 'Открытие MR → мерж. Ключевая метрика скорости поставки.'],
+  'mr.review_coverage': ['Покрытие ревью', 'Доля замерженных MR с хотя бы одним аппрувом. Комментарии не учитываются: обязательные ИИ-ревью искажают эту статистику.'],
+  'mr.no_mr_share': ['Мимо MR', 'Доля коммитов, не прошедших ни через один MR (прямые пуши + ещё не замерженные ветки).'],
+  'm6': ['Соблюдение правил (0–10)', 'LLM-оценка соответствия кодстайлу и правилам KBPro по diff-примерам.'],
+  'm7': ['Сложность работ (0–10)', 'LLM-оценка технической сложности (не объёма и не сеньорности).'],
+  'm14': ['Критичность зон (0–10)', 'Насколько ядровые зоны затронуты. Выше = критичнее, а не «лучше».'],
+  'm17': ['Архитектурная дисциплина (0–10)', 'Переиспользование платформенных систем, чистота границ модулей.'],
+  'm18': ['Завершённость (0–10)', 'Выглядит ли работа законченной: без TODO-хвостов и полу-интеграций.'],
+  'b1.closed_pm': ['B24: закрыто задач/мес', 'Bitrix24: завершённые dev-задачи (тег/название Dev) за месяц. Пара качества: доля возвратов.'],
+  'b2.cycle_days_median': ['B24: цикл задачи, дней', 'Bitrix24: создание → закрытие задачи, медиана.'],
+  'b3.hit_rate': ['B24: дедлайны в срок', 'Bitrix24: доля закрытых в срок среди задач с дедлайном.'],
+  'b4.deadline_shifts_avg': ['B24: переносы дедлайна', 'Bitrix24: среднее число переносов дедлайна на задачу.'],
+  'b5.reopen_rate': ['B24: доля возвратов', 'Bitrix24: задачи, вернувшиеся с проверки в работу (история статусов). Сверяйте с git-метрикой «исправлено другими».'],
+  'b10.self_assigned_share': ['B24: самопоставленные', 'Bitrix24: доля созданных задач, где постановщик = исполнитель.'],
+  'b11.bugs_closed_pm': ['B24: багов закрыто/мес', 'Bitrix24: баг-задачи (тег Баг/эвристика).'],
+  'b11.bug_mttr_days_median': ['B24: MTTR бага, дней', 'Bitrix24: создание бага → закрытие, медиана.'],
+  'b12.time_to_first_action_days_median': ['B24: до первого действия, дней', 'Bitrix24: создание задачи → первое действие исполнителя.'],
+};
+
+const SPEED_QUALITY_PAIRS = [
+  ['mr.cycle_time_days_median', 'm9.ratio', 'Цикл MR ↔ исправлено другими'],
+  ['m5.commits_pm', 'm9.ratio', 'Объём ↔ исправлено другими'],
+  ['m5.eff_loc_pm', 'm8.self_fix_ratio', 'Объём ↔ само-фиксы'],
+  ['mr.merged_pm', 'mr.review_coverage', 'Мержи ↔ покрытие ревью'],
+];
+
+// Metrics where LOWER is better (for delta coloring).
+const LOWER_BETTER = new Set([
+  'm8.self_fix_ratio', 'm9.ratio', 'm16_pm.reverted_by_others',
+  'mr.cycle_time_days_median',
+  'mr.no_mr_share', 'm11.monster_share', 'm13.context_switches_pm', 'm15.gini',
+  'b2.cycle_days_median', 'b4.deadline_shifts_avg', 'b5.reopen_rate',
+  'b11.bug_mttr_days_median', 'b12.time_to_first_action_days_median',
+]);
+// Volume/context metrics: direction is neutral, colored grey.
+const NEUTRAL = new Set(['m5.commits_pm', 'm5.files_pm', 'm5.eff_loc_pm', 'm2_pm',
+  'm11.median_files', 'm8.churn_ratio', 'b1.closed_pm', 'b11.bugs_closed_pm']);
+
+const $ = sel => document.querySelector(sel);
+const el = (tag, cls, html) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtNum = v => (v == null || !isFinite(v)) ? '—' : (Math.abs(v) >= 100 ? Math.round(v) : Math.round(v * 100) / 100);
+function get(obj, dotted) {
+  let cur = obj;
+  for (const p of dotted.split('.')) { if (cur == null) return undefined; cur = cur[p]; }
+  return (typeof cur === 'number') ? cur : undefined;
+}
+function labelOf(key) { return (GLOSSARY[key] || [key])[0]; }
+function descOf(key) { return (GLOSSARY[key] || ['', ''])[1]; }
+
+// --- tooltip -----------------------------------------------------------------
+const tip = $('#tip');
+document.addEventListener('mousemove', e => {
+  if (tip.style.display !== 'block') return;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - 360) + 'px';
+  tip.style.top = (e.clientY + 14) + 'px';
+});
+function bindTips(root) {
+  root.querySelectorAll('[data-tip]').forEach(n => {
+    n.addEventListener('mouseover', () => { tip.innerHTML = n.dataset.tip; tip.style.display = 'block'; });
+    n.addEventListener('mouseout', () => { tip.style.display = 'none'; });
+  });
+}
+function infoIcon(key) {
+  return `<span class="info" data-tip="${esc(`<b>${labelOf(key)}</b><br>${descOf(key)}`)}">?</span>`;
+}
+
+// --- cells ---------------------------------------------------------------------
+function confIcon(c) {
+  if (c === 'high') return '<span class="conf high" data-tip="Уверенность: высокая">✓</span>';
+  if (c === 'medium') return '<span class="conf medium" data-tip="Уверенность: средняя">⚠</span>';
+  if (c === 'low') return '<span class="conf low" data-tip="Уверенность: низкая">×</span>';
+  return '';
+}
+function bandCell(b) {
+  if (!b || b === 'N/A' || !b.band) return '<span class="small">N/A</span>';
+  const [lo, hi] = b.band;
+  const left = Math.max(0, Math.min(100, lo * 10));
+  const width = Math.max(4, Math.min(100 - left, (hi - lo) * 10));
+  return `<span class="band-bar"><span class="band-fill" style="left:${left}%;width:${width}%"></span></span>`
+    + `${lo}–${hi}${confIcon(b.confidence)}`;
+}
+function deltaCell(key, delta) {
+  if (delta == null || !isFinite(delta)) return '<span class="flat">—</span>';
+  if (Math.abs(delta) < 1e-9) return '<span class="flat">0</span>';
+  const arrow = delta > 0 ? '↑' : '↓';
+  let cls = 'flat';
+  if (!NEUTRAL.has(key)) {
+    const better = LOWER_BETTER.has(key) ? delta < 0 : delta > 0;
+    cls = better ? 'up' : 'down';
+  }
+  return `<span class="${cls}">${arrow} ${fmtNum(delta)}</span>`;
+}
+function trendWord(t) {
+  return t === 'up' ? '<span class="up">рост</span>'
+    : t === 'down' ? '<span class="down">снижение</span>'
+    : t === 'no_data' ? '<span class="small">нет данных</span>'
+    : '<span class="flat">без значимых изменений</span>';
+}
+function mmYY(iso) {
+  return `${String(iso).slice(5, 7)}.${String(iso).slice(2, 4)}`;
+}
+
+// --- SVG trend chart -------------------------------------------------------------
+// v1 UI lessons kept: height 220 + bottom padding 55, MM.YY labels rotated -35°,
+// dashed phase dividers with centered phase labels, no quotes inside labels.
+function trendChart(series, keys, colors, title) {
+  const W = Math.max(460, 60 + series.length * 46), H = 220, PB = 55, PL = 42, PT = 24, PR = 10;
+  const plotW = W - PL - PR, plotH = H - PT - PB;
+  let maxV = 0;
+  for (const s of series) for (const k of keys) maxV = Math.max(maxV, s.values[k] || 0);
+  if (maxV <= 0) maxV = 1;
+  const x = i => PL + (series.length === 1 ? plotW / 2 : i * plotW / (series.length - 1));
+  const y = v => PT + plotH - (v / maxV) * plotH;
+  let out = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img">`;
+  out += `<text x="${PL}" y="12" class="phase-lbl">${esc(title)}</text>`;
+  out += `<line class="axis" x1="${PL}" y1="${PT + plotH}" x2="${W - PR}" y2="${PT + plotH}"/>`;
+  out += `<line class="axis" x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT + plotH}"/>`;
+  out += `<text x="4" y="${y(maxV) + 4}">${fmtNum(maxV)}</text><text x="4" y="${PT + plotH}">0</text>`;
+  // Phase dividers + centered labels.
+  let prevPhase = null, phaseStartX = null;
+  const phaseSpans = [];
+  series.forEach((s, i) => {
+    if (s.phase !== prevPhase) {
+      if (prevPhase !== null) {
+        const divX = (x(i) + x(i - 1)) / 2;
+        out += `<line class="phase-div" x1="${divX}" y1="${PT}" x2="${divX}" y2="${PT + plotH}"/>`;
+        phaseSpans.push({ phase: prevPhase, from: phaseStartX, to: x(i - 1) });
+      }
+      prevPhase = s.phase; phaseStartX = x(i);
+    }
+  });
+  phaseSpans.push({ phase: prevPhase, from: phaseStartX, to: x(series.length - 1) });
+  for (const ps of phaseSpans) {
+    out += `<text class="phase-lbl" x="${(ps.from + ps.to) / 2}" y="${PT - 4}" text-anchor="middle">${esc(ps.phase)}</text>`;
+  }
+  // X labels + absence shading.
+  series.forEach((s, i) => {
+    out += `<text x="${x(i)}" y="${PT + plotH + 14}" text-anchor="end" transform="rotate(-35 ${x(i)} ${PT + plotH + 14})">${mmYY(s.from)}</text>`;
+    if (s.excluded_absence) {
+      out += `<rect x="${x(i) - 8}" y="${PT}" width="16" height="${plotH}" fill="currentColor" opacity="0.07"/>`
+        + `<text x="${x(i)}" y="${PT + 12}" text-anchor="middle">✈</text>`;
+    }
+  });
+  // Lines + points with native tooltips.
+  keys.forEach((k, ki) => {
+    const pts = series.map((s, i) => `${x(i)},${y(s.values[k] || 0)}`).join(' ');
+    out += `<polyline fill="none" stroke="${colors[ki]}" stroke-width="2" points="${pts}"/>`;
+    series.forEach((s, i) => {
+      out += `<circle cx="${x(i)}" cy="${y(s.values[k] || 0)}" r="3" fill="${colors[ki]}"><title>${esc(labelOf(k))} · ${mmYY(s.from)}: ${fmtNum(s.values[k] || 0)}</title></circle>`;
+    });
+  });
+  // Legend.
+  let lx = PL;
+  keys.forEach((k, ki) => {
+    out += `<rect x="${lx}" y="${H - 12}" width="10" height="10" fill="${colors[ki]}"/><text x="${lx + 14}" y="${H - 3}">${esc(labelOf(k))}</text>`;
+    lx += 16 + labelOf(k).length * 6;
+  });
+  out += '</svg>';
+  return `<div class="chart-wrap">${out}</div>`;
+}
+
+// --- employee view -----------------------------------------------------------------
+function metricRow(key, phases) {
+  const cells = phases.map((ph, i) => {
+    const v = get(ph.metrics, key);
+    let d = '';
+    if (i > 0 && ph.metrics.m20 && ph.metrics.m20.deltas_pm && key in ph.metrics.m20.deltas_pm) {
+      d = ` ${deltaCell(key, ph.metrics.m20.deltas_pm[key])}`;
+    }
+    return `<td>${fmtNum(v)}${d}</td>`;
+  }).join('');
+  return `<tr><td>${labelOf(key)}${infoIcon(key)}</td>${cells}</tr>`;
+}
+
+function qualRow(id, phases) {
+  const cells = phases.map((ph, i) => {
+    let trend = '';
+    if (i > 0 && ph.metrics.m20 && ph.metrics.m20.qualitative_trends) {
+      trend = `<div class="small">${trendWord(ph.metrics.m20.qualitative_trends[id])}</div>`;
+    }
+    return `<td>${bandCell(ph.metrics[id])}${trend}</td>`;
+  }).join('');
+  return `<tr><td>${labelOf(id)}${infoIcon(id)}</td>${cells}</tr>`;
+}
+
+// --- Bitrix24 task-metrics section (present when consolidate.js was given
+// --bitrix and matched this employee's bitrix-summary.json) --------------------
+const B24_ROWS = ['b1.closed_pm', 'b2.cycle_days_median', 'b5.reopen_rate',
+  'b3.hit_rate', 'b4.deadline_shifts_avg', 'b10.self_assigned_share',
+  'b11.bugs_closed_pm', 'b11.bug_mttr_days_median', 'b12.time_to_first_action_days_median'];
+
+function bMetricRow(key, phases) {
+  const cells = phases.map((ph, i) => {
+    const v = get(ph.metrics, key);
+    let d = '';
+    if (i > 0 && ph.metrics?.b20?.deltas_pm && key in ph.metrics.b20.deltas_pm) {
+      d = ` ${deltaCell(key, ph.metrics.b20.deltas_pm[key])}`;
+    }
+    return `<td>${fmtNum(v)}${d}</td>`;
+  }).join('');
+  return `<tr><td>${labelOf(key)}${infoIcon(key)}</td>${cells}</tr>`;
+}
+
+function bitrixSection(b) {
+  if (!b) return '';
+  const phases = (b.phases || []).filter(p => p.metrics);
+  if (!phases.length) return '';
+  const head = `<tr><th>Метрика</th>${phases.map(p =>
+    `<th>${esc(p.name)} <span class="small">(${esc(p.from)} — ${esc(p.to)})</span></th>`).join('')}</tr>`;
+  const flags = (b.flags || []).filter(f => /PARTIAL|HEURISTIC/.test(f))
+    .map(f => `<span class="flag warn">${esc(f)}</span>`).join('');
+  return `
+    <h3>Bitrix24: задачи (общая таблица с git-метриками)</h3>
+    <div class="legend-banner" data-tip="Git и Bitrix видят разное: git — код, Bitrix — процесс задач. Расхождение (например, git-переделки выросли, а возвраты задач нет) — это находка для разбора, не ошибка данных.">ℹ Сверяйте пары источников: git «исправлено другими» (m9) ↔ B24 «доля возвратов» (b5); git «объём» ↔ B24 «закрыто задач». ${flags}</div>
+    <table>${head}${B24_ROWS.map(k => bMetricRow(k, phases)).join('')}</table>`;
+}
+
+function employeeView(summary, attention, verdictInfo) {
+  const phases = summary.phases || [];
+  const head = `<tr><th>Метрика</th>${phases.map(p =>
+    `<th>${esc(p.name)} <span class="small">(${esc(p.from)} — ${esc(p.to)}, ${p.metrics.months} мес)</span></th>`).join('')}</tr>`;
+
+  const groupTable = (title, rows, note) => `
+    <h3>${title}</h3>
+    ${note ? `<div class="legend-banner">ℹ ${esc(note)}</div>` : ''}
+    <table>${head}${rows.join('')}</table>`;
+
+  const speedRows = ['mr.cycle_time_days_median',
+    'mr.merged_pm', 'm2_pm', 'm5.files_pm', 'm5.eff_loc_pm', 'm13.context_switches_pm']
+    .map(k => metricRow(k, phases));
+  const qualityRows = ['m9.ratio', 'm8.self_fix_ratio', 'm8.churn_ratio',
+    'm16_pm.reverted_by_others', 'mr.review_coverage', 'mr.no_mr_share']
+    .map(k => metricRow(k, phases));
+  const discRows = ['m11.median_files', 'm11.monster_share', 'm15.active_share', 'm15.gini']
+    .map(k => metricRow(k, phases));
+  const qualLlmRows = ['m6', 'm17', 'm18', 'm7', 'm14'].map(id => qualRow(id, phases));
+
+  const series = summary.window_series || [];
+  const charts = series.length ? `
+    <h3>Тренды по окнам</h3>
+    <div class="grid2">
+      ${trendChart(series, ['m5.commits_pm'], ['#2563eb'], 'Коммиты/мес')}
+      ${trendChart(series, ['m8.self_fix_ratio', 'm9.ratio'], ['#b45309', '#b91c1c'], 'Переделки: свои фиксы и чужие')}
+      ${trendChart(series, ['m11.median_files'], ['#7c3aed'], 'Гранулярность (медиана файлов/коммит)')}
+      ${trendChart(series, ['m15.active_share'], ['#15803d'], 'Доля активных рабочих дней')}
+    </div>` : '';
+
+  const flags = (summary.flags || []).map(f =>
+    `<span class="flag ${/UNVALIDATED|LOW_SAMPLE|ADOPTION|ABSENCE|MISSING|EXHAUSTED|SHALLOW/.test(f) ? 'warn' : ''}">${esc(f)}</span>`).join('');
+
+  const attn = (attention && attention.length)
+    ? `<div class="legend-banner">⚠ <b>Темы для 1:1:</b> ${attention.map(a =>
+        `<span class="attn" data-tip="${esc(descOf(a.metric))}">${labelOf(a.metric)}: ${deltaCell(a.metric, a.delta)} при медиане группы ${fmtNum(a.groupMedian)}</span>`).join(' · ')}
+       <div class="small">Отклонение от общей динамики — повод спросить о препятствиях, не вывод о работе.</div></div>`
+    : '';
+
+  const verdict = verdictInfo
+    ? `<p>Вердикт по нововведению: <span class="verdict ${esc(verdictInfo.verdict)}">${esc(verdictInfo.verdict)}</span>
+       <span class="small">${esc(verdictInfo.reason || '')}</span></p>`
+    : '<p class="small">Вердикт появится после прохода финального аналитика.</p>';
+
+  const pairRows = SPEED_QUALITY_PAIRS.map(([s, q, note]) => {
+    const cells = phases.map(ph =>
+      `<td>${fmtNum(get(ph.metrics, s))} <span class="q">/ ${fmtNum(get(ph.metrics, q))}</span></td>`).join('');
+    return `<tr><td class="pair" data-tip="${esc(`${descOf(s)} · ${descOf(q)}`)}">${esc(note)}</td>${cells}</tr>`;
+  }).join('');
+
+  return `
+  <div class="card">
+    <h2>${esc(summary.author?.display || 'AUTHOR')}
+      <span class="small">профиль: ${esc(phases.map(p => p.profile).join(' → '))}</span></h2>
+    ${verdict}
+    ${attn}
+    <div>${flags}</div>
+    <h3>Пары «скорость / качество»</h3>
+    <div class="legend-banner" data-tip="Метрика скорости читается только вместе со своей парой качества — рост объёма при росте переделок не является улучшением.">ℹ Формат ячейки: <b>скорость</b> / <span class="q">качество</span>. Читаются только парой.</div>
+    <table><tr><th>Пара</th>${phases.map(p => `<th>${esc(p.name)}</th>`).join('')}</tr>${pairRows}</table>
+    ${groupTable('A. Поток и скорость', speedRows)}
+    ${groupTable('B. Качество и стабильность', qualityRows, 'Все доли считаются от добавленных строк кода, blame-уровень, хаб-файлы исключены, атрибуция к дате написания.')}
+    ${groupTable('C/D. Дисциплина и ритм', discRows)}
+    ${groupTable('LLM-оценки (полосы 0–10)', qualLlmRows, 'Оценки по рубрикам с независимым судейским спот-чеком. Тренд признаётся только при непересечении полос.')}
+    ${bitrixSection(summary.bitrix)}
+    ${charts}
+  </div>`;
+}
+
+// --- people summary (main view) ------------------------------------------------
+function lastDelta(summary, key) {
+  const phases = summary.phases || [];
+  const last = phases[phases.length - 1];
+  if (!last || !last.metrics.m20 || !last.metrics.m20.deltas_pm) return undefined;
+  return last.metrics.m20.deltas_pm[key];
+}
+
+function bLastDelta(bitrix, key) {
+  if (!bitrix) return undefined;
+  const phases = (bitrix.phases || []).filter(p => p.metrics);
+  const last = phases[phases.length - 1];
+  return last?.metrics?.b20?.deltas_pm?.[key];
+}
+
+function peopleView(data) {
+  const employees = data.employees || [];
+  const KEYS = ['mr.cycle_time_days_median', 'm5.commits_pm', 'm9.ratio',
+    'm8.self_fix_ratio', 'mr.review_coverage', 'm15.active_share'];
+  // Bitrix columns appear when at least one employee has an attached
+  // bitrix-summary (consolidate.js --bitrix).
+  const hasBitrix = employees.some(s => s.bitrix);
+  const B_KEYS = hasBitrix ? ['b1.closed_pm', 'b2.cycle_days_median', 'b5.reopen_rate'] : [];
+  const rows = employees.map(s => {
+    const name = s.author?.display || 'AUTHOR';
+    const v = (data.verdicts || {})[name];
+    const attn = ((data.attention || {})[name] || []);
+    const cells = KEYS.map(k => {
+      const d = lastDelta(s, k);
+      const flagged = attn.some(a => a.metric === k);
+      return `<td>${flagged ? '<span class="attn">' : ''}${deltaCell(k, d)}${flagged ? '</span>' : ''}</td>`;
+    }).join('');
+    const bCells = B_KEYS.map(k => `<td>${deltaCell(k, bLastDelta(s.bitrix, k))}</td>`).join('');
+    return `<tr>
+      <td><a href="#" data-emp="${esc(name)}"><b>${esc(name)}</b></a><div class="small">${esc(s.analyzed_range?.from || '')} — ${esc(s.analyzed_range?.to || '')}</div></td>
+      <td>${v ? `<span class="verdict ${esc(v.verdict)}">${esc(v.verdict)}</span>` : '<span class="small">ожидает аналитика</span>'}</td>
+      ${cells}${bCells}
+      <td>${attn.length ? attn.map(a => `<span class="flag warn">${labelOf(a.metric)}</span>`).join('') : '<span class="small">—</span>'}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <div class="card">
+    <h2>Сводка по людям <span class="small">(дельты последней фазы к предыдущей; порядок строк не является рейтингом)</span></h2>
+    <div class="legend-banner" data-tip="Дельты: зелёная — изменение в желательную сторону, красная — в нежелательную, серая — нейтральная объёмная метрика. «Внимание» — метрики, где динамика человека статистически отклоняется от группы (медиана ± 1.5 MAD).">ℹ Наведите на значения и иконки «?» для расшифровки. Клик по имени — персональная страница.${hasBitrix ? ' Колонки «B24: …» — данные задач Bitrix24, сведённые с git-метриками.' : ''}</div>
+    <table>
+      <tr><th>Сотрудник</th><th>Вердикт</th>${KEYS.map(k => `<th>Δ ${labelOf(k)}${infoIcon(k)}</th>`).join('')}${B_KEYS.map(k => `<th>Δ ${labelOf(k)}${infoIcon(k)}</th>`).join('')}<th>Внимание (для 1:1)</th></tr>
+      ${rows}
+    </table>
+  </div>`;
+}
+
+// --- glossary ---------------------------------------------------------------------
+function renderGlossary() {
+  $('#glossary-body').innerHTML = `<table><tr><th>Метрика</th><th>Что означает</th></tr>${
+    Object.entries(GLOSSARY).map(([k, [name, desc]]) =>
+      `<tr><td><b>${esc(name)}</b><div class="small">${esc(k)}</div></td><td>${esc(desc)}</td></tr>`).join('')
+  }</table>`;
+}
+
+// --- bootstrap -----------------------------------------------------------------------
+function boot() {
+  // The glossary is static reference content — render it even when the file
+  // is the bare template (placeholder not yet replaced).
+  renderGlossary();
+  if (!DATA) {
+    document.body.insertAdjacentHTML('beforeend',
+      '<p class="card">Нет данных: это шаблон (плейсхолдер __DATA_JSON__ не заменён). Откройте сгенерированный dashboard.html из папки отчётов.</p>');
+    bindTips(document.body);
+    return;
+  }
+  $('#meta').textContent = [
+    DATA.innovation ? `Нововведение: ${DATA.innovation.name || DATA.innovation}` : null,
+    `Сгенерировано: ${(DATA.generated_at || '').slice(0, 16).replace('T', ' ')}`,
+    `Сотрудников: ${(DATA.employees || []).length}`,
+  ].filter(Boolean).join(' · ');
+
+  const tabs = $('#tabs'), views = $('#views');
+  const mk = (id, label, html) => {
+    const t = el('div', 'tab', esc(label));
+    t.dataset.view = id;
+    tabs.appendChild(t);
+    const v = el('div', 'view');
+    v.id = `view-${id}`;
+    v.innerHTML = html;
+    views.appendChild(v);
+  };
+  mk('people', '👥 Люди (сводка)', peopleView(DATA));
+  (DATA.employees || []).forEach((s, i) => {
+    const name = s.author?.display || `AUTHOR_${i + 1}`;
+    mk(`emp${i}`, name, employeeView(s, (DATA.attention || {})[name], (DATA.verdicts || {})[name]));
+  });
+
+  const activate = id => {
+    tabs.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === id));
+    views.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === `view-${id}`));
+  };
+  tabs.addEventListener('click', e => {
+    const t = e.target.closest('.tab');
+    if (t) activate(t.dataset.view);
+  });
+  views.addEventListener('click', e => {
+    const a = e.target.closest('a[data-emp]');
+    if (!a) return;
+    e.preventDefault();
+    const idx = (DATA.employees || []).findIndex(s => (s.author?.display || '') === a.dataset.emp);
+    if (idx >= 0) activate(`emp${idx}`);
+  });
+  activate('people');
+  bindTips(document.body);
+}
+boot();
+</script>
+</body>
+</html>

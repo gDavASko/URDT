@@ -27,7 +27,7 @@ namespace KBP.URDT.Tests
     {
         private const string SCENE_NAME = "URDT_TestPoligon_UI";
         private const string TOKEN = "urdt-test-poligon";
-        private const string DEBUG_COMPONENT = "UrdtTestPoligonDebugTarget";
+        private const string DEBUG_COMPONENT = "UrdtUiTarget";
 
         private ClientWebSocket _client;
         private readonly Dictionary<string, string> _idByTarget = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -142,7 +142,7 @@ namespace KBP.URDT.Tests
             _sliceByTarget.Clear();
             foreach (JToken match in matches)
             {
-                JToken slice = match["components"]?[DEBUG_COMPONENT];
+                JToken slice = FindTargetSlice(match);
                 string targetId = slice?["TargetId"]?.ToString();
                 if (string.IsNullOrEmpty(targetId))
                 {
@@ -153,6 +153,20 @@ namespace KBP.URDT.Tests
                 _visibleByTarget[targetId] = match["activeInHierarchy"] != null && (bool)match["activeInHierarchy"];
                 _sliceByTarget[targetId] = slice;
             }
+        }
+
+        private static JToken FindTargetSlice(JToken match)
+        {
+            JObject components = match["components"] as JObject;
+            if (components == null) return null;
+            foreach (JProperty prop in components.Properties())
+            {
+                if (prop.Value != null && prop.Value["TargetId"] != null)
+                {
+                    return prop.Value;
+                }
+            }
+            return null;
         }
 
         private static Vector2 ReadScreenCenter(JToken slice)

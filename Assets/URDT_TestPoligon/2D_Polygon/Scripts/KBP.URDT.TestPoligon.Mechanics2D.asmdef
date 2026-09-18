@@ -1,0 +1,21 @@
+{
+    "name": "KBP.URDT.TestPoligon.Mechanics2D",
+    "rootNamespace": "KBP.URDT.TestPoligon.Mechanics2D",
+    "references": [
+        "KBP.URDT",
+        "KBP.URDT.TestPoligon",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "URDT_ENABLED"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

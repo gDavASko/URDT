@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--text:#142033;--muted:#607086;--line:#dce4ef;--good:#0f7a3a;--mid:#a56700;--risk:#b42318;--head:#eef3f9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 "Segoe UI",Arial,sans-serif}
+main{max-width:1480px;margin:0 auto;padding:24px}
+h1{font-size:34px;margin:0 0 8px}
+h2{font-size:26px;margin:0 0 14px}
+h2 span{font-size:16px;color:var(--muted);font-weight:500}
+h3{font-size:20px;margin:22px 0 10px}
+.muted{color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;margin:18px 0;box-shadow:0 8px 24px rgba(20,32,51,.06)}
+.lead{font-size:18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:8px;padding:16px;background:#fff}
+.card b{display:block;font-size:18px;margin-bottom:6px}
+.scoregrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0}
+.scoregrid div{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fafcff}
+.scoregrid b{font-size:28px;display:block}
+.scoregrid span{color:var(--muted)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;table-layout:auto}
+th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top}
+th{background:var(--head);text-align:left}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.good{color:var(--good);font-weight:700}
+.mid{color:var(--mid);font-weight:700}
+.risk{color:var(--risk);font-weight:700}
+.pill{display:inline-block;border-radius:999px;padding:3px 9px;font-size:13px;font-weight:700}
+.pill.good{background:#e8f6ee}
+.pill.mid{background:#fff4dd}
+.pill.risk{background:#fdecea}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.nav button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--text);font-weight:600;cursor:pointer}
+.nav button.active{background:#155eef;color:#fff;border-color:#155eef}
+.tabpane{display:none}
+.tabpane.active{display:block}
+@media(max-width:760px){main{padding:14px}h1{font-size:27px}table{font-size:14px}}
+</style>
+</head>
+<body>
+<main>
+<h1>{{TITLE}}</h1>
+<p class="muted">{{PERIOD_NOTE}} Названия коммитов и комментарии в MR исключены; ревью считается по фактическим аппрувам.</p>
+<div class="nav" id="tabs">{{TAB_BUTTONS}}</div>
+{{TAB_PANES}}
+</main>
+<script>
+document.getElementById('tabs').addEventListener('click', function(e){
+  const btn=e.target.closest('button[data-open]');
+  if(!btn)return;
+  const id=btn.getAttribute('data-open');
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b===btn));
+  document.querySelectorAll('.tabpane').forEach(p=>p.classList.toggle('active',p.getAttribute('data-tab')===id));
+  window.scrollTo({top:0,behavior:'instant'});
+});
+</script>
+</body>
+</html>
+

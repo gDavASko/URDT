@@ -1,0 +1,6 @@
+interface:
+  display_name: "DavASko Team Performance Report"
+  short_description: "Executive dev team performance reports"
+  default_prompt: "Use $davasko-team-performance-report to create an executive HTML performance report for a date interval and employee list."
+policy:
+  allow_implicit_invocation: true
