@@ -53,6 +53,11 @@ namespace KBP.URDT.TestPoligon
                 _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiScrollTarget)), TEST_ID_TEMPLATE);
                 _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiWindowTarget)), TEST_ID_TEMPLATE);
                 _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiGenericTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(Urdt2DModuleTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(Urdt2DDraggableTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(Urdt2DSlotTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(Urdt2DInteractiveAreaTarget)), TEST_ID_TEMPLATE);
+                _serverHost.RegisterSelectorRule(new HasComponentPredicate(nameof(UrdtUiTextTarget)), TEST_ID_TEMPLATE);
             }
         }
 

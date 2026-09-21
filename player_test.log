@@ -1,0 +1,38 @@
+Mono path[0] = 'E:/Projects/URDT/Builds/URDT_TestPoligon/URDT_TestPoligon_Data/Managed'
+Mono config path = 'E:/Projects/URDT/Builds/URDT_TestPoligon/MonoBleedingEdge/etc'
+Starting managed debugger on port 56404
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=0.0.0.0:56404
+CodeReloadManager initialized
+Found 3 interfaces on host : 0) 192.168.0.235 1) 172.19.176.1 2) 172.18.0.1
+Player connection [21212]  Target information:
+
+Player connection [21212]  * "[IP] 192.168.0.235 [Port] 55000 [Flags] 2 [Guid] 2718170404 [EditorId] 3715043140 [Version] 1048832 [Id] WindowsPlayer(2,DavASkoPC04) [Debug] 1 [PackageName] WindowsPlayer [ProjectName] URDT_gen" 
+
+Player connection [21212]  * "[IP] 172.19.176.1 [Port] 55000 [Flags] 2 [Guid] 2718170404 [EditorId] 3715043140 [Version] 1048832 [Id] WindowsPlayer(2,DavASkoPC04) [Debug] 1 [PackageName] WindowsPlayer [ProjectName] URDT_gen" 
+
+Player connection [21212]  * "[IP] 172.18.0.1 [Port] 55000 [Flags] 2 [Guid] 2718170404 [EditorId] 3715043140 [Version] 1048832 [Id] WindowsPlayer(2,DavASkoPC04) [Debug] 1 [PackageName] WindowsPlayer [ProjectName] URDT_gen" 
+
+Player connection [21212] Started UDP target info broadcast (1) on [225.0.0.222:54997].
+
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.4.4f1 (360f97ecca93)
+[Subsystems] Discovering subsystems at path E:/Projects/URDT/Builds/URDT_TestPoligon/URDT_TestPoligon_Data/UnitySubsystems
+[D3D12 Device Filter] Vendor Name: NVIDIA
+[D3D12 Device Filter] Device Name: NVIDIA GeForce RTX 2070
+[D3D12 Device Filter] Driver Version: 32.0.15.9597
+[D3D12 Device Filter] Feature Level: 12.2
+[D3D12 Device Filter] Graphics Memory: 8006 MB
+[D3D12 Device Filter] Processor Count: 32
+[D3D12 Device Filter] Device Type: Discrete
+GfxDevice: creating device client; kGfxThreadingModeSplitJobs
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        NVIDIA GeForce RTX 2070 (ID=0x1f02)
+    Vendor:          NVIDIA
+    VRAM:            8006 MB
+    App VRAM Budget: 7238 MB
+    Driver:          32.0.15.9597
+Begin MonoManager ReloadAssembly

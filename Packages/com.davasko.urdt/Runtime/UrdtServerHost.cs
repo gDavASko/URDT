@@ -85,6 +85,9 @@ namespace KBP.URDT
         private bool _previousRunInBackground;
         private bool _running;
 
+        /// <summary>Gets the globally accessible active host instance.</summary>
+        public static UrdtServerHost Instance { get; private set; }
+
         /// <summary>Gets the active runtime facade.</summary>
         public UrdtRuntime Runtime
         {
@@ -243,6 +246,11 @@ namespace KBP.URDT
             }
         }
 
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         private void OnDisable()
         {
             StopServer();
@@ -250,6 +258,10 @@ namespace KBP.URDT
 
         private void OnDestroy()
         {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
             StopServer();
         }
 
@@ -852,7 +864,8 @@ namespace KBP.URDT
             }
         }
 
-        private void ScanActiveScene()
+        /// <summary>Performs a full scan of the active scene using registered selector rules.</summary>
+        public void ScanActiveScene()
         {
             if (_registry == null)
             {
@@ -864,6 +877,17 @@ namespace KBP.URDT
             {
                 _registry.ScanScene(scene);
             }
+        }
+
+        /// <summary>Registers an entire transform subtree incrementally.</summary>
+        public void RegisterHierarchy(Transform root)
+        {
+            if (_registry == null || root == null)
+            {
+                return;
+            }
+
+            _registry.RegisterHierarchy(root, RegistrationSource.Incremental);
         }
 
         private void ConfigureVisualizer()

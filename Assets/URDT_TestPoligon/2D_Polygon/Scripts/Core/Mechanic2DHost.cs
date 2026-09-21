@@ -340,6 +340,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             _activeInstance.OnProgressChanged += HandleMechanicProgress;
             _activeInstance.Initialize();
 
+            KBP.URDT.UrdtServerHost.Instance?.RegisterHierarchy(_activeInstance.transform);
+
             UpdateHeaderUI();
             DisableNonButtonRaycasts();
         }
@@ -775,6 +777,12 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             btn.colors = cb;
 
             btn.onClick.AddListener(() => LaunchSingleMechanic(index));
+
+            if (!btnObj.TryGetComponent(out KBP.URDT.Inspect.UrdtUiButtonTarget cardBtnTarget))
+            {
+                cardBtnTarget = btnObj.AddComponent<KBP.URDT.Inspect.UrdtUiButtonTarget>();
+            }
+            cardBtnTarget.TargetId = $"btn_launch_m{index + 1:D2}";
         }
         #endregion
 
@@ -1424,7 +1432,27 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
                 _statusBadgeBg.raycastTarget = true;
             }
 
+            EnsureButtonTarget(_btnPlayMainMenu, "btn_2d_play_main_menu");
+            EnsureButtonTarget(_btnPlayCatalog, "btn_2d_play_catalog");
+            EnsureButtonTarget(_btnCatalogBack, "btn_2d_catalog_main_menu");
+            EnsureButtonTarget(_btnRunSequential, "btn_2d_run_sequential");
+            EnsureButtonTarget(_btnPrev, "btn_2d_prev");
+            EnsureButtonTarget(_btnNext, "btn_2d_next");
+            EnsureButtonTarget(_btnReset, "btn_2d_reset");
+
+            KBP.URDT.UrdtServerHost.Instance?.RegisterHierarchy(transform);
+
             DisableNonButtonRaycasts();
+        }
+
+        private void EnsureButtonTarget(Button btn, string targetId)
+        {
+            if (btn == null) return;
+            if (!btn.TryGetComponent(out KBP.URDT.Inspect.UrdtUiButtonTarget target))
+            {
+                target = btn.gameObject.AddComponent<KBP.URDT.Inspect.UrdtUiButtonTarget>();
+            }
+            target.TargetId = targetId;
         }
 
         private static Sprite _cachedProceduralNavSprite = null;

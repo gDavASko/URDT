@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using KBP.URDT.Driver;
@@ -302,8 +302,12 @@ namespace KBP.URDT.Registry
             ScanScene(scene);
         }
 
-        private void RegisterHierarchy(Transform root, RegistrationSource source)
+        public void RegisterHierarchy(Transform root, RegistrationSource source = RegistrationSource.Incremental)
         {
+            if (root == null)
+            {
+                return;
+            }
             Register(root.gameObject, source);
 
             int childCount = root.childCount;

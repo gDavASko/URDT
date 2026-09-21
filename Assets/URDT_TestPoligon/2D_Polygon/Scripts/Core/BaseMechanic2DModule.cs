@@ -37,6 +37,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         {
             _isCompleted = false;
             _progressNormalized = 0f;
+            Urdt2DBeaconUtility.InstrumentHierarchy(this);
             OnProgressChanged?.Invoke(this, 0f);
         }
 
@@ -48,6 +49,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         protected void SetProgress(float normalized)
         {
             _progressNormalized = Mathf.Clamp01(normalized);
+            Urdt2DBeaconUtility.SyncModuleState(this);
             OnProgressChanged?.Invoke(this, _progressNormalized);
         }
 
@@ -60,6 +62,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         {
             if (max <= 0f) max = 1f;
             _progressNormalized = Mathf.Clamp01(current / max);
+            Urdt2DBeaconUtility.SyncModuleState(this);
             OnProgressChanged?.Invoke(this, _progressNormalized);
 
             if (_progressNormalized >= 1f && !_isCompleted)
@@ -73,6 +76,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             if (_isCompleted) return;
             _isCompleted = true;
             _progressNormalized = 1f;
+            Urdt2DBeaconUtility.SyncModuleState(this);
             OnProgressChanged?.Invoke(this, 1f);
             OnCompleted?.Invoke(this);
             Debug.Log($"<color=#00FF99>[2D Polygon] Механика '{MechanicId} - {Title}' УСПЕШНО ЗАВЕРШЕНА!</color>");

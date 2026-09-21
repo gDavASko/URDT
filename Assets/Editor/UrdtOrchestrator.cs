@@ -16,22 +16,24 @@ namespace UrdtSetup
     public static class UrdtOrchestrator
     {
         private const string ScenePath = "Assets/URDT_TestPoligon/Scenes/URDT_TestPoligon_UI.unity";
+        private const string PlayTriggerPath = "Temp/UrdtPlay.trigger";
         private static int _settleFrames;
 
         static UrdtOrchestrator()
         {
-            if (Environment.GetEnvironmentVariable("URDT_AUTOPLAY") != "1")
-            {
-                return;
-            }
-
             _settleFrames = 0;
             EditorApplication.update += Tick;
         }
 
         private static void Tick()
         {
-            // Keep-alive diagnostic mode: while URDT_AUTOPLAY=1, re-enter Play Mode whenever the
+            bool shouldPlay = Environment.GetEnvironmentVariable("URDT_AUTOPLAY") == "1" || System.IO.File.Exists(PlayTriggerPath);
+            if (!shouldPlay)
+            {
+                return;
+            }
+
+            // Keep-alive diagnostic mode: while URDT_AUTOPLAY=1 or trigger exists, re-enter Play Mode whenever the
             // editor drops back to Edit Mode, so an external probe always has a live :7777 server.
             if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isPlaying)
             {

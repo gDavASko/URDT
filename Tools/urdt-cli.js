@@ -234,6 +234,59 @@ async function handleCommand(client, command, positional, flags) {
             break;
         }
 
+        case 'hit_test': {
+            const testId = positional[0];
+            const payload = testId ? (testId.includes(',') ? { x: Number(testId.split(',')[0]), y: Number(testId.split(',')[1]) } : { testId }) : {};
+            const res = await client.call('hit_test', payload);
+            console.log(`🎯 [HIT_TEST] Result:`, JSON.stringify(res.data, null, 2));
+            break;
+        }
+
+        case 'call': {
+            const action = positional[0];
+            if (!action) throw new Error('Usage: call <action> [jsonPayload]');
+            const raw = positional.slice(1).join(' ') || '{}';
+            const payload = JSON.parse(raw);
+            const res = await client.call(action, payload);
+            console.log(JSON.stringify(res, null, 2));
+            break;
+        }
+
+        case 'drag': {
+            const fromRaw = positional[0];
+            const toRaw = positional[1];
+            const steps = flags.steps ? Number(flags.steps) : 10;
+            const pointerId = flags.pointerId !== undefined ? Number(flags.pointerId) : 0;
+            const parsePoint = (pt) => {
+                if (!pt) throw new Error('Invalid point: ' + pt);
+                if (pt.includes(',')) {
+                    const [x, y] = pt.split(',').map(Number);
+                    return { x, y };
+                }
+                return { testId: pt };
+            };
+            const payload = {
+                from: parsePoint(fromRaw),
+                to: parsePoint(toRaw),
+                steps,
+                pointerId
+            };
+            const res = await client.call('drag', payload);
+            console.log(`↔️ [DRAG] status=${res.status}`, res.data || res.error);
+            break;
+        }
+
+        case 'press_move': {
+            const steps = flags.steps ? Number(flags.steps) : 10;
+            const pointerId = flags.pointerId !== undefined ? Number(flags.pointerId) : 0;
+            const pathJson = positional.join(' ');
+            const path = JSON.parse(pathJson);
+            const payload = { path, steps, pointerId };
+            const res = await client.call('press_move', payload);
+            console.log(`〰️ [PRESS_MOVE] status=${res.status}`, res.data || res.error);
+            break;
+        }
+
         default:
             throw new Error(`Unknown command: "${command}"`);
     }

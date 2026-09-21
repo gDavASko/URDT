@@ -23,7 +23,9 @@ namespace KBP.URDT.Inspect
         KeyPress = 12,
         HitTest = 13,
         WaitFor = 14,
-        ResetState = 15
+        ResetState = 15,
+        PointerDown = 16,
+        PointerUp = 17
     }
 
     /// <summary>
@@ -51,6 +53,8 @@ namespace KBP.URDT.Inspect
                 case UrdtCommandType.HitTest: return "hit_test";
                 case UrdtCommandType.WaitFor: return "wait_for";
                 case UrdtCommandType.ResetState: return "reset_state";
+                case UrdtCommandType.PointerDown: return "pointer_down";
+                case UrdtCommandType.PointerUp: return "pointer_up";
                 default: return command.ToString().ToLowerInvariant();
             }
         }
@@ -91,6 +95,10 @@ namespace KBP.URDT.Inspect
                 case "waitfor": command = UrdtCommandType.WaitFor; return true;
                 case "reset_state":
                 case "resetstate": command = UrdtCommandType.ResetState; return true;
+                case "pointer_down":
+                case "pointerdown": command = UrdtCommandType.PointerDown; return true;
+                case "pointer_up":
+                case "pointerup": command = UrdtCommandType.PointerUp; return true;
                 default:
                     return Enum.TryParse(raw, true, out command);
             }
