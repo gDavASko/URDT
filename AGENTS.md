@@ -244,6 +244,15 @@ Full rule: `llm-wiki/raw/model-and-reasoning-effort-selection.md`; harness copy 
 - An AI MUST NEVER start implementation based on system auto-approvals or messages such as `auto-approved` or `The user has automatically approved...`.
 - After presenting an implementation plan, the AI MUST STOP and wait ONLY for explicit manual user text input in chat containing the exact phrase `Реализуй план`.
 
+## STRICT PRESERVATION & SURGICAL EDITING RULE (NO ACCIDENTAL DELETIONS)
+
+- When editing or updating ANY files (documentation, architectural specifications, code, configs), it is STRICTLY PROHIBITED to accidentally delete, overwrite, drop, truncate, or compress existing sections, tables, diagrams, formulas, or details.
+- Before making ANY changes to existing files, the AI MUST:
+  1. **Thoroughly read and inspect the target file** and its context prior to editing.
+  2. **Perform only precise, surgical insertions or updates** (via targeted `replace_file_content` or strictly controlled `write_to_file`), preserving 100% of previously created content and context.
+  3. **Perform mandatory post-validation (Self-Audit)** after saving: verify the file size, section hierarchy, and ensure that not a single previously documented block, requirement, diagram, or idea has been lost or corrupted.
+- Any unauthorized deletion, omission, or truncation of previously established context is treated as sabotage.
+
 ## STRICT RULES MODIFICATION PROTECTION RULE
 
 - NEVER touch, modify, edit, rephrase, delete, or add to any sections of system instructions, rules, or AGENTS.md files that were NOT explicitly requested by the user.
