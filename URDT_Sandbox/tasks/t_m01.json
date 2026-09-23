@@ -1,0 +1,3 @@
+{ "taskId": "t_m01_nogdd", "goal": "Complete the snap-to-slot puzzle", "target": { "scope": "M01_SnapToSlot" },
+  "success": { "all": [ { "beacon": "@scope", "path": "IsCompleted", "op": "==", "value": true } ] },
+  "autonomy": "full", "budget": { "timeMs": 120000, "actions": 150 } }

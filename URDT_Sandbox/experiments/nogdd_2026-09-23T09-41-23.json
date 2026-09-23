@@ -1,0 +1,14 @@
+[
+  {
+    "module": "M15_TimingInterceptor",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 48,
+    "seconds": 87.9,
+    "learned": [
+      "primitive tap is effective here",
+      "recognized skill timing_intercept: moving ball, intercept line, one action button"
+    ],
+    "findings": []
+  }
+]

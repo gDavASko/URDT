@@ -1,0 +1,30 @@
+[
+  {
+    "module": "M10_TimedAccumulator",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 4,
+    "seconds": 26.9,
+    "learned": [
+      "primitive hold is effective here"
+    ],
+    "findings": [
+      "CONSOLE_ERROR: GameObject has multiple AudioSources and/or AudioListeners attached. While built-in filters like lowpass are instantiated separately, components implementing OnAudioFilterRead may only be used by either one AudioSource or AudioListener at a time.\nThe reason for this is that any state information used by the callback exists only once in the component, and the source or listener calling it cannot be inferred from the callback.\nIn this case the OnAudioFilterRead callback of script UrdtAudioTap was first attached to a component of type AudioSource on the game object World2DSuiteWindow after which a component of type AudioListener tried to attach it."
+    ]
+  },
+  {
+    "module": "M27_PhysicsCarHills",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 92,
+    "seconds": 150.9,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive hold is effective here",
+      "primitive rotate is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M27_PhysicsCarHills\" not reached within budget"
+    ]
+  }
+]

@@ -1,0 +1,393 @@
+[
+  {
+    "module": "M01_SnapToSlot",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 3,
+    "seconds": 5.6,
+    "learned": [
+      "match rule: item.game.ItemId == receptacle.game.SlotId (from Item_Triangle → Slot_Triangle)",
+      "match rule: item.game.ItemId == receptacle.id:suffix (from Item_Triangle → Slot_Triangle)",
+      "match rule: item.game.ItemId == receptacle.id:tokens (from Item_Triangle → Slot_Triangle)",
+      "match rule: item.id:suffix == receptacle.game.SlotId (from Item_Triangle → Slot_Triangle)"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M02_ContainerSorting",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 8,
+    "seconds": 14.2,
+    "learned": [
+      "match rule: item.game.ItemTypeId == receptacle.game.AcceptedTypeId (from Item_Berry_2 → Bucket_Blue)",
+      "match rule: item.game.ItemTypeId == receptacle.id:suffix (from Item_Berry_2 → Bucket_Blue)",
+      "match rule: item.id:suffix == receptacle.game.RequiredCount (from Item_Berry_2 → Bucket_Blue)",
+      "primitive drag is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M03_WeightComparator",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 41,
+    "seconds": 74.3,
+    "learned": [
+      "primitive drag is effective here",
+      "recognized skill balance_scale: weights with mass and a reference pan"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M04_MultiLayerAttachment",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 5,
+    "seconds": 7.4,
+    "learned": [
+      "match rule: item.game.Stage == receptacle.game.Stage (from Part_Core → Socket_Core)",
+      "match rule: item.game.Stage == receptacle.game.LayerIndex (from Part_Core → Socket_Core)",
+      "match rule: item.game.LayerIndex == receptacle.game.Stage (from Part_Core → Socket_Core)",
+      "match rule: item.game.LayerIndex == receptacle.game.LayerIndex (from Part_Core → Socket_Core)"
+    ],
+    "findings": [
+      "UNGUARDED_SHORTCUT: a junk/defective item was accepted and rewarded: drag Part_Junk1 → Part_Core"
+    ]
+  },
+  {
+    "module": "M05_TimelineSequencer",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 89,
+    "seconds": 150.9,
+    "learned": [],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M05_TimelineSequencer\" not reached within budget"
+    ]
+  },
+  {
+    "module": "M06_NodePairing",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 3,
+    "seconds": 6.5,
+    "learned": [
+      "match rule: item.game.PairId == receptacle.game.PairId (from Pin_Tgt_A → Pin_Src_A)",
+      "match rule: item.game.PairId == receptacle.id:suffix (from Pin_Tgt_A → Pin_Src_A)",
+      "match rule: item.id:suffix == receptacle.game.PairId (from Pin_Tgt_A → Pin_Src_A)",
+      "match rule: item.id:suffix == receptacle.id:suffix (from Pin_Tgt_A → Pin_Src_A)"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M07_WobbleAndSnap",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 16,
+    "seconds": 54.6,
+    "learned": [
+      "primitive drag is effective here",
+      "recognized skill wobble_extract: fatigue-based extraction with an attachable tool"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M08_WaypointTracking",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 7,
+    "seconds": 8.1,
+    "learned": [
+      "primitive trace is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M09_CoverageAccumulator",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 39,
+    "seconds": 43,
+    "learned": [
+      "primitive drag is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M10_TimedAccumulator",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 5,
+    "seconds": 16,
+    "learned": [
+      "primitive hold is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M11_ConeEmitter",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 7,
+    "seconds": 15.2,
+    "learned": [
+      "primitive dwell_drag is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M12_AngularDeltaTracker",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 4,
+    "seconds": 4.9,
+    "learned": [
+      "primitive rotate is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M13_LaneSwitcherRunner",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 74,
+    "seconds": 50.5,
+    "learned": [
+      "primitive hold is effective here",
+      "primitive tap is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M14_SlingshotImpulser",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 23,
+    "seconds": 100.1,
+    "learned": [
+      "recognized skill slingshot: projectile + anchor + hittable targets"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M15_TimingInterceptor",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 25,
+    "seconds": 71.2,
+    "learned": [
+      "primitive hold is effective here",
+      "recognized skill timing_intercept: moving ball, intercept line, one action button"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M16_RhythmPhaseDetector",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 49,
+    "seconds": 16.3,
+    "learned": [
+      "primitive tap is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M17_TugOfWarBalance",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 86,
+    "seconds": 153.6,
+    "learned": [
+      "primitive hold is effective here",
+      "primitive tap is effective here",
+      "primitive mash is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M17_TugOfWarBalance\" not reached within budget"
+    ]
+  },
+  {
+    "module": "M18_GraphFlowClosure",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 38,
+    "seconds": 82.5,
+    "learned": [
+      "primitive tap is effective here",
+      "recognized skill pipe_puzzle: tiles exposing water flow"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M19_FloodFillColoring",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 39,
+    "seconds": 73.2,
+    "learned": [
+      "primitive tap is effective here",
+      "recognized skill paint_learned_palette: segments with a reference colour id"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M20_VerticalStacking",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 26,
+    "seconds": 62.7,
+    "learned": [
+      "primitive mash is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M21_ReactionProbe",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 23,
+    "seconds": 56.1,
+    "learned": [
+      "primitive hold is effective here",
+      "recognized skill reaction_strike: bobber that dips on a bite + strike button"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M22_GridPathfinding",
+    "status": "success",
+    "solvedBy": "skill (recognized)",
+    "actions": 91,
+    "seconds": 71.3,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive hold is effective here",
+      "recognized skill grid_path: grid of cells Walkable/ObstacleWall/Goal/GlitchTrapHazard"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M23_StencilReveal",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 39,
+    "seconds": 37.5,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive rotate is effective here",
+      "primitive hold is effective here",
+      "primitive dwell_drag is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M24_TargetElimination",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 17,
+    "seconds": 14.9,
+    "learned": [
+      "primitive tap is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M25_LaneSwitcherTapHalves",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 27,
+    "seconds": 22.4,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive hold is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M26_LaneSwitcherDirectDrag",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 30,
+    "seconds": 22.5,
+    "learned": [
+      "primitive hold is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M27_PhysicsCarHills",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 57,
+    "seconds": 150.3,
+    "learned": [
+      "primitive hold is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M27_PhysicsCarHills\" not reached within budget"
+    ]
+  },
+  {
+    "module": "M28_DualBridgeRoute",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 123,
+    "seconds": 150.3,
+    "learned": [
+      "primitive drag is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M28_DualBridgeRoute\" not reached within budget"
+    ]
+  },
+  {
+    "module": "M29_ContourCutting",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 27,
+    "seconds": 18.4,
+    "learned": [
+      "primitive trace is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M30_CharacterDressUp",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 4,
+    "seconds": 5,
+    "learned": [
+      "match rule: item.game.SlotType == receptacle.id:suffix (from Item_Feet → Slot_Feet)",
+      "match rule: item.game.SlotType == receptacle.id:tokens (from Item_Feet → Slot_Feet)",
+      "match rule: item.id:suffix == receptacle.id:suffix (from Item_Feet → Slot_Feet)",
+      "match rule: item.id:suffix == receptacle.id:tokens (from Item_Feet → Slot_Feet)"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M31_LiquidFilling",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 29,
+    "seconds": 39.1,
+    "learned": [
+      "primitive trace is effective here",
+      "primitive hold is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M32_AirplaneStarGlider",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 20,
+    "seconds": 18.4,
+    "learned": [
+      "primitive hold is effective here"
+    ],
+    "findings": []
+  }
+]

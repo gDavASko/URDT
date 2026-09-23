@@ -1,0 +1,3 @@
+{ "taskId": "t_m05_vision", "goal": "Complete mechanic M05_TimelineSequencer", "target": { "scope": "M05_TimelineSequencer" },
+  "success": { "all": [ { "beacon": "@scope", "path": "IsCompleted", "op": "==", "value": true } ] },
+  "autonomy": "full", "budget": { "timeMs": 150000, "actions": 200 } }

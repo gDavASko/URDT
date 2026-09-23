@@ -1,0 +1,6 @@
+{ "taskId": "expB_m02_regression", "goal": "Verify container sorting after my change: red items go to the red bucket, blue to blue, the stone is junk and must be rejected",
+  "context": { "module": "M02_ContainerSorting", "changedFiles": ["Assets/URDT_TestPoligon/2D_Polygon/Scripts/Mechanics/M02_ContainerSorting/SortContainer.cs"], "designNotes": "each bucket accepts only its own colour; junk is never accepted" },
+  "target": { "scope": "M02_ContainerSorting" },
+  "success": { "all": [ { "beacon": "@scope", "path": "IsCompleted", "op": "==", "value": true } ] },
+  "forbid": [ { "beacon": "Item_Stone_Junk", "path": "game.IsDeposited", "op": "==", "value": true, "text": "junk stone deposited" } ],
+  "autonomy": "full", "audit": true, "budget": { "timeMs": 120000, "actions": 150 } }

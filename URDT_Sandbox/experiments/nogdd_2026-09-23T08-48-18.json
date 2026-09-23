@@ -1,0 +1,55 @@
+[
+  {
+    "module": "M05_TimelineSequencer",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 1,
+    "seconds": 17.9,
+    "learned": [
+      "primitive plan is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M17_TugOfWarBalance",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 108,
+    "seconds": 150.6,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive hold is effective here",
+      "primitive mash is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M17_TugOfWarBalance\" not reached within budget"
+    ]
+  },
+  {
+    "module": "M27_PhysicsCarHills",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 181,
+    "seconds": 150.7,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive hold is effective here",
+      "primitive rotate is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M27_PhysicsCarHills\" not reached within budget"
+    ]
+  },
+  {
+    "module": "M28_DualBridgeRoute",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 8,
+    "seconds": 17.9,
+    "learned": [
+      "primitive plan is effective here",
+      "primitive tap is effective here"
+    ],
+    "findings": []
+  }
+]

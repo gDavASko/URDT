@@ -1,0 +1,28 @@
+[
+  {
+    "module": "M17_TugOfWarBalance",
+    "status": "success",
+    "solvedBy": "explorer",
+    "actions": 2,
+    "seconds": 22.9,
+    "learned": [
+      "primitive mash is effective here"
+    ],
+    "findings": []
+  },
+  {
+    "module": "M27_PhysicsCarHills",
+    "status": "fail",
+    "solvedBy": "-",
+    "actions": 72,
+    "seconds": 151.3,
+    "learned": [
+      "primitive tap is effective here",
+      "primitive hold is effective here",
+      "primitive rotate is effective here"
+    ],
+    "findings": [
+      "GOAL_NOT_REACHED: goal \"Complete mechanic M27_PhysicsCarHills\" not reached within budget"
+    ]
+  }
+]
