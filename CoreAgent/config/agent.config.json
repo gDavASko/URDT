@@ -43,7 +43,61 @@
     "bufferSize": 25,
     "fps": 5,
     "sampleIntervalMs": 200,
-    "resolution": { "width": 480, "height": 270 },
+    "resolution": {
+      "width": 480,
+      "height": 270
+    },
     "jpegQuality": 60
+  },
+  "vision": {
+    "enabled": true,
+    "active": "qwen3vl-4b",
+    "backend": "cuda",
+    "servers": {
+      "cuda": "E:/Projects/URDT/CoreAgent/tools/llama.cpp-cuda/llama-server.exe",
+      "vulkan": "E:/Projects/URDT/CoreAgent/tools/llama.cpp/llama-server.exe"
+    },
+    "models": {
+      "qwen3vl-4b": {
+        "model": "E:/Projects/URDT/CoreAgent/models/Qwen3VL-4B-Instruct-Q4_K_M.gguf",
+        "mmproj": "E:/Projects/URDT/CoreAgent/models/mmproj-Qwen3VL-4B-Instruct-Q8_0.gguf"
+      },
+      "qwen3vl-2b": {
+        "model": "E:/Projects/URDT/CoreAgent/models/Qwen3VL-2B-Instruct-Q4_K_M.gguf",
+        "mmproj": "E:/Projects/URDT/CoreAgent/models/mmproj-Qwen3VL-2B-Instruct-Q8_0.gguf"
+      }
+    },
+    "port": 8091,
+    "gpuLayers": 99,
+    "contextSize": 8192,
+    "timeoutMs": 60000,
+    "usage": "briefing and on stagnation only; never in the control loop",
+    "imageMaxTokens": 512,
+    "ubatch": 1024,
+    "maxOutputTokens": 600
+  },
+  "hearing": {
+    "enabled": true,
+    "active": "qwen3-asr-1.7b",
+    "backend": "cuda",
+    "servers": {
+      "cuda": "E:/Projects/URDT/CoreAgent/tools/llama.cpp-cuda/llama-server.exe",
+      "vulkan": "E:/Projects/URDT/CoreAgent/tools/llama.cpp/llama-server.exe"
+    },
+    "models": {
+      "qwen3-asr-1.7b": {
+        "model": "E:/Projects/URDT/CoreAgent/models/Qwen3-ASR-1.7B-Q8_0.gguf",
+        "mmproj": "E:/Projects/URDT/CoreAgent/models/mmproj-Qwen3-ASR-1.7B-Q8_0.gguf"
+      },
+      "qwen3-asr-0.6b": {
+        "model": "E:/Projects/URDT/CoreAgent/models/Qwen3-ASR-0.6B-Q8_0.gguf",
+        "mmproj": "E:/Projects/URDT/CoreAgent/models/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"
+      }
+    },
+    "vadModel": "E:/Projects/URDT/CoreAgent/models/silero_vad.onnx",
+    "port": 8092,
+    "gpuLayers": 99,
+    "timeoutMs": 30000,
+    "usage": "voice hints at briefing and on stagnation; never in the control loop"
   }
 }
