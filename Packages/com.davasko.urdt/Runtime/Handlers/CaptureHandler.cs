@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using KBP.URDT.Diagnostics;
 using KBP.URDT.Transport;
 using Newtonsoft.Json.Linq;
@@ -27,7 +27,12 @@ namespace KBP.URDT.Handlers
             bool wantScreenshot = PayloadReader.GetBool(payload, "screenshot", true);
             int logTail = PayloadReader.GetInt(payload, "log_tail", 20);
 
-            CaptureData data = _runtime.Diagnostics.Capture(wantScreenshot, logTail);
+            // ScreenCapture.CaptureScreenshotAsTexture only works at end of frame; a command handler runs
+            // mid-frame, so it always failed (and logged a console error that polluted failure evidence).
+            // Prefer the dashcam's latest end-of-frame JPEG when the dashcam is running.
+            var dashcam = global::URDT.Runtime.Inspectors.UrdtCrashDashcam.Instance;
+            string latestJpeg = wantScreenshot && dashcam != null ? dashcam.ExportLatestFrameBase64() : null;
+            CaptureData data = _runtime.Diagnostics.Capture(wantScreenshot && string.IsNullOrEmpty(latestJpeg), logTail);
 
             JArray logs = new JArray();
             for (int i = 0; i < data.Logs.Length; i++)
@@ -47,9 +52,19 @@ namespace KBP.URDT.Handlers
                 ["logs"] = logs
             };
 
-            if (data.HasScreenshot)
+            if (!string.IsNullOrEmpty(latestJpeg))
+            {
+                result["screenshot_jpeg_datauri"] = latestJpeg;
+            }
+            else if (data.HasScreenshot)
             {
                 result["screenshot_b64"] = Convert.ToBase64String(data.ScreenshotPng);
+            }
+
+            // Failure-evidence dashcam: the last ~5 s of low-res JPEG frames kept in RAM (oldest first).
+            if (PayloadReader.GetBool(payload, "dashcam", false) && dashcam != null)
+            {
+                result["dashcam_jpeg_b64"] = new JArray(dashcam.ExportBase64Frames());
             }
 
             return Response.Success(command.Id, result);

@@ -22,6 +22,7 @@ namespace KBP.URDT.Handlers
             router.Register(ProtocolConstants.ACTION_CLICK, new ClickHandler(runtime));
             router.Register(ProtocolConstants.ACTION_DOUBLE_CLICK, new DoubleClickHandler(runtime));
             router.Register(ProtocolConstants.ACTION_DRAG, new DragHandler(runtime));
+            router.Register(ProtocolConstants.ACTION_INPUT_STATUS, new InputStatusHandler(runtime));
             router.Register(ProtocolConstants.ACTION_PRESS_MOVE, new PressMoveHandler(runtime));
             router.Register(ProtocolConstants.ACTION_SWIPE, new SwipeHandler(runtime));
             router.Register(ProtocolConstants.ACTION_SCROLL, new ScrollHandler(runtime));

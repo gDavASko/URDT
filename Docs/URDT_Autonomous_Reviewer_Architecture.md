@@ -1,4 +1,4 @@
-# Архитектура автономного ИИ-ревьюера проектов Unity на базе URDT
+﻿# Архитектура автономного ИИ-ревьюера проектов Unity на базе URDT
 *(Autonomous URDT QA Reviewer Architecture)*
 
 ---

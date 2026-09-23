@@ -53,3 +53,5 @@ sysinfo.txt
 /test-results.xml
 /CodeCoverage/
 node_modules/
+/.npm_cache/
+/CoreAgent/tmp/

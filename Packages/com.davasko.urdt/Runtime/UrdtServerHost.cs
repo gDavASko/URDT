@@ -233,6 +233,7 @@ namespace KBP.URDT
             }
 
             Interlocked.Exchange(ref _lastMainThreadTickUtcTicks, DateTime.UtcNow.Ticks);
+            KBP.URDT.Registry.UrdtBeaconDiscovery.Drain(_registry);
             CacheUnityState();
             PumpTransportLogs();
             PumpVisualizerCommandsSafely();
@@ -573,6 +574,22 @@ namespace KBP.URDT
                 return response;
             }
 
+            if (IsRealtimePaced(command))
+            {
+                // Realtime gestures are pumped one pointer state per Update, so the game observes them over
+                // real frames (velocities, dwell and hold timers behave as for a human). Compressing a whole
+                // drag into one synchronous transaction would make every gesture instantaneous in game time.
+                JObject paced = response.Data as JObject;
+                if (paced != null)
+                {
+                    paced["pumped_frames"] = 0;
+                    paced["input_transaction"] = "frame_paced";
+                    paced["frame_ms"] = Mathf.Round(Time.smoothDeltaTime * 100000f) / 100f;
+                }
+
+                return response;
+            }
+
             try
             {
                 int pumpedFrames = PumpInputTransaction(queuedFrames);
@@ -672,6 +689,15 @@ namespace KBP.URDT
             }
 
             return pumpedFrames;
+        }
+
+        private static bool IsRealtimePaced(Command command)
+        {
+            JObject payload = command != null ? command.Payload as JObject : null;
+            JToken pacing = payload != null ? payload["pacing"] : null;
+            return pacing != null
+                && pacing.Type == JTokenType.String
+                && string.Equals((string)pacing, ProtocolConstants.PACING_REALTIME, StringComparison.Ordinal);
         }
 
         private static bool TryGetQueuedFrameCount(Response response, out int queuedFrames)

@@ -1,0 +1,9954 @@
+{
+ "M01_SnapToSlot": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M01_SnapToSlot",
+    "Title": "Механика #1: Drag & Drop Snap-to-Slot",
+    "Instruction": "Перетащите подходящие геометрические детали в соответствующие пазы. Остерегайтесь бракованной детали (знак X)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Перетащите подходящие геометрические детали в соответствующие пазы. Остерегайтесь бракованной детали (знак X)!"
+  },
+  "parts": [
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     720,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1200,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     720,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Item_Junk_Defective",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     645,
+     375
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "ItemId": "junk",
+     "IsJunk": true,
+     "IsLocked": false
+    }
+   },
+   {
+    "id": "Item_Triangle",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1065,
+     375
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "ItemId": "triangle",
+     "IsJunk": false,
+     "IsLocked": false
+    }
+   },
+   {
+    "id": "Item_Square",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     855,
+     375
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "ItemId": "square",
+     "IsJunk": false,
+     "IsLocked": false
+    }
+   },
+   {
+    "id": "Item_Circle",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1275,
+     375
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "ItemId": "circle",
+     "IsJunk": false,
+     "IsLocked": false
+    }
+   },
+   {
+    "id": "ItemsSpawnTray",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     375
+    ],
+    "r": [
+     930,
+     128
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Obstacle_Barrier",
+    "kind": "area",
+    "role": "obstacleBarrier",
+    "c": [
+     960,
+     473
+    ],
+    "r": [
+     930,
+     18
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     720,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "text": "Треугольник",
+    "game": {}
+   },
+   {
+    "id": "Slot_Triangle",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     720,
+     563
+    ],
+    "r": [
+     158,
+     158
+    ],
+    "vis": true,
+    "game": {
+     "SlotId": "triangle",
+     "IsOccupied": false
+    }
+   },
+   {
+    "id": "Label_1",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1200,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "text": "Квадрат",
+    "game": {}
+   },
+   {
+    "id": "Slot_Square",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1200,
+     563
+    ],
+    "r": [
+     158,
+     158
+    ],
+    "vis": true,
+    "game": {
+     "SlotId": "square",
+     "IsOccupied": false
+    }
+   },
+   {
+    "id": "Label",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     458
+    ],
+    "r": [
+     368,
+     33
+    ],
+    "vis": true,
+    "text": "Круг",
+    "game": {}
+   },
+   {
+    "id": "Slot_Circle",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     563
+    ],
+    "r": [
+     158,
+     158
+    ],
+    "vis": true,
+    "game": {
+     "SlotId": "circle",
+     "IsOccupied": false
+    }
+   },
+   {
+    "id": "SlotsTargetArea",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     563
+    ],
+    "r": [
+     840,
+     158
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Перетащите подходящие детали в пазы. Заполнено: 0 / 3",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M02_ContainerSorting": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M02_ContainerSorting",
+    "Title": "Механика #2: Сортировка по контейнерам (Bucket Sorting)",
+    "Instruction": "Разложите красные яблоки и синие ягоды в соответствующие корзины. Камень (X) не помещайте!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Разложите красные яблоки и синие ягоды в соответствующие корзины. Камень (X) не помещайте!"
+  },
+  "parts": [
+   {
+    "id": "Label_1",
+    "kind": "text",
+    "role": "",
+    "c": [
+     735,
+     455
+    ],
+    "r": [
+     435,
+     33
+    ],
+    "vis": true,
+    "text": "0/2",
+    "game": {}
+   },
+   {
+    "id": "ContainersArea",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     570
+    ],
+    "r": [
+     900,
+     188
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Bucket_Blue",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     735,
+     570
+    ],
+    "r": [
+     195,
+     180
+    ],
+    "vis": true,
+    "game": {
+     "AcceptedTypeId": "blue",
+     "RequiredCount": 2,
+     "CurrentCount": 0,
+     "IsFull": false
+    }
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Item_Berry_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     353
+    ],
+    "r": [
+     143,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "ItemTypeId": "blue",
+     "IsJunk": false,
+     "IsDeposited": false
+    }
+   },
+   {
+    "id": "Item_Berry_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1125,
+     353
+    ],
+    "r": [
+     143,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "ItemTypeId": "blue",
+     "IsJunk": false,
+     "IsDeposited": false
+    }
+   },
+   {
+    "id": "Item_Stone_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     795,
+     353
+    ],
+    "r": [
+     143,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "ItemTypeId": "stone",
+     "IsJunk": true,
+     "IsDeposited": false
+    }
+   },
+   {
+    "id": "Obstacle_Barrier",
+    "kind": "area",
+    "role": "obstacleBarrier",
+    "c": [
+     960,
+     468
+    ],
+    "r": [
+     960,
+     18
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Item_Apple_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1290,
+     353
+    ],
+    "r": [
+     143,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "ItemTypeId": "red",
+     "IsJunk": false,
+     "IsDeposited": false
+    }
+   },
+   {
+    "id": "Bucket_Red",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1185,
+     570
+    ],
+    "r": [
+     195,
+     180
+    ],
+    "vis": true,
+    "game": {
+     "AcceptedTypeId": "red",
+     "RequiredCount": 2,
+     "CurrentCount": 0,
+     "IsFull": false
+    }
+   },
+   {
+    "id": "Label",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1185,
+     455
+    ],
+    "r": [
+     435,
+     33
+    ],
+    "vis": true,
+    "text": "0/2",
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Разложите красные яблоки и синие ягоды в соответствующие корзины.",
+    "game": {}
+   },
+   {
+    "id": "Item_Apple_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     630,
+     353
+    ],
+    "r": [
+     143,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "ItemTypeId": "red",
+     "IsJunk": false,
+     "IsDeposited": false
+    }
+   }
+  ]
+ },
+ "M03_WeightComparator": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M03_WeightComparator",
+    "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+    "Instruction": "Уравновесьте весы. Наберите ровно 15 кг на правой чаше (10кг + 5кг). Избегайте гири-пустышки (X)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Уравновесьте весы. Наберите ровно 15 кг на правой чаше (10кг + 5кг). Избегайте гири-пустышки (X)!"
+  },
+  "parts": [
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Уравновесьте весы: 15 кг слева против 0 кг справа. Перетащите гири на правую чашу!",
+    "game": {}
+   },
+   {
+    "id": "LeftPan",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     757,
+     456
+    ],
+    "r": [
+     225,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "PanId": "left",
+     "BaseMass": 15,
+     "IsReferencePan": true,
+     "AcceptsDrop": false,
+     "CurrentMass": 15
+    }
+   },
+   {
+    "id": "ScaleBeam",
+    "kind": "area",
+    "role": "beamTransform",
+    "c": [
+     960,
+     585
+    ],
+    "r": [
+     553,
+     210
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     745,
+     493
+    ],
+    "r": [
+     117,
+     110
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     778,
+     394
+    ],
+    "r": [
+     411,
+     164
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "MassLabel_5",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1230,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "text": "<color=#FFAA44>0 кг</color>\n<size=11><color=#FF6666>(X)</color></size>",
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Weight_3kg",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1050,
+     368
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "Mass": 3,
+     "IsJunk": false
+    }
+   },
+   {
+    "id": "MassLabel_1",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1220,
+     538
+    ],
+    "r": [
+     411,
+     164
+    ],
+    "vis": true,
+    "text": "0 кг",
+    "game": {}
+   },
+   {
+    "id": "ItemsAnchor_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1193,
+     621
+    ],
+    "r": [
+     189,
+     189
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "MassLabel_4",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1050,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "text": "<b>3 кг</b>",
+    "game": {}
+   },
+   {
+    "id": "RightPan",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1200,
+     600
+    ],
+    "r": [
+     225,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "PanId": "right",
+     "BaseMass": 0,
+     "IsReferencePan": false,
+     "AcceptsDrop": true,
+     "CurrentMass": 0
+    }
+   },
+   {
+    "id": "ItemsAnchor",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     750,
+     477
+    ],
+    "r": [
+     189,
+     189
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label",
+    "kind": "text",
+    "role": "",
+    "c": [
+     745,
+     493
+    ],
+    "r": [
+     117,
+     110
+    ],
+    "vis": true,
+    "text": "15 кг",
+    "game": {}
+   },
+   {
+    "id": "Weight_10kg",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     690,
+     368
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "Mass": 10,
+     "IsJunk": false
+    }
+   },
+   {
+    "id": "MassLabel",
+    "kind": "text",
+    "role": "",
+    "c": [
+     778,
+     394
+    ],
+    "r": [
+     411,
+     164
+    ],
+    "vis": true,
+    "text": "<b>15 кг</b>",
+    "game": {}
+   },
+   {
+    "id": "Weight_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1230,
+     368
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "Mass": 0,
+     "IsJunk": true
+    }
+   },
+   {
+    "id": "MassLabel_3",
+    "kind": "text",
+    "role": "",
+    "c": [
+     870,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "text": "<b>5 кг</b>",
+    "game": {}
+   },
+   {
+    "id": "Weight_5kg",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     870,
+     368
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "Mass": 5,
+     "IsJunk": false
+    }
+   },
+   {
+    "id": "MassLabel_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     690,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "text": "<b>10 кг</b>",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1220,
+     538
+    ],
+    "r": [
+     411,
+     164
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     690,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     870,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1050,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#8",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1230,
+     362
+    ],
+    "r": [
+     116,
+     104
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M04_MultiLayerAttachment": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "CurrentStage": 1,
+    "CurrentInstalledLayer": 0,
+    "MechanicId": "M04_MultiLayerAttachment",
+    "Title": "Механика #4: Сборка многокомпонентной иерархии (2 Этапа)",
+    "Instruction": "Смонтируйте узлы робота: Этап 1: Ядро -> Броня. Этап 2: Шлем -> Энергоблок. Подсветка сокетов при захвате детали!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Смонтируйте узлы робота: Этап 1: Ядро -> Броня. Этап 2: Шлем -> Энергоблок. Подсветка сокетов при захвате детали!"
+  },
+  "parts": [
+   {
+    "id": "Socket_Battery",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     429
+    ],
+    "r": [
+     128,
+     113
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 2,
+     "LayerIndex": 4,
+     "RequiredPrerequisiteLayer": 3,
+     "SlotName": "Socket_Battery",
+     "IsInstalled": false
+    }
+   },
+   {
+    "id": "ChassisStation",
+    "kind": "area",
+    "role": "chassisBase",
+    "c": [
+     960,
+     549
+    ],
+    "r": [
+     255,
+     255
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1260,
+     287
+    ],
+    "r": [
+     300,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Socket_Head",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     677
+    ],
+    "r": [
+     143,
+     143
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 2,
+     "LayerIndex": 3,
+     "RequiredPrerequisiteLayer": 2,
+     "SlotName": "Socket_Head",
+     "IsInstalled": false
+    }
+   },
+   {
+    "id": "Socket_Armor",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     534
+    ],
+    "r": [
+     188,
+     188
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 1,
+     "LayerIndex": 2,
+     "RequiredPrerequisiteLayer": 1,
+     "SlotName": "Socket_Armor",
+     "IsInstalled": false
+    }
+   },
+   {
+    "id": "PartLabel_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1260,
+     287
+    ],
+    "r": [
+     300,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "<b>Этап 1/2:</b> Смонтируйте базу робота (1. Ядро -> 2. Броня). Не используйте дефектный блок (X)!",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     660,
+     283
+    ],
+    "r": [
+     308,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Part_Core",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     660,
+     368
+    ],
+    "r": [
+     128,
+     128
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 1,
+     "LayerIndex": 1,
+     "PartName": "Энергоядро",
+     "IsJunk": false,
+     "IsLocked": false
+    }
+   },
+   {
+    "id": "Socket_Core",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     534
+    ],
+    "r": [
+     135,
+     135
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 1,
+     "LayerIndex": 1,
+     "RequiredPrerequisiteLayer": 0,
+     "SlotName": "Socket_Core",
+     "IsInstalled": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1260,
+     287
+    ],
+    "r": [
+     300,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     272
+    ],
+    "r": [
+     330,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Part_Armor",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     150,
+     150
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 1,
+     "LayerIndex": 2,
+     "PartName": "Бронекорпус",
+     "IsJunk": false,
+     "IsLocked": false
+    }
+   },
+   {
+    "id": "PartLabel_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     272
+    ],
+    "r": [
+     330,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Stage1Tray",
+    "kind": "area",
+    "role": "stage1Tray",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     930,
+     128
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PartLabel",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     660,
+     283
+    ],
+    "r": [
+     308,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Part_Junk1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1260,
+     368
+    ],
+    "r": [
+     120,
+     120
+    ],
+    "vis": true,
+    "game": {
+     "Stage": 1,
+     "LayerIndex": 99,
+     "PartName": "Дефектный блок",
+     "IsJunk": true,
+     "IsLocked": false
+    }
+   }
+  ]
+ },
+ "M05_TimelineSequencer": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M05_TimelineSequencer",
+    "Title": "Механика #5: Сборка исполняемой очереди команд",
+    "Instruction": "Составьте маршрут: Вперед -> Поворот -> Вперед. Запустите программу кнопкой «ПУСК». Не ставьте фишку со сбоем (X)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Составьте маршрут: Вперед -> Поворот -> Вперед. Запустите программу кнопкой «ПУСК». Не ставьте фишку со сбоем (X)!"
+  },
+  "parts": [
+   {
+    "id": "Avatar_Bot",
+    "kind": "area",
+    "role": "avatarTransform",
+    "c": [
+     660,
+     630
+    ],
+    "r": [
+     96,
+     96
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Goal_Flag",
+    "kind": "area",
+    "role": "goalTransform",
+    "c": [
+     870,
+     525
+    ],
+    "r": [
+     96,
+     96
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1275,
+     468
+    ],
+    "r": [
+     150,
+     75
+    ],
+    "vis": true,
+    "text": "ПУСК ▶",
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Chip_Glitch_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1268,
+     368
+    ],
+    "r": [
+     143,
+     98
+    ],
+    "vis": true,
+    "game": {
+     "CommandType": "Glitch",
+     "CommandName": "Сбой [X]",
+     "IsJunk": true
+    }
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Соберите маршрут: 1. Вперед -> 2. Поворот -> 3. Вперед, затем нажмите «ПУСК».",
+    "game": {}
+   },
+   {
+    "id": "ChipsTray",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     900,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Chip_Fwd_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1065,
+     368
+    ],
+    "r": [
+     143,
+     98
+    ],
+    "vis": true,
+    "game": {
+     "CommandType": "Forward",
+     "CommandName": "Вперед ↓",
+     "IsJunk": false
+    }
+   },
+   {
+    "id": "Slot_0",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     735,
+     468
+    ],
+    "r": [
+     150,
+     105
+    ],
+    "vis": true,
+    "game": {
+     "StepIndex": 0,
+     "IsOccupied": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1275,
+     468
+    ],
+    "r": [
+     150,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Slot_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     915,
+     468
+    ],
+    "r": [
+     150,
+     105
+    ],
+    "vis": true,
+    "game": {
+     "StepIndex": 1,
+     "IsOccupied": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Button_Execute",
+    "kind": "button",
+    "role": "",
+    "c": [
+     1275,
+     468
+    ],
+    "r": [
+     150,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StepLabel_1",
+    "kind": "text",
+    "role": "",
+    "c": [
+     915,
+     540
+    ],
+    "r": [
+     300,
+     27
+    ],
+    "vis": true,
+    "text": "#2",
+    "game": {}
+   },
+   {
+    "id": "StepLabel_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1095,
+     540
+    ],
+    "r": [
+     300,
+     27
+    ],
+    "vis": true,
+    "text": "#3",
+    "game": {}
+   },
+   {
+    "id": "Slot_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1095,
+     468
+    ],
+    "r": [
+     150,
+     105
+    ],
+    "vis": true,
+    "game": {
+     "StepIndex": 2,
+     "IsOccupied": false
+    }
+   },
+   {
+    "id": "Chip_Turn",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     863,
+     368
+    ],
+    "r": [
+     143,
+     98
+    ],
+    "vis": true,
+    "game": {
+     "CommandType": "Turn",
+     "CommandName": "Поворот ↷",
+     "IsJunk": false
+    }
+   },
+   {
+    "id": "StepLabel",
+    "kind": "text",
+    "role": "",
+    "c": [
+     735,
+     540
+    ],
+    "r": [
+     300,
+     27
+    ],
+    "vis": true,
+    "text": "#1",
+    "game": {}
+   },
+   {
+    "id": "Chip_Fwd_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     660,
+     368
+    ],
+    "r": [
+     143,
+     98
+    ],
+    "vis": true,
+    "game": {
+     "CommandType": "Forward",
+     "CommandName": "Вперед →",
+     "IsJunk": false
+    }
+   }
+  ]
+ },
+ "M06_NodePairing": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M06_NodePairing",
+    "Title": "Механика #6: Соединение графовых узлов эластичной связью",
+    "Instruction": "Соедините контакты одинакового цвета. Не замыкайте дефектную клемму (X)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Соедините контакты одинакового цвета. Не замыкайте дефектную клемму (X)!"
+  },
+  "parts": [
+   {
+    "id": "Pin_Tgt_C",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1290,
+     525
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "C",
+     "IsSource": false,
+     "IsJunk": false,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "WiresContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     480
+    ],
+    "r": [
+     1836,
+     804
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Pin_Tgt_B",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1290,
+     615
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "B",
+     "IsSource": false,
+     "IsJunk": false,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "Pin_Src_B",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     630,
+     525
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "B",
+     "IsSource": true,
+     "IsJunk": false,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "Pin_Tgt_A",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1290,
+     435
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "A",
+     "IsSource": false,
+     "IsJunk": false,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "Pin_Src_A",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     630,
+     615
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "A",
+     "IsSource": true,
+     "IsJunk": false,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "Pin_Src_C",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     630,
+     435
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "C",
+     "IsSource": true,
+     "IsJunk": false,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "Pin_Src_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     630,
+     345
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "Junk",
+     "IsSource": true,
+     "IsJunk": true,
+     "IsConnected": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Протяните провода от левых клемм к парным правым. Не замыкайте клемму (X)!",
+    "game": {}
+   },
+   {
+    "id": "Pin_Tgt_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1290,
+     345
+    ],
+    "r": [
+     84,
+     84
+    ],
+    "vis": true,
+    "game": {
+     "PairId": "Junk",
+     "IsSource": false,
+     "IsJunk": true,
+     "IsConnected": false
+    }
+   }
+  ]
+ },
+ "M07_WobbleAndSnap": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M07_WobbleAndSnap",
+    "Title": "Механика #7: Преодоление сопротивления пружины (Wobble & Snap)",
+    "Instruction": "Наложите хирургические щипцы на зуб и раскачивайте его до ослабления связки, затем потяните вверх!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Наложите хирургические щипцы на зуб и раскачивайте его до ослабления связки, затем потяните вверх!"
+  },
+  "parts": [
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "GumSocket",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     428
+    ],
+    "r": [
+     255,
+     113
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     27
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1320,
+     611
+    ],
+    "r": [
+     450,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TrayLabel",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1320,
+     611
+    ],
+    "r": [
+     450,
+     30
+    ],
+    "vis": true,
+    "text": "ЛОТОК ИНСТРУМЕНТОВ",
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Возьмите щипцы со столика справа и наложите их на коронку зуба!",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1320,
+     611
+    ],
+    "r": [
+     450,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ToothItem",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     480
+    ],
+    "r": [
+     165,
+     210
+    ],
+    "vis": true,
+    "game": {
+     "Fatigue": 0,
+     "IsSnapped": false,
+     "RequiresForceps": true,
+     "IsForcepsAttached": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "FatigueBarFill",
+    "kind": "area",
+    "role": "fatigueProgressBar",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     27
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "FatigueLabel",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     27
+    ],
+    "vis": true,
+    "text": "Усталость связки: 0%",
+    "game": {}
+   },
+   {
+    "id": "DentalForceps",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1305,
+     480
+    ],
+    "r": [
+     143,
+     285
+    ],
+    "vis": true,
+    "game": {
+     "IsAttached": false
+    }
+   }
+  ]
+ },
+ "M08_WaypointTracking": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M08_WaypointTracking",
+    "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+    "Instruction": "Проведите инструмент по линии распила строго по контрольным точкам. Не заденьте гвоздь (X)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Проведите инструмент по линии распила строго по контрольным точкам. Не заденьте гвоздь (X)!"
+  },
+  "parts": [
+   {
+    "id": "Waypoint_4",
+    "kind": "area",
+    "role": "waypointMarkers",
+    "c": [
+     1260,
+     480
+    ],
+    "r": [
+     42,
+     42
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Проведите пилу через контрольные точки 1 -> 5. Избегайте сучка с гвоздем (X)!",
+    "game": {}
+   },
+   {
+    "id": "Waypoint_2",
+    "kind": "area",
+    "role": "waypointMarkers",
+    "c": [
+     960,
+     480
+    ],
+    "r": [
+     42,
+     42
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Waypoint_3",
+    "kind": "area",
+    "role": "waypointMarkers",
+    "c": [
+     1110,
+     480
+    ],
+    "r": [
+     42,
+     42
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Waypoint_1",
+    "kind": "area",
+    "role": "waypointMarkers",
+    "c": [
+     810,
+     480
+    ],
+    "r": [
+     42,
+     42
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "HazardKnot",
+    "kind": "area",
+    "role": "hazardObstacle",
+    "c": [
+     960,
+     423
+    ],
+    "r": [
+     54,
+     54
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Waypoint_0",
+    "kind": "area",
+    "role": "waypointMarkers",
+    "c": [
+     660,
+     480
+    ],
+    "r": [
+     42,
+     42
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ToolSaw",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     660,
+     495
+    ],
+    "r": [
+     113,
+     113
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M09_CoverageAccumulator": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M09_CoverageAccumulator",
+    "Title": "Механика #9: Накопление покрытия / Стирание маски (Coverage Accumulator)",
+    "Instruction": "Сотрите пятна грязи губкой. Несмываемый скол (красный X) очистить невозможно.",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Сотрите пятна грязи губкой. Несмываемый скол (красный X) очистить невозможно."
+  },
+  "parts": [
+   {
+    "id": "DirtCell_3_0",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     690,
+     353
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_2_0",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     690,
+     435
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_3_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     825,
+     353
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_2_4",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1230,
+     435
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_0_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     825,
+     600
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "DirtCell_2_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     825,
+     435
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_1_4",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1230,
+     518
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_2_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1095,
+     435
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_2_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     435
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Возьмите губку и круговыми движениями сотрите грязь (цель: 90%).",
+    "game": {}
+   },
+   {
+    "id": "DirtCell_1_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     518
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_0_0",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     690,
+     600
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_1_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1095,
+     518
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_0_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     600
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_0_4",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1230,
+     600
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_1_0",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     690,
+     518
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_1_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     825,
+     518
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_0_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1095,
+     600
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_3_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     353
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_3_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1095,
+     353
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": false
+    }
+   },
+   {
+    "id": "DirtCell_3_4",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1230,
+     353
+    ],
+    "r": [
+     113,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "IsCleaned": false,
+     "IsPermanentHazard": true
+    }
+   },
+   {
+    "id": "ToolSponge",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1305,
+     480
+    ],
+    "r": [
+     120,
+     120
+    ],
+    "vis": true,
+    "game": {
+     "BrushRadius": 40
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M10_TimedAccumulator": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M10_TimedAccumulator",
+    "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+    "Instruction": "Зажмите и удерживайте кнопку «НАКАЧКА». Отпустите в зелёном секторе (70-85%). Перекачка выше 90% приводит к взрыву!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Зажмите и удерживайте кнопку «НАКАЧКА». Отпустите в зелёном секторе (70-85%). Перекачка выше 90% приводит к взрыву!"
+  },
+  "parts": [
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "text": "Зажмите кнопку «НАКАЧКА» и отпустите в зеленой зоне (70-85%). Не перекачивайте!",
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     240,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     240,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "GaugeNeedle",
+    "kind": "area",
+    "role": "needleTransform",
+    "c": [
+     921,
+     518
+    ],
+    "r": [
+     122,
+     85
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     240,
+     66
+    ],
+    "vis": true,
+    "text": "НАКАЧКА ▶",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     1050,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ButtonPump",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     368
+    ],
+    "r": [
+     240,
+     66
+    ],
+    "vis": true,
+    "game": {
+     "IsPressed": false
+    }
+   }
+  ]
+ },
+ "M11_ConeEmitter": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M11_ConeEmitter",
+    "Title": "Механика #11: Наведение конуса воздействия с деградацией HP цели (Cone Emitter)",
+    "Instruction": "Зажмите и направляйте струю огнетушителя на очаги пожара. Не попадайте на электрощит (молния)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Зажмите и направляйте струю огнетушителя на очаги пожара. Не попадайте на электрощит (молния)!"
+  },
+  "parts": [
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Зажмите и направляйте струю на очаги огня. Остерегайтесь электрощита (молния)!",
+    "game": {}
+   },
+   {
+    "id": "FireTarget_3",
+    "kind": "area",
+    "role": "targets",
+    "c": [
+     1305,
+     608
+    ],
+    "r": [
+     90,
+     90
+    ],
+    "vis": true,
+    "game": {
+     "IsExtinguished": false,
+     "CurrentHp": 100
+    }
+   },
+   {
+    "id": "Obstacle_ElectricBox",
+    "kind": "area",
+    "role": "electricHazardBox",
+    "c": [
+     1080,
+     480
+    ],
+    "r": [
+     83,
+     83
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Nozzle",
+    "kind": "area",
+    "role": "nozzleTransform",
+    "c": [
+     675,
+     480
+    ],
+    "r": [
+     98,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "FireTarget_1",
+    "kind": "area",
+    "role": "targets",
+    "c": [
+     1200,
+     623
+    ],
+    "r": [
+     90,
+     90
+    ],
+    "vis": true,
+    "game": {
+     "IsExtinguished": false,
+     "CurrentHp": 100
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "FireTarget_2",
+    "kind": "area",
+    "role": "targets",
+    "c": [
+     1200,
+     338
+    ],
+    "r": [
+     90,
+     90
+    ],
+    "vis": true,
+    "game": {
+     "IsExtinguished": false,
+     "CurrentHp": 100
+    }
+   }
+  ]
+ },
+ "M12_AngularDeltaTracker": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M12_AngularDeltaTracker",
+    "Title": "Механика #12: Трекер углового смещения (Angular Delta Tracker)",
+    "Instruction": "Вращайте рабочий вентиль слева. Заклинивший вентиль справа [X] не вращается!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Вращайте рабочий вентиль слева. Заклинивший вентиль справа [X] не вращается!"
+  },
+  "parts": [
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Valve_Jammed_Junk",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1140,
+     480
+    ],
+    "r": [
+     225,
+     225
+    ],
+    "vis": true,
+    "game": {
+     "IsJammed": true,
+     "AccumulatedAngle": 0
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProgressBarFill",
+    "kind": "area",
+    "role": "progressFill",
+    "c": [
+     960,
+     312
+    ],
+    "r": [
+     390,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Поверните рабочий вентиль слева на 2 полных оборота (720°). Вентиль справа заклинило [X]!",
+    "game": {}
+   },
+   {
+    "id": "Valve_Active",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     780,
+     480
+    ],
+    "r": [
+     225,
+     225
+    ],
+    "vis": true,
+    "game": {
+     "IsJammed": false,
+     "AccumulatedAngle": 0
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     618
+    ],
+    "r": [
+     360,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M13_LaneSwitcherRunner": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "ControlMode": "Swipe",
+    "MechanicId": "M13_LaneSwitcherRunner",
+    "Title": "Механика #13: Сдвиг по полосам — Свайпы (Lane Switcher: Swipe)",
+    "Instruction": "Свайпайте влево или вправо по экрану для смены полосы. Соберите 5 монет и избегайте барьеров [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Свайпайте влево или вправо по экрану для смены полосы. Соберите 5 монет и избегайте барьеров [X]!"
+  },
+  "parts": [
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Barrier#5",
+    "kind": "area",
+    "role": "spawned:Barrier",
+    "c": [
+     960,
+     549
+    ],
+    "r": [
+     105,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Coin#4",
+    "kind": "area",
+    "role": "spawned:Coin",
+    "c": [
+     750,
+     549
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "text": "Собрано: 0 / 5",
+    "game": {}
+   },
+   {
+    "id": "PlayerAvatar",
+    "kind": "area",
+    "role": "playerAvatar",
+    "c": [
+     960,
+     402
+    ],
+    "r": [
+     69,
+     69
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SpawnContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     507
+    ],
+    "r": [
+     630,
+     315
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Свайпайте влево или вправо по экрану для смены полосы. Соберите 5 монет и избегайте барьеров [X]!",
+    "game": {}
+   }
+  ]
+ },
+ "M14_SlingshotImpulser": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M14_SlingshotImpulser",
+    "Title": "Механика #14: Баллистический импульс с обратным вектором (Slingshot Impulser)",
+    "Instruction": "Оттяните снаряд назад и отпустите для выстрела. Сбейте 3 банки! Остерегайтесь колонны [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Оттяните снаряд назад и отпустите для выстрела. Сбейте 3 банки! Остерегайтесь колонны [X]!"
+  },
+  "parts": [
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProjectileBall",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     690,
+     420
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SlingshotAnchor",
+    "kind": "area",
+    "role": "slingshotAnchor",
+    "c": [
+     690,
+     420
+    ],
+    "r": [
+     150,
+     150
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Оттяните снаряд назад и отпустите для выстрела. Сбейте 3 банки! Остерегайтесь колонны [X]!",
+    "game": {}
+   },
+   {
+    "id": "TargetCan_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1275,
+     465
+    ],
+    "r": [
+     68,
+     83
+    ],
+    "vis": true,
+    "game": {
+     "IsObstacle": false,
+     "IsHit": false
+    }
+   },
+   {
+    "id": "Obstacle_Pillar",
+    "kind": "area",
+    "role": "obstaclePillar",
+    "c": [
+     1005,
+     450
+    ],
+    "r": [
+     38,
+     195
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "text": "Сбито: 0 / 3",
+    "game": {}
+   },
+   {
+    "id": "TargetCan_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1215,
+     555
+    ],
+    "r": [
+     68,
+     83
+    ],
+    "vis": true,
+    "game": {
+     "IsObstacle": false,
+     "IsHit": false
+    }
+   },
+   {
+    "id": "TrajectoryDots",
+    "kind": "area",
+    "role": "trajectoryDotsContainer",
+    "c": [
+     960,
+     480
+    ],
+    "r": [
+     1836,
+     804
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TargetCan_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1215,
+     375
+    ],
+    "r": [
+     68,
+     83
+    ],
+    "vis": true,
+    "game": {
+     "IsObstacle": false,
+     "IsHit": false
+    }
+   }
+  ]
+ },
+ "M15_TimingInterceptor": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M15_TimingInterceptor",
+    "Title": "Механика #15: Перехват объекта во временном окне допуска (Timing Interceptor)",
+    "Instruction": "Нажмите «ОТРАЗИТЬ» в момент прохода мяча через зеленую линию. Не отбивайте фантомы [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Нажмите «ОТРАЗИТЬ» в момент прохода мяча через зеленую линию. Не отбивайте фантомы [X]!"
+  },
+  "parts": [
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     330
+    ],
+    "r": [
+     255,
+     63
+    ],
+    "vis": true,
+    "text": "ОТРАЗИТЬ ->",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     618
+    ],
+    "r": [
+     450,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Нажмите «ОТРАЗИТЬ» в момент прохода мяча через зеленую линию. Не отбивайте фантомы [X]!",
+    "game": {}
+   },
+   {
+    "id": "MovingBall",
+    "kind": "area",
+    "role": "ballTransform",
+    "c": [
+     822,
+     480
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "InterceptorLine",
+    "kind": "area",
+    "role": "interceptorLine",
+    "c": [
+     810,
+     480
+    ],
+    "r": [
+     53,
+     300
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StreakText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     618
+    ],
+    "r": [
+     450,
+     45
+    ],
+    "vis": true,
+    "text": "Серия перехватов: 0 / 3",
+    "game": {}
+   },
+   {
+    "id": "HitPaddle",
+    "kind": "area",
+    "role": "hitPaddle",
+    "c": [
+     810,
+     516
+    ],
+    "r": [
+     45,
+     120
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     330
+    ],
+    "r": [
+     255,
+     63
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnIntercept",
+    "kind": "button",
+    "role": "",
+    "c": [
+     960,
+     330
+    ],
+    "r": [
+     255,
+     63
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     330
+    ],
+    "r": [
+     255,
+     63
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M16_RhythmPhaseDetector": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M16_RhythmPhaseDetector",
+    "Title": "Механика #16: Синхронизация поочередных фаз движения (Rhythm Phase Detector)",
+    "Instruction": "Ритмично чередуйте: ЛЕВЫЙ -> ПРАВЫЙ рычаг (темп 0.3-1.1с). Не жмите средний сломанный [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Ритмично чередуйте: ЛЕВЫЙ -> ПРАВЫЙ рычаг (темп 0.3-1.1с). Не жмите средний сломанный [X]!"
+  },
+  "parts": [
+   {
+    "id": "BtnLeftLever",
+    "kind": "button",
+    "role": "",
+    "c": [
+     735,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     663
+    ],
+    "r": [
+     975,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnRightLever",
+    "kind": "button",
+    "role": "",
+    "c": [
+     1185,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#8",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     390
+    ],
+    "r": [
+     135,
+     83
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_4",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     390
+    ],
+    "r": [
+     135,
+     83
+    ],
+    "vis": true,
+    "text": "[X] СЛОМАН",
+    "game": {}
+   },
+   {
+    "id": "BeatsText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     36
+    ],
+    "vis": true,
+    "text": "Ритм-такт: 0 / 8",
+    "game": {}
+   },
+   {
+    "id": "Label_3",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1185,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "text": "ПРАВЫЙ",
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     663
+    ],
+    "r": [
+     975,
+     36
+    ],
+    "vis": true,
+    "text": "Ритмично чередуйте: ЛЕВЫЙ -> ПРАВЫЙ рычаг (темп 0.3-1.1с). Не жмите средний сломанный [X]!",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1185,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#9",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     390
+    ],
+    "r": [
+     135,
+     83
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnJunkLever",
+    "kind": "button",
+    "role": "",
+    "c": [
+     960,
+     390
+    ],
+    "r": [
+     135,
+     83
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TankFill",
+    "kind": "area",
+    "role": "tankFill",
+    "c": [
+     960,
+     582
+    ],
+    "r": [
+     450,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     735,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "text": "ЛЕВЫЙ",
+    "game": {}
+   },
+   {
+    "id": "MetronomeTick",
+    "kind": "area",
+    "role": "metronomeTick",
+    "c": [
+     960,
+     533
+    ],
+    "r": [
+     15,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     735,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     735,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#6",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1185,
+     390
+    ],
+    "r": [
+     165,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     663
+    ],
+    "r": [
+     975,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M17_TugOfWarBalance": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M17_TugOfWarBalance",
+    "Title": "Механика #17: Аккумулятор интенсивности ввода с диссипацией (Tug-of-War Balance)",
+    "Instruction": "Быстро тапайте «ТЯНИ!», чтобы перетянуть канат в зону победы. Не жмите скользкий узел [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0.270526052
+   },
+   "instruction": "Быстро тапайте «ТЯНИ!», чтобы перетянуть канат в зону победы. Не жмите скользкий узел [X]!"
+  },
+  "parts": [
+   {
+    "id": "BtnSlipHazard",
+    "kind": "button",
+    "role": "",
+    "c": [
+     1155,
+     383
+    ],
+    "r": [
+     180,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     795,
+     383
+    ],
+    "r": [
+     240,
+     78
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#8",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1155,
+     383
+    ],
+    "r": [
+     180,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Быстро тапайте «ТЯНИ!», чтобы перетянуть канат в зону победы. Не жмите скользкий узел [X]!",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#7",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BalanceText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     45
+    ],
+    "vis": true,
+    "text": "Баланс сил: 25% (Цель: 92%)",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     795,
+     383
+    ],
+    "r": [
+     240,
+     78
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1155,
+     383
+    ],
+    "r": [
+     180,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "RopeVisual",
+    "kind": "area",
+    "role": "ropeVisual",
+    "c": [
+     945,
+     540
+    ],
+    "r": [
+     690,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     795,
+     383
+    ],
+    "r": [
+     240,
+     78
+    ],
+    "vis": true,
+    "text": "ТЯНИ! ▶",
+    "game": {}
+   },
+   {
+    "id": "RopeMarker",
+    "kind": "area",
+    "role": "ropeMarker",
+    "c": [
+     825,
+     540
+    ],
+    "r": [
+     33,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BalanceBarFill",
+    "kind": "area",
+    "role": "balanceFill",
+    "c": [
+     960,
+     615
+    ],
+    "r": [
+     510,
+     24
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnPull",
+    "kind": "button",
+    "role": "",
+    "c": [
+     795,
+     383
+    ],
+    "r": [
+     240,
+     78
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_3",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1155,
+     383
+    ],
+    "r": [
+     180,
+     66
+    ],
+    "vis": true,
+    "text": "[X] УЗЕЛ",
+    "game": {}
+   }
+  ]
+ },
+ "M18_GraphFlowClosure": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M18_GraphFlowClosure",
+    "Title": "Механика #18: Дискретный поворот топологического узла (BFS Graph Flow Closure)",
+    "Instruction": "Кликайте по трубам для поворота. Соедините Источник (слева-сверху) с Приемником (справа-снизу)!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Кликайте по трубам для поворота. Соедините Источник (слева-сверху) с Приемником (справа-снизу)!"
+  },
+  "parts": [
+   {
+    "id": "PipeTile_1_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     335
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 1,
+     "GridY": 2,
+     "Type": "BrokenJunk",
+     "HasWater": false
+    }
+   },
+   {
+    "id": "PipeTile_0_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     852,
+     551
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 0,
+     "GridY": 0,
+     "Type": "Source",
+     "HasWater": true
+    }
+   },
+   {
+    "id": "StatusText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     525,
+     36
+    ],
+    "vis": true,
+    "text": "Заполнено узлов: 2 / 9 (Вариант #5)",
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PipeTile_1_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 1,
+     "GridY": 1,
+     "Type": "Corner",
+     "HasWater": false
+    }
+   },
+   {
+    "id": "PipeTile_2_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1068,
+     335
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 2,
+     "GridY": 2,
+     "Type": "Sink",
+     "HasWater": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PipeTile_1_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     551
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 1,
+     "GridY": 0,
+     "Type": "Corner",
+     "HasWater": true
+    }
+   },
+   {
+    "id": "PipeTile_2_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1068,
+     443
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 2,
+     "GridY": 1,
+     "Type": "Corner",
+     "HasWater": false
+    }
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Кликайте по трубам для поворота. Соедините Источник (слева-сверху) с Приемником (справа-снизу)!",
+    "game": {}
+   },
+   {
+    "id": "PipeTile_2_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1068,
+     551
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 2,
+     "GridY": 0,
+     "Type": "Corner",
+     "HasWater": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     525,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PipesGrid",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     360,
+     360
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PipeTile_0_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     852,
+     443
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 0,
+     "GridY": 1,
+     "Type": "Straight",
+     "HasWater": false
+    }
+   },
+   {
+    "id": "PipeTile_0_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     852,
+     335
+    ],
+    "r": [
+     102,
+     102
+    ],
+    "vis": true,
+    "game": {
+     "GridX": 0,
+     "GridY": 2,
+     "Type": "Corner",
+     "HasWater": false
+    }
+   }
+  ]
+ },
+ "M19_FloodFillColoring": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M19_FloodFillColoring",
+    "Title": "Механика #19: Присвоение идентификатора сегменту маски (Tag / Flood Fill)",
+    "Instruction": "Выберите цвет в палитре и раскрасьте сегменты по эталону. Не используйте грязь [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Выберите цвет в палитре и раскрасьте сегменты по эталону. Не используйте грязь [X]!"
+  },
+  "parts": [
+   {
+    "id": "BtnRed",
+    "kind": "button",
+    "role": "",
+    "c": [
+     750,
+     342
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "EtalonPanel",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1305,
+     503
+    ],
+    "r": [
+     195,
+     255
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnMudJunk",
+    "kind": "button",
+    "role": "",
+    "c": [
+     1170,
+     342
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Preview_4",
+    "kind": "area",
+    "role": "etalonPreviews",
+    "c": [
+     1347,
+     455
+    ],
+    "r": [
+     75,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1058,
+     563
+    ],
+    "r": [
+     165,
+     135
+    ],
+    "vis": true,
+    "game": {
+     "ExpectedColorId": 2,
+     "CurrentColorId": 0,
+     "IsCorrect": false
+    }
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnGreen",
+    "kind": "button",
+    "role": "",
+    "c": [
+     855,
+     342
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Preview_1",
+    "kind": "area",
+    "role": "etalonPreviews",
+    "c": [
+     1263,
+     527
+    ],
+    "r": [
+     75,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1305,
+     596
+    ],
+    "r": [
+     180,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Preview_2",
+    "kind": "area",
+    "role": "etalonPreviews",
+    "c": [
+     1347,
+     527
+    ],
+    "r": [
+     75,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Preview_3",
+    "kind": "area",
+    "role": "etalonPreviews",
+    "c": [
+     1263,
+     455
+    ],
+    "r": [
+     75,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     863,
+     443
+    ],
+    "r": [
+     165,
+     135
+    ],
+    "vis": true,
+    "game": {
+     "ExpectedColorId": 4,
+     "CurrentColorId": 0,
+     "IsCorrect": false
+    }
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Выберите цвет в палитре и раскрасьте сегменты по эталону. Не используйте грязь [X]!",
+    "game": {}
+   },
+   {
+    "id": "ActiveColorIndicator",
+    "kind": "area",
+    "role": "activeColorIndicator",
+    "c": [
+     1275,
+     342
+    ],
+    "r": [
+     45,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnYellow",
+    "kind": "button",
+    "role": "",
+    "c": [
+     1065,
+     342
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnBlue",
+    "kind": "button",
+    "role": "",
+    "c": [
+     960,
+     342
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     863,
+     563
+    ],
+    "r": [
+     165,
+     135
+    ],
+    "vis": true,
+    "game": {
+     "ExpectedColorId": 1,
+     "CurrentColorId": 0,
+     "IsCorrect": false
+    }
+   },
+   {
+    "id": "Segment_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1058,
+     443
+    ],
+    "r": [
+     165,
+     135
+    ],
+    "vis": true,
+    "game": {
+     "ExpectedColorId": 3,
+     "CurrentColorId": 0,
+     "IsCorrect": false
+    }
+   },
+   {
+    "id": "EtalonTitle",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1305,
+     596
+    ],
+    "r": [
+     180,
+     39
+    ],
+    "vis": true,
+    "text": "ЭТАЛОН",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1305,
+     596
+    ],
+    "r": [
+     180,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M20_VerticalStacking": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M20_VerticalStacking",
+    "Title": "Механика #20: Своевременный сброс с проверкой устойчивости (Vertical Stacking)",
+    "Instruction": "Нажмите «СБРОСИТЬ БЛОК» в момент пролета над башней. Постройте башню из 3 блоков!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Нажмите «СБРОСИТЬ БЛОК» в момент пролета над башней. Постройте башню из 3 блоков!"
+  },
+  "parts": [
+   {
+    "id": "ActiveBlock",
+    "kind": "area",
+    "role": "activeBlock",
+    "c": [
+     1061,
+     578
+    ],
+    "r": [
+     165,
+     68
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Нажмите «СБРОСИТЬ БЛОК» в момент пролета над башней. Постройте башню из 3 блоков!",
+    "game": {}
+   },
+   {
+    "id": "BtnDrop",
+    "kind": "button",
+    "role": "",
+    "c": [
+     960,
+     323
+    ],
+    "r": [
+     270,
+     57
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     323
+    ],
+    "r": [
+     270,
+     57
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BasePlatform",
+    "kind": "area",
+    "role": "basePlatform",
+    "c": [
+     960,
+     383
+    ],
+    "r": [
+     300,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StackText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     36
+    ],
+    "vis": true,
+    "text": "Блоков в башне: 0 / 3",
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     323
+    ],
+    "r": [
+     270,
+     57
+    ],
+    "vis": true,
+    "text": "СБРОСИТЬ БЛОК",
+    "game": {}
+   },
+   {
+    "id": "SwingingArm",
+    "kind": "area",
+    "role": "swingingArm",
+    "c": [
+     1061,
+     608
+    ],
+    "r": [
+     24,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     323
+    ],
+    "r": [
+     270,
+     57
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M21_ReactionProbe": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M21_ReactionProbe",
+    "Title": "Механика #21: Реакция на фазовый триггер поклевки (Reaction Time Probe)",
+    "Instruction": "Ждите поклёвки (знак «!» и рывок поплавка вниз) и моментально жмите «ПОДСЕЧЬ»!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Ждите поклёвки (знак «!» и рывок поплавка вниз) и моментально жмите «ПОДСЕЧЬ»!"
+  },
+  "parts": [
+   {
+    "id": "Bobber",
+    "kind": "area",
+    "role": "bobber",
+    "c": [
+     960,
+     471
+    ],
+    "r": [
+     60,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "text": "Поймано: 0 / 2",
+    "game": {}
+   },
+   {
+    "id": "JunkBoot",
+    "kind": "area",
+    "role": "junkBoot",
+    "c": [
+     1163,
+     435
+    ],
+    "r": [
+     90,
+     90
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     357
+    ],
+    "r": [
+     240,
+     57
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     357
+    ],
+    "r": [
+     240,
+     57
+    ],
+    "vis": true,
+    "text": "ПОДСЕЧЬ! ->",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     357
+    ],
+    "r": [
+     240,
+     57
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Внимание на поплавок... Ждите поклёвки (знак «!») и жмите «ПОДСЕЧЬ»!",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnStrike",
+    "kind": "button",
+    "role": "",
+    "c": [
+     960,
+     357
+    ],
+    "r": [
+     240,
+     57
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M22_GridPathfinding": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M22_GridPathfinding",
+    "Title": "Механика #22: Навигация сущности по дискретной тайловой сетке (Grid Pathfinding)",
+    "Instruction": "Нажимайте на соседние доступные ячейки, чтобы довести робота до зеленого флага!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Нажимайте на соседние доступные ячейки, чтобы довести робота до зеленого флага!"
+  },
+  "parts": [
+   {
+    "id": "Tile_2_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     509
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 2,
+     "CellY": 1,
+     "CellType": "ObstacleWall"
+    }
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Tile_3_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1026,
+     575
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 3,
+     "CellY": 0,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_4_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1092,
+     509
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 4,
+     "CellY": 1,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_2_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     575
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 2,
+     "CellY": 0,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_3_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1026,
+     509
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 3,
+     "CellY": 1,
+     "CellType": "ObstacleWall"
+    }
+   },
+   {
+    "id": "Tile_0_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     828,
+     509
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 0,
+     "CellY": 1,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Нажимайте на соседние доступные ячейки, чтобы довести робота до зеленого флага!",
+    "game": {}
+   },
+   {
+    "id": "Tile_0_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     828,
+     575
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 0,
+     "CellY": 0,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_1_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     894,
+     509
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 1,
+     "CellY": 1,
+     "CellType": "GlitchTrapHazard"
+    }
+   },
+   {
+    "id": "Tile_4_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1092,
+     575
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 4,
+     "CellY": 0,
+     "CellType": "Goal"
+    }
+   },
+   {
+    "id": "GridContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     360,
+     360
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Tile_1_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     894,
+     575
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 1,
+     "CellY": 0,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_0_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     828,
+     443
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 0,
+     "CellY": 2,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_1_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     894,
+     443
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 1,
+     "CellY": 2,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_2_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 2,
+     "CellY": 2,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_3_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1026,
+     443
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 3,
+     "CellY": 2,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_4_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1092,
+     443
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 4,
+     "CellY": 2,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_0_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     828,
+     377
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 0,
+     "CellY": 3,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_1_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     894,
+     377
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 1,
+     "CellY": 3,
+     "CellType": "ObstacleWall"
+    }
+   },
+   {
+    "id": "Tile_2_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     377
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 2,
+     "CellY": 3,
+     "CellType": "ObstacleWall"
+    }
+   },
+   {
+    "id": "Tile_3_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1026,
+     377
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 3,
+     "CellY": 3,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_4_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1092,
+     377
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 4,
+     "CellY": 3,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_0_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     828,
+     311
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 0,
+     "CellY": 4,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_1_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     894,
+     311
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 1,
+     "CellY": 4,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_2_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     960,
+     311
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 2,
+     "CellY": 4,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_3_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1026,
+     311
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 3,
+     "CellY": 4,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "Tile_4_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1092,
+     311
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {
+     "CellX": 4,
+     "CellY": 4,
+     "CellType": "Walkable"
+    }
+   },
+   {
+    "id": "RobotAvatar",
+    "kind": "area",
+    "role": "robotAvatar",
+    "c": [
+     828,
+     311
+    ],
+    "r": [
+     54,
+     54
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StepText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     36
+    ],
+    "vis": true,
+    "text": "Шаги: 0 | Позиция: (0,4)",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     450,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M23_StencilReveal": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M23_StencilReveal",
+    "Title": "Механика #23: Пространственная фильтрация триггеров лучом/окном (Stencil Reveal)",
+    "Instruction": "Перемещайте лупу по области, находите скрытые кристаллы и удерживайте 2 сек для сбора!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Перемещайте лупу по области, находите скрытые кристаллы и удерживайте 2 сек для сбора!"
+  },
+  "parts": [
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     420,
+     36
+    ],
+    "vis": true,
+    "text": "Найдено: 0 / 3",
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "HiddenGem_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     735,
+     503
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {
+     "IsJunkDust": false,
+     "IsCollected": false
+    }
+   },
+   {
+    "id": "StencilLens",
+    "kind": "area",
+    "role": "lensTransform",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     195,
+     195
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "<color=#00FFFF>Изучение кристалла... Удержание: 1,3 / 2,0 сек</color>",
+    "game": {}
+   },
+   {
+    "id": "DarkSearchArea",
+    "kind": "area",
+    "role": "darkSearchArea",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     750,
+     315
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "HiddenGem_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     900,
+     375
+    ],
+    "r": [
+     90,
+     90
+    ],
+    "vis": true,
+    "game": {
+     "IsJunkDust": false,
+     "IsCollected": false
+    }
+   },
+   {
+    "id": "JunkDust",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1125,
+     383
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {
+     "IsJunkDust": true,
+     "IsCollected": false
+    }
+   },
+   {
+    "id": "HiddenGem_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1170,
+     488
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {
+     "IsJunkDust": false,
+     "IsCollected": false
+    }
+   },
+   {
+    "id": "ProgressRing",
+    "kind": "area",
+    "role": "lensProgressRing",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     177,
+     177
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     420,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M24_TargetElimination": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M24_TargetElimination",
+    "Title": "Механика #24: Прямое поражение движущихся точечных целей (Target Elimination)",
+    "Instruction": "Кликайте по всплывающим мыльным пузырям (лопните 6 шт). Не трогайте красные бомбы [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Кликайте по всплывающим мыльным пузырям (лопните 6 шт). Не трогайте красные бомбы [X]!"
+  },
+  "parts": [
+   {
+    "id": "PoppableTarget",
+    "kind": "area",
+    "role": "PoppableTarget",
+    "c": [
+     883,
+     429
+    ],
+    "r": [
+     98,
+     98
+    ],
+    "vis": true,
+    "game": {
+     "IsHazardBomb": true,
+     "IsPopped": false
+    }
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Кликайте по всплывающим мыльным пузырям (лопните 6 шт). Не трогайте красные бомбы [X]!",
+    "game": {}
+   },
+   {
+    "id": "SpawnContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     473
+    ],
+    "r": [
+     825,
+     390
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PoppableTarget_1",
+    "kind": "area",
+    "role": "PoppableTarget",
+    "c": [
+     745,
+     245
+    ],
+    "r": [
+     98,
+     98
+    ],
+    "vis": true,
+    "game": {
+     "IsHazardBomb": false,
+     "IsPopped": false
+    }
+   },
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "text": "Лопнуто: 0 / 6",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M25_LaneSwitcherTapHalves": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "ControlMode": "HalfScreenTap",
+    "MechanicId": "M25_LaneSwitcherTapHalves",
+    "Title": "Механика #25: Сдвиг по полосам — Тапы по половинам (Lane Switcher: Half Taps)",
+    "Instruction": "Нажимайте на левую или правую половину экрана для смены полосы. Соберите 5 монет и избегайте барьеров [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Нажимайте на левую или правую половину экрана для смены полосы. Соберите 5 монет и избегайте барьеров [X]!"
+  },
+  "parts": [
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SpawnContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     495
+    ],
+    "r": [
+     630,
+     390
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Нажимайте на левую или правую половину экрана для смены полосы. Соберите 5 монет и избегайте барьеров [X]!",
+    "game": {}
+   },
+   {
+    "id": "Coin#4",
+    "kind": "area",
+    "role": "spawned:Coin",
+    "c": [
+     1170,
+     541
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Barrier#5",
+    "kind": "area",
+    "role": "spawned:Barrier",
+    "c": [
+     750,
+     541
+    ],
+    "r": [
+     105,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "text": "Собрано: 0 / 5",
+    "game": {}
+   },
+   {
+    "id": "PlayerAvatar",
+    "kind": "area",
+    "role": "playerAvatar",
+    "c": [
+     960,
+     360
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M26_LaneSwitcherDirectDrag": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "ControlMode": "DirectDrag",
+    "MechanicId": "M26_LaneSwitcherDirectDrag",
+    "Title": "Механика #26: Сдвиг по полосам — Вождение приёмника (Lane Switcher: Drag)",
+    "Instruction": "Зажмите приёмник и ведите его влево-вправо мышкой. Соберите 5 монет и избегайте барьеров [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Зажмите приёмник и ведите его влево-вправо мышкой. Соберите 5 монет и избегайте барьеров [X]!"
+  },
+  "parts": [
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PlayerAvatar",
+    "kind": "area",
+    "role": "playerAvatar",
+    "c": [
+     960,
+     360
+    ],
+    "r": [
+     75,
+     75
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Зажмите приёмник и ведите его влево-вправо мышкой. Соберите 5 монет и избегайте барьеров [X]!",
+    "game": {}
+   },
+   {
+    "id": "SpawnContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     495
+    ],
+    "r": [
+     630,
+     390
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ScoreText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     45
+    ],
+    "vis": true,
+    "text": "Собрано: 0 / 5",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Coin#4",
+    "kind": "area",
+    "role": "spawned:Coin",
+    "c": [
+     750,
+     542
+    ],
+    "r": [
+     60,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M27_PhysicsCarHills": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "IsAirborne": false,
+    "MechanicId": "M27_PhysicsCarHills",
+    "Title": "Механика #27: Машинка с холмиками с физикой (Physics Car on Hills)",
+    "Instruction": "Преодолейте холмистую трассу! Зажимайте ГАЗ / ТОРМОЗ (или клавиши A/D / стрелки).",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Преодолейте холмистую трассу! Зажимайте ГАЗ / ТОРМОЗ (или клавиши A/D / стрелки)."
+  },
+  "parts": [
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1860,
+     529
+    ],
+    "r": [
+     69,
+     33
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "DistanceText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1692,
+     848
+    ],
+    "r": [
+     300,
+     39
+    ],
+    "vis": true,
+    "text": "Дистанция: 0 / 2400 м",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     806
+    ],
+    "r": [
+     630,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "InstructionText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     806
+    ],
+    "r": [
+     630,
+     39
+    ],
+    "vis": true,
+    "text": "Зажимайте ГАЗ (D) / ТОРМОЗ (A). В воздухе управляйте наклоном машины!",
+    "game": {}
+   },
+   {
+    "id": "TrackContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1110,
+     469
+    ],
+    "r": [
+     4500,
+     450
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Text",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1860,
+     529
+    ],
+    "r": [
+     69,
+     33
+    ],
+    "vis": true,
+    "text": "500м",
+    "game": {}
+   },
+   {
+    "id": "SpeedometerText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     228,
+     848
+    ],
+    "r": [
+     300,
+     39
+    ],
+    "vis": true,
+    "text": "Скорость: 0 км/ч",
+    "game": {}
+   },
+   {
+    "id": "CarRoot",
+    "kind": "area",
+    "role": "carRoot",
+    "c": [
+     810,
+     448
+    ],
+    "r": [
+     120,
+     60
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Chassis",
+    "kind": "area",
+    "role": "chassis",
+    "c": [
+     810,
+     466
+    ],
+    "r": [
+     111,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "RearWheel",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     765,
+     448
+    ],
+    "r": [
+     48,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "FrontWheel",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     855,
+     448
+    ],
+    "r": [
+     48,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnBrake",
+    "kind": "button",
+    "role": "",
+    "c": [
+     189,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     189,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "text": "ТОРМОЗ (A)",
+    "game": {}
+   },
+   {
+    "id": "BtnGas",
+    "kind": "button",
+    "role": "",
+    "c": [
+     1731,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_3",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1731,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "text": "ГАЗ (D)",
+    "game": {}
+   },
+   {
+    "id": "ProgressBarFill",
+    "kind": "area",
+    "role": "progressBarFill",
+    "c": [
+     960,
+     141
+    ],
+    "r": [
+     390,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     228,
+     848
+    ],
+    "r": [
+     300,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     228,
+     848
+    ],
+    "r": [
+     300,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1692,
+     848
+    ],
+    "r": [
+     300,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     806
+    ],
+    "r": [
+     630,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1692,
+     848
+    ],
+    "r": [
+     300,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#11",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     189,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#12",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     189,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#13",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1731,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#14",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1731,
+     168
+    ],
+    "r": [
+     210,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M28_DualBridgeRoute": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M28_DualBridgeRoute",
+    "Title": "Механика #28: Построение маршрута с мостиками (Dual Bridge Route)",
+    "Instruction": "Перетащите исправные мостики в провалы путей и нажмите 'ПУСК'. Остерегайтесь сломанного мостика [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Перетащите исправные мостики в провалы путей и нажмите 'ПУСК'. Остерегайтесь сломанного мостика [X]!"
+  },
+  "parts": [
+   {
+    "id": "GoalA",
+    "kind": "area",
+    "role": "goalA",
+    "c": [
+     1260,
+     633
+    ],
+    "r": [
+     66,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Slot_Inv_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SlotBLabel",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     510
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ToolboxHeader",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     384
+    ],
+    "r": [
+     750,
+     24
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "EntityA",
+    "kind": "area",
+    "role": "entityA",
+    "c": [
+     615,
+     593
+    ],
+    "r": [
+     69,
+     69
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "EntityB",
+    "kind": "area",
+    "role": "entityB",
+    "c": [
+     615,
+     488
+    ],
+    "r": [
+     69,
+     69
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     840,
+     593
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BridgeToolbox",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     360
+    ],
+    "r": [
+     795,
+     84
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     510
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     510
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#6",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     384
+    ],
+    "r": [
+     750,
+     24
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "GoalB",
+    "kind": "area",
+    "role": "goalB",
+    "c": [
+     1260,
+     552
+    ],
+    "r": [
+     66,
+     66
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PlatformA_Start",
+    "kind": "area",
+    "role": "progressFill",
+    "c": [
+     615,
+     593
+    ],
+    "r": [
+     210,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Plank_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {
+     "BridgeId": 2,
+     "IsBroken": false,
+     "InitialPosition": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   },
+   {
+    "id": "SlotB",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     510
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SlotLabel",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SlotLabel_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Plank_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {
+     "BridgeId": 1,
+     "IsBroken": false,
+     "InitialPosition": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   },
+   {
+    "id": "PlankLabel",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Slot_Inv_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Plank_Broken_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {
+     "BridgeId": 3,
+     "IsBroken": true,
+     "InitialPosition": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   },
+   {
+    "id": "SlotLabel_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     975,
+     33
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Label_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     432
+    ],
+    "r": [
+     240,
+     51
+    ],
+    "vis": true,
+    "text": "ПУСК >>",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     840,
+     593
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SlotALabel",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     840,
+     593
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     669
+    ],
+    "r": [
+     975,
+     33
+    ],
+    "vis": true,
+    "text": "Установите оба мостика в разрывы путей (установлено 0/2). Остерегайтесь сломанного [X]!",
+    "game": {}
+   },
+   {
+    "id": "SlotA",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     840,
+     593
+    ],
+    "r": [
+     165,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PlankLabel_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Slot_Inv_3",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PlankLabel_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "BtnStart",
+    "kind": "button",
+    "role": "",
+    "c": [
+     960,
+     432
+    ],
+    "r": [
+     240,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     384
+    ],
+    "r": [
+     750,
+     24
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#8",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#9",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#10",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#11",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     720,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#12",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#13",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#14",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#15",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#16",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#17",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     174,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#18",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#19",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1200,
+     348
+    ],
+    "r": [
+     165,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#20",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     432
+    ],
+    "r": [
+     240,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M29_ContourCutting": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M29_ContourCutting",
+    "Title": "Механика #29: Вырезание по контуру (Contour Scissor Cutting)",
+    "Instruction": "Ведите ножницами вдоль пунктирного контура звезды. Не выходите за пределы допуска!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Ведите ножницами вдоль пунктирного контура звезды. Не выходите за пределы допуска!"
+  },
+  "parts": [
+   {
+    "id": "StarPart_2",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     276,
+     276
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_0",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1140,
+     498
+    ],
+    "r": [
+     27,
+     27
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_2",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1044,
+     610
+    ],
+    "r": [
+     89,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_8",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     821,
+     478
+    ],
+    "r": [
+     86,
+     46
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StarPart_1",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     195,
+     195
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_4",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     940,
+     637
+    ],
+    "r": [
+     46,
+     86
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1215,
+     498
+    ],
+    "r": [
+     120,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Зажмите инструмент в точке СТАРТ и ведите вдоль пунктира!",
+    "game": {}
+   },
+   {
+    "id": "Text",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1215,
+     498
+    ],
+    "r": [
+     120,
+     39
+    ],
+    "vis": true,
+    "text": "СТАРТ ▶",
+    "game": {}
+   },
+   {
+    "id": "Segment_0",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1099,
+     518
+    ],
+    "r": [
+     87,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_1",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1072,
+     582
+    ],
+    "r": [
+     36,
+     89
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_6",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     848,
+     582
+    ],
+    "r": [
+     36,
+     89
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_5",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     876,
+     610
+    ],
+    "r": [
+     89,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1215,
+     498
+    ],
+    "r": [
+     120,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_7",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     863,
+     538
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_3",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     980,
+     637
+    ],
+    "r": [
+     46,
+     86
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_11",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     940,
+     359
+    ],
+    "r": [
+     46,
+     86
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_3",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1000,
+     595
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_15",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1099,
+     478
+    ],
+    "r": [
+     86,
+     46
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_14",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1072,
+     414
+    ],
+    "r": [
+     36,
+     89
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_8",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     780,
+     498
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_15",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1057,
+     458
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_11",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     920,
+     401
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProgressText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "text": "Вырезано: 0%",
+    "game": {}
+   },
+   {
+    "id": "ContourContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     510,
+     510
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "CutShapeVisual",
+    "kind": "area",
+    "role": "cutShapeVisual",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     300,
+     300
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_6",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     833,
+     625
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StartBadge",
+    "kind": "area",
+    "role": "startBadge",
+    "c": [
+     1215,
+     498
+    ],
+    "r": [
+     120,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_14",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1087,
+     371
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProgressBarFill",
+    "kind": "area",
+    "role": "progressFill",
+    "c": [
+     960,
+     312
+    ],
+    "r": [
+     390,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_7",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     821,
+     518
+    ],
+    "r": [
+     86,
+     46
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_9",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     848,
+     414
+    ],
+    "r": [
+     36,
+     89
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_10",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     876,
+     386
+    ],
+    "r": [
+     89,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_12",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     980,
+     359
+    ],
+    "r": [
+     46,
+     86
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Segment_13",
+    "kind": "area",
+    "role": "interactive_zone",
+    "c": [
+     1044,
+     386
+    ],
+    "r": [
+     89,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_1",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1057,
+     538
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_2",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1087,
+     625
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_4",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     960,
+     678
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_5",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     920,
+     595
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_9",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     863,
+     458
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_10",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     833,
+     371
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_12",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     960,
+     318
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Point_13",
+    "kind": "area",
+    "role": "vertexDotVisuals",
+    "c": [
+     1000,
+     401
+    ],
+    "r": [
+     21,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ScissorTool",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1140,
+     498
+    ],
+    "r": [
+     88,
+     88
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M30_CharacterDressUp": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M30_CharacterDressUp",
+    "Title": "Механика #30: Одевание персонажа (Character Dress-Up)",
+    "Instruction": "Перетащите элементы экипировки на силуэт робота. Бракованный хлам [X] не подходит!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Перетащите элементы экипировки на силуэт робота. Бракованный хлам [X] не подходит!"
+  },
+  "parts": [
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Перетащите элементы экипировки на силуэт робота. Бракованный хлам [X] не подходит!",
+    "game": {}
+   },
+   {
+    "id": "Slot_Feet",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     795,
+     375
+    ],
+    "r": [
+     83,
+     68
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Item_Accessory",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1238,
+     450
+    ],
+    "r": [
+     68,
+     68
+    ],
+    "vis": true,
+    "game": {
+     "SlotType": "Accessory",
+     "IsJunk": false,
+     "IsEquipped": false
+    }
+   },
+   {
+    "id": "WardrobePanel",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1155,
+     473
+    ],
+    "r": [
+     315,
+     330
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Slot_Head",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     795,
+     570
+    ],
+    "r": [
+     78,
+     78
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Slot_Body",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     795,
+     488
+    ],
+    "r": [
+     98,
+     98
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Item_Body",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1238,
+     540
+    ],
+    "r": [
+     72,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "SlotType": "Body",
+     "IsJunk": false,
+     "IsEquipped": false
+    }
+   },
+   {
+    "id": "Item_Head",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1073,
+     540
+    ],
+    "r": [
+     72,
+     72
+    ],
+    "vis": true,
+    "game": {
+     "SlotType": "Head",
+     "IsJunk": false,
+     "IsEquipped": false
+    }
+   },
+   {
+    "id": "Slot_Accessory",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     885,
+     488
+    ],
+    "r": [
+     68,
+     68
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProgressBarFill",
+    "kind": "area",
+    "role": "progressFill",
+    "c": [
+     960,
+     353
+    ],
+    "r": [
+     375,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "CharacterSilhouette",
+    "kind": "area",
+    "role": "characterSilhouette",
+    "c": [
+     795,
+     473
+    ],
+    "r": [
+     240,
+     330
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Item_Feet",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1073,
+     450
+    ],
+    "r": [
+     68,
+     68
+    ],
+    "vis": true,
+    "game": {
+     "SlotType": "Feet",
+     "IsJunk": false,
+     "IsEquipped": false
+    }
+   },
+   {
+    "id": "Item_Junk",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     1155,
+     360
+    ],
+    "r": [
+     68,
+     68
+    ],
+    "vis": true,
+    "game": {
+     "SlotType": "Junk",
+     "IsJunk": true,
+     "IsEquipped": false
+    }
+   },
+   {
+    "id": "ProgressText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "text": "Экипировано: 0 / 4",
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M31_LiquidFilling": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M31_LiquidFilling",
+    "Title": "Механика #31: Заполнение лунок раствором (3-Well Solution Dispensing)",
+    "Instruction": "Перемещайте раствороподатчик над лунками по очереди (1 → 2 → 3), чтобы заполнить их раствором!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Перемещайте раствороподатчик над лунками по очереди (1 → 2 → 3), чтобы заполнить их раствором!"
+  },
+  "parts": [
+   {
+    "id": "WellLabel_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1163,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "text": "Лунка 3",
+    "game": {}
+   },
+   {
+    "id": "WellsContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     675,
+     225
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Well_2",
+    "kind": "area",
+    "role": "wellRoots",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     114,
+     144
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PercentText_1",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     401
+    ],
+    "r": [
+     120,
+     33
+    ],
+    "vis": true,
+    "text": "0%",
+    "game": {}
+   },
+   {
+    "id": "LiquidFill",
+    "kind": "area",
+    "role": "liquidFills",
+    "c": [
+     758,
+     443
+    ],
+    "r": [
+     102,
+     132
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Перемещайте раствороподатчик над лунками по очереди (1 → 2 → 3), чтобы заполнить их!",
+    "game": {}
+   },
+   {
+    "id": "WellLabel",
+    "kind": "text",
+    "role": "",
+    "c": [
+     758,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "text": "Лунка 1",
+    "game": {}
+   },
+   {
+    "id": "GlowRing",
+    "kind": "area",
+    "role": "glowRings",
+    "c": [
+     758,
+     443
+    ],
+    "r": [
+     120,
+     150
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LiquidFill_2",
+    "kind": "area",
+    "role": "liquidFills",
+    "c": [
+     1163,
+     443
+    ],
+    "r": [
+     102,
+     132
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Well_1",
+    "kind": "area",
+    "role": "wellRoots",
+    "c": [
+     758,
+     443
+    ],
+    "r": [
+     114,
+     144
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "WellLabel_1",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "text": "Лунка 2",
+    "game": {}
+   },
+   {
+    "id": "NozzleTip",
+    "kind": "area",
+    "role": "nozzleTip",
+    "c": [
+     758,
+     533
+    ],
+    "r": [
+     150,
+     150
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "GlowRing_2",
+    "kind": "area",
+    "role": "glowRings",
+    "c": [
+     1163,
+     443
+    ],
+    "r": [
+     120,
+     150
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LiquidFill_1",
+    "kind": "area",
+    "role": "liquidFills",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     102,
+     132
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     758,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Well_3",
+    "kind": "area",
+    "role": "wellRoots",
+    "c": [
+     1163,
+     443
+    ],
+    "r": [
+     114,
+     144
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SocketBg_2",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     1163,
+     443
+    ],
+    "r": [
+     114,
+     144
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "SocketBg",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     758,
+     443
+    ],
+    "r": [
+     114,
+     144
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#9",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     618
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PercentText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     758,
+     401
+    ],
+    "r": [
+     120,
+     33
+    ],
+    "vis": true,
+    "text": "0%",
+    "game": {}
+   },
+   {
+    "id": "SocketBg_1",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     114,
+     144
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "GlowRing_1",
+    "kind": "area",
+    "role": "glowRings",
+    "c": [
+     960,
+     443
+    ],
+    "r": [
+     120,
+     150
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "PercentText_2",
+    "kind": "text",
+    "role": "",
+    "c": [
+     1163,
+     401
+    ],
+    "r": [
+     120,
+     33
+    ],
+    "vis": true,
+    "text": "0%",
+    "game": {}
+   },
+   {
+    "id": "DispenserTool",
+    "kind": "draggable",
+    "role": "",
+    "c": [
+     758,
+     585
+    ],
+    "r": [
+     69,
+     105
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProgressText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     618
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "text": "Заполнено лунок: 0 / 3",
+    "game": {}
+   },
+   {
+    "id": "ProgressBarFill",
+    "kind": "area",
+    "role": "progressFill",
+    "c": [
+     960,
+     312
+    ],
+    "r": [
+     390,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     758,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#5",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     960,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#7",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]",
+    "c": [
+     1163,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#8",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     1163,
+     527
+    ],
+    "r": [
+     150,
+     30
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ },
+ "M32_AirplaneStarGlider": {
+  "module": {
+   "rect": {
+    "x": 42,
+    "y": 78,
+    "w": 1836,
+    "h": 804
+   },
+   "game": {
+    "MechanicId": "M32_AirplaneStarGlider",
+    "Title": "Механика #32: Полет самолетика со сбором звездочек (Airplane Star Glider)",
+    "Instruction": "Ведите курсором вверх/вниз для управления самолетиком. Соберите 5 звезд и избегайте туч [X]!",
+    "IsCompleted": false,
+    "ProgressNormalized": 0
+   },
+   "instruction": "Ведите курсором вверх/вниз для управления самолетиком. Соберите 5 звезд и избегайте туч [X]!"
+  },
+  "parts": [
+   {
+    "id": "window_2d_suite",
+    "kind": "window",
+    "role": "",
+    "c": [
+     960,
+     503
+    ],
+    "r": [
+     1872,
+     981
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "ProgressBarFill",
+    "kind": "area",
+    "role": "progressFill",
+    "c": [
+     960,
+     353
+    ],
+    "r": [
+     375,
+     21
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "LocalInstruction",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     666
+    ],
+    "r": [
+     1080,
+     36
+    ],
+    "vis": true,
+    "text": "Ведите курсором вверх/вниз для управления самолетиком. Соберите 5 звезд и избегайте туч [X]!",
+    "game": {}
+   },
+   {
+    "id": "Star_0",
+    "kind": "area",
+    "role": "activeStars",
+    "c": [
+     740,
+     581
+    ],
+    "r": [
+     51,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "FlightContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     930,
+     315
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Star_2",
+    "kind": "area",
+    "role": "activeStars",
+    "c": [
+     1160,
+     588
+    ],
+    "r": [
+     51,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StarsCountText",
+    "kind": "text",
+    "role": "",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "text": "Звезды: 0 / 5",
+    "game": {}
+   },
+   {
+    "id": "Star_4",
+    "kind": "area",
+    "role": "activeStars",
+    "c": [
+     1580,
+     558
+    ],
+    "r": [
+     51,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "AirplaneRoot",
+    "kind": "area",
+    "role": "airplaneRoot",
+    "c": [
+     690,
+     498
+    ],
+    "r": [
+     75,
+     48
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StormCloud_1",
+    "kind": "area",
+    "role": "activeClouds",
+    "c": [
+     1331,
+     566
+    ],
+    "r": [
+     69,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2",
+    "kind": "area",
+    "role": "spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]",
+    "c": [
+     960,
+     624
+    ],
+    "r": [
+     375,
+     39
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Star_1",
+    "kind": "area",
+    "role": "activeStars",
+    "c": [
+     950,
+     431
+    ],
+    "r": [
+     51,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "Star_3",
+    "kind": "area",
+    "role": "activeStars",
+    "c": [
+     1370,
+     468
+    ],
+    "r": [
+     51,
+     51
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "CloudsContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     930,
+     315
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StarsContainer",
+    "kind": "slot",
+    "role": "",
+    "c": [
+     960,
+     498
+    ],
+    "r": [
+     930,
+     315
+    ],
+    "vis": true,
+    "game": {}
+   },
+   {
+    "id": "StormCloud_0",
+    "kind": "area",
+    "role": "activeClouds",
+    "c": [
+     911,
+     453
+    ],
+    "r": [
+     69,
+     45
+    ],
+    "vis": true,
+    "game": {}
+   }
+  ]
+ }
+}

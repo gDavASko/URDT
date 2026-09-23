@@ -74,7 +74,9 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
 
         public static void InstrumentGameObject(GameObject go)
         {
-            if (go == null) return;
+            // One beacon per object: a re-initialized mechanic may already carry a beacon from a previous pass
+            // (or from Urdt2DEntityInstrumentation); adding a second UrdtDebugTarget fails and returned null.
+            if (go == null || go.TryGetComponent(out UrdtDebugTarget _)) return;
 
             string nameLower = go.name.ToLowerInvariant();
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using KBP.URDT.Driver;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -80,6 +80,27 @@ namespace KBP.URDT.Handlers
             if (value is bool || value is int || value is long || value is float || value is double || value is string)
             {
                 return new JValue(value);
+            }
+
+            if (value is System.Collections.IDictionary dictionary)
+            {
+                JObject map = new JObject();
+                foreach (System.Collections.DictionaryEntry entry in dictionary)
+                {
+                    map[System.Convert.ToString(entry.Key)] = ValueToToken(entry.Value);
+                }
+
+                return map;
+            }
+
+            if (value is System.Enum)
+            {
+                return new JValue(value.ToString());
+            }
+
+            if (value is byte || value is short || value is uint || value is ulong || value is ushort || value is sbyte || value is decimal)
+            {
+                return new JValue(System.Convert.ToDouble(value));
             }
 
             return new JValue(value.ToString());

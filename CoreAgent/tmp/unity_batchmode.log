@@ -1,0 +1,40 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.4/staging' branch; Version is '6000.4.4f1 (360f97ecca93) revision 3542935'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) Professional' Language: 'ru' Physical Memory: 31861 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-09-22T11:35:57Z
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-DavASko" at "2026-09-22T11:35:57.6942586Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 25804, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              bb9bdf0a7aef4e70b9f5fd2fa0a44616
+  Correlation Id:          632de8153883e71142d2b3dd7d169232
+  External correlation Id: 5866447670759114157
+  Machine Id:              keLZsJXDMCkNQz5w91OExKMmslo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-DavASko" (connect: 0.00s, validation: 0.00s, handshake: 0.08s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-DavASko-notifications" at "2026-09-22T11:35:57.7732985Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 10170729887446-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.08s
+
+COMMAND LINE ARGUMENTS:
+E:\UnityEditors\6000.4.4f1\Editor\Unity.exe
+-batchmode
+-projectPath
+E:\Projects\URDT
+-quit
+-logFile
+E:\Projects\URDT\CoreAgent\tmp\unity_batchmode.log
+Successfully changed project path to: E:\Projects\URDT
+E:/Projects/URDT
+Exiting without the bug reporter. Application will terminate with return code 1

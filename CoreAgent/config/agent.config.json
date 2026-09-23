@@ -1,0 +1,49 @@
+{
+  "$schema": "urdt/agent_config_v2.json",
+  "projectRoot": "E:\\Projects\\URDT",
+  "storageRule": "STRICT_DRIVE_E_ONLY",
+  "ipc": {
+    "windowsPipePath": "\\\\.\\pipe\\urdt_fast_ticker",
+    "webSocketUrl": "ws://127.0.0.1:9002",
+    "kinematicTickerRateMs": 16.666,
+    "physicsSyncCadenceMs": 20.0,
+    "pingIntervalMs": 1000,
+    "reconnectTimeoutMs": 3000
+  },
+  "slmConfig": {
+    "l2Tactical": {
+      "modelName": "Qwen3-0.6B (L2 Runtime Reflexes)",
+      "modelPath": "E:\\Projects\\URDT\\CoreAgent\\models\\qwen3-0.6b-q4_k_m.gguf",
+      "inferenceTimeoutMs": 100,
+      "contextSize": 1024,
+      "threads": 4,
+      "useGbnf": true,
+      "targetLatencyMs": 15
+    },
+    "l3Strategic": {
+      "modelName": "Qwen3-4B (L3 Strategist & Crash Evidence)",
+      "modelPath": "E:\\Projects\\URDT\\CoreAgent\\models\\qwen3-4b-q4_k_m.gguf",
+      "inferenceTimeoutMs": 3000,
+      "contextSize": 8192,
+      "threads": 8,
+      "targetLatencyMs": 1500
+    },
+    "backend": "node-llama-cpp",
+    "gpuLayers": 99
+  },
+  "storage": {
+    "npmCache": "E:\\Projects\\URDT\\.npm_cache",
+    "tmpDir": "E:\\Projects\\URDT\\CoreAgent\\tmp",
+    "modelsDir": "E:\\Projects\\URDT\\CoreAgent\\models",
+    "sandboxDir": "E:\\Projects\\URDT\\URDT_Sandbox",
+    "evidenceJson": "E:\\Projects\\URDT\\.harness\\failure_evidence.json",
+    "qaAuditReportHtml": "E:\\Projects\\URDT\\Docs\\QA_Audit_Report.html"
+  },
+  "dashcam": {
+    "bufferSize": 25,
+    "fps": 5,
+    "sampleIntervalMs": 200,
+    "resolution": { "width": 480, "height": 270 },
+    "jpegQuality": 60
+  }
+}

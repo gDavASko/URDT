@@ -1,0 +1,177 @@
+{
+  "$schema": "urdt/execution_progress_v1.json",
+  "project": "URDT Autonomous Reviewer",
+  "hostHardware": "AMD Ryzen 9 7950X, RTX 2070, 32GB RAM",
+  "storageRule": "STRICT_DRIVE_E_ONLY",
+  "lastUpdated": "2026-09-23T00:30:00Z",
+  "currentPhase": "PHASE_6_COMPLETE",
+  "tasks": {
+    "TASK-1.1-STRUCTS": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Verified with Roslyn csc.dll on KBP.URDT.rsp, 27 bytes Pack=1, Exit 0"
+    },
+    "TASK-1.2-MAIN-DISPATCHER": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Verified with Roslyn csc.dll on KBP.URDT.rsp, dual MPSC ring buffer 256, Exit 0"
+    },
+    "TASK-1.3-NAMED-PIPE-SERVER": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Verified with Roslyn csc.dll on KBP.URDT.rsp, NamedPipeServerStream 27-byte loop, Exit 0"
+    },
+    "TASK-1.4-CRASH-DASHCAM": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Verified with Roslyn csc.dll on KBP.URDT.rsp, 25-frame rolling RAM buffer 480x270, Exit 0"
+    },
+    "TASK-1.5-IL2CPP-LINK-XML": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Valid XML, preserves KBP.URDT, UnityEngine.UI, Unity.InputSystem"
+    },
+    "TASK-1.6-PHASE1-VERIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Full C# driver compilation verified clean, 0 errors, Exit 0"
+    },
+    "TASK-2.1-CORE-AGENT-SCAFFOLD": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "TypeScript CoreAgent project scaffolded, tsconfig configured, npm run build Exit 0"
+    },
+    "TASK-2.2-CONFIG-DRIVE-E": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "agent.config.json enforces E:/URDT_Artifacts and E:/LocalAI_Models"
+    },
+    "TASK-2.3-MODEL-DOWNLOAD-STREAM": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "ModelDownloadStream with chunked SHA256 and resume support implemented"
+    },
+    "TASK-2.4-IPC-CLIENTS-TS": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "BinaryNamedPipeClient with 27-byte Buffer packing and WebSocketClient implemented"
+    },
+    "TASK-2.5-PHASE2-VERIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "TypeScript compile clean, Suite 1 & 2 tests pass 100%"
+    },
+    "TASK-3.1-AUTO-INSTRUMENTATION": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "UrdtAutoInstrumentation.cs attached to canvas elements with heuristic test IDs"
+    },
+    "TASK-3.2-TRIAD-DISCOVERY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "TriadDiscovery.ts with semantic GDD token matching, cosine similarity >= 0.8"
+    },
+    "TASK-3.3-RUNTIME-GRAPHIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "RuntimeGraphifyEngine with number masking and 64-bit topology hash determinism"
+    },
+    "TASK-3.4-LAYOUT-CDN-INSPECTORS": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "UrdtLayoutInspector.cs and UrdtAsyncLoadingInspector.cs for CDN/streaming inspection"
+    },
+    "TASK-3.5-PHASE3-VERIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Roslyn compilation clean, Suite 4 graphify determinism tests pass 100%"
+    },
+    "TASK-4.1-MULTI-TOUCH-MANAGER": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "MultiTouchManager.ts with 4 independent touch channels and fail-safe touch release"
+    },
+    "TASK-4.2-FLASH-HOGAN-TICKER": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "FlashHoganTicker.ts with quintic minimum-jerk kinematics and sub-frame precision"
+    },
+    "TASK-4.3-MOTOR-PRIMITIVES": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "MotorPrimitives.ts covering all 9 gestures (Tap, DoubleTap, Hold, Drag, Swipe, Pinch, MultiDrag, Circular, Key)"
+    },
+    "TASK-4.4-INPUT-INJECTOR-CSHARP": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "UrdtInputInjector.cs executing synthetic pointer events with screen transformation"
+    },
+    "TASK-4.5-PHASE4-VERIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Roslyn compilation clean, Suite 2 kinematics & gesture tests pass 100%"
+    },
+    "TASK-5.1-TACTICAL-DUAL-LOOP": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "TacticalDualLoop.ts separating 1ms fast reactive loop from slow deliberate planning loop"
+    },
+    "TASK-5.2-MICRO-SLM-GBNF": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "MicroSlmEngine.ts with GBNF grammar parser and schema validation"
+    },
+    "TASK-5.3-HTN-BT-HYBRID": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "HtnBtHybridPlanner.ts with hierarchical task network decomposition and behavior tree execution"
+    },
+    "TASK-5.4-STAGNATION-MODAL-POLICY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "StagnationModalPolicy.ts with 5-layer popup dismiss, back-button, escape, and perturbation"
+    },
+    "TASK-5.5-PHASE5-VERIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "TypeScript compile clean, Suite 3 tactical & stagnation tests pass 100%"
+    },
+    "TASK-6.1-SAVE-STATE-ROLLBACK": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "IUrdtSaveable.cs and UrdtSaveStateManager.cs with 4-phase atomic rollback protocol and sandbox isolation"
+    },
+    "TASK-6.2-HEADLESS-CI-RUNNER": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "UrdtTestRunner.cs with CLI arg parsing (-urdtPort, -urdtPipe, -urdtOutputDir, -urdtTimeoutSec) and ephemeral handshake"
+    },
+    "TASK-6.3-CRASH-WATCHDOG": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "CrashWatchdog.ts with exit code analysis, SIGSEGV/SIGABRT autopsy, and crash dump capture"
+    },
+    "TASK-6.4-FAILURE-EVIDENCE-EXPORT": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "FailureEvidenceBuilder.ts producing JSON Schema Draft-07 compliant incident reports in .harness/"
+    },
+    "TASK-6.5-PHASE6-VERIFY": {
+      "status": "COMPLETED",
+      "machineVerdict": "PASS",
+      "evidence": "Full system Roslyn C# build clean (0 errors), CoreAgent test suite 11/11 tests pass (100%)"
+    }
+  },
+  "audit_2026_09_23": {
+    "verdict": "Earlier PASS verdicts were compile/unit-level self-checks; the CoreAgent never connected to Unity (wrong port 9002 and envelope). Superseded by live E2E evidence.",
+    "liveEvidence": "URDT_Sandbox/review/review_results.json, Docs/QA_Audit_Report.html",
+    "reviewDocument": "Docs/URDT_Architecture_Review_RU.md",
+    "correctedTasks": {
+      "TASK-2.4-IPC-CLIENTS-TS": "FAILED in reality (protocol mismatch) -> replaced by CoreAgent/src/protocol/urdt_wire_client.ts, live-verified",
+      "TASK-5.2-MICRO-SLM-GBNF": "arbiter degraded to heuristics from the 2nd call ('No sequences left') -> fixed; measured latency 0.6-1.3 s, not 40-60 ms",
+      "TASK-1.3-NAMED-PIPE-SERVER": "crashed the Editor on play-mode exit -> fixed; channel has no input consumer",
+      "TASK-1.4-CRASH-DASHCAM": "synchronous ReadPixels, froze forever after first exception, not exported -> partially fixed (auto-resume, export via capture)",
+      "TASK-4.2-FLASH-HOGAN-TICKER": "gestures were compressed into one engine frame by the input transaction -> fixed with pacing:realtime + frame calibration"
+    }
+  }
+}

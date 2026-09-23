@@ -1,0 +1,40 @@
+{
+  "name": "urdt-core-agent",
+  "version": "2.0.0",
+  "description": "Autonomous URDT Reviewer Core Agent (L1 Kinematics, L2 Tactics, LangGraph, Micro-SLM)",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "tsx test/urdt_test_suite.ts",
+    "download-models": "node scripts/download-models.js",
+    "test:reviewer": "tsx test/reviewer_units.ts",
+    "review": "tsx src/reviewer.ts",
+    "inventory": "tsx scripts/inventory.ts"
+  },
+  "keywords": [
+    "urdt",
+    "game-testing",
+    "autonomous-agent",
+    "unity",
+    "kinematics"
+  ],
+  "author": "DavASko URDT Team",
+  "license": "MIT",
+  "dependencies": {
+    "@langchain/core": "^0.3.15",
+    "@langchain/langgraph": "^0.2.20",
+    "node-llama-cpp": "^3.4.0",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "@types/ws": "^8.5.12",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}

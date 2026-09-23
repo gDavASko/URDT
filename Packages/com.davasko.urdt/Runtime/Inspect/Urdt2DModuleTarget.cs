@@ -63,6 +63,13 @@ namespace KBP.URDT.Inspect
             set { _progressNormalized = Mathf.Clamp01(value); }
         }
 
+        /// <summary>Live read-only snapshot of the gameplay component(s) on this object.</summary>
+        [TestInspectable]
+        public System.Collections.Generic.Dictionary<string, object> GameState
+        {
+            get { return UrdtLiveStateReader.Read(gameObject); }
+        }
+
         [TestInspectable]
         public float Score
         {

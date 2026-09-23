@@ -47,6 +47,10 @@ namespace KBP.URDT.Net
         public const string ACTION_PIN_FIXED_DELTA = "pin_fixed_delta";
         public const string ACTION_POINTER_DOWN = "pointer_down";
         public const string ACTION_POINTER_UP = "pointer_up";
+        public const string ACTION_INPUT_STATUS = "input_status";
+
+        /// <summary>Payload value of <c>pacing</c> that plays a gesture one pointer state per game frame.</summary>
+        public const string PACING_REALTIME = "realtime";
 
         /// <summary>Namespace prefix for game-provided arrange-only test seams (protocol §4.14).</summary>
         public const string CUSTOM_PREFIX = "custom:";

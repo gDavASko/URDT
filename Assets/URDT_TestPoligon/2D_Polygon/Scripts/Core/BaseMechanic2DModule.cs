@@ -38,6 +38,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             _isCompleted = false;
             _progressNormalized = 0f;
             Urdt2DBeaconUtility.InstrumentHierarchy(this);
+            Urdt2DEntityInstrumentation.Attach(this);
             OnProgressChanged?.Invoke(this, 0f);
         }
 

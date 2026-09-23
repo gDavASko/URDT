@@ -1,0 +1,646 @@
+
+## M01_SnapToSlot  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M01_SnapToSlot","Title":"Механика #1: Drag & Drop Snap-to-Slot","Instruction":"Перетащите подходящие геометрические детали в соответствующие пазы. Остерегайтесь бракованной детали (знак X)!","IsCompleted":false,"ProgressNormalized":0}
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=720,458 s=368x33   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1200,458 s=368x33   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=720,458 s=368x33   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,458 s=368x33   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Item_Junk_Defective          draggable                    c=645,375 s=128x128   ItemId=junk IsJunk=true IsLocked=false
+  Item_Triangle                draggable                    c=1065,375 s=128x128   ItemId=triangle IsJunk=false IsLocked=false
+  Item_Square                  draggable                    c=855,375 s=128x128   ItemId=square IsJunk=false IsLocked=false
+  Item_Circle                  draggable                    c=1275,375 s=128x128   ItemId=circle IsJunk=false IsLocked=false
+  ItemsSpawnTray               draggable                    c=960,375 s=930x128   
+  Obstacle_Barrier             area      obstacleBarrier    c=960,473 s=930x18   
+  Label_2                      text                         c=720,458 s=368x33  "Треугольник" 
+  Slot_Triangle                slot                         c=720,563 s=158x158   SlotId=triangle IsOccupied=false
+  Label_1                      text                         c=1200,458 s=368x33  "Квадрат" 
+  Slot_Square                  slot                         c=1200,563 s=158x158   SlotId=square IsOccupied=false
+  Label                        text                         c=960,458 s=368x33  "Круг" 
+  Slot_Circle                  slot                         c=960,563 s=158x158   SlotId=circle IsOccupied=false
+  SlotsTargetArea              slot                         c=960,563 s=840x158   
+  LocalInstruction             text                         c=960,669 s=1050x36  "Перетащите подходящие детали в пазы. Заполнено: 0 " 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+
+## M02_ContainerSorting  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M02_ContainerSorting","Title":"Механика #2: Сортировка по контейнерам (Bucket Sorting)","Instruction":"Разложите красные яблоки и синие ягоды в соответствующие корзины. Камень (X) не помещайте!","IsCompleted":false,"ProgressNormalized":0}
+  Label_1                      text                         c=735,455 s=435x33  "0/2" 
+  ContainersArea               slot                         c=960,570 s=900x188   
+  Bucket_Blue                  slot                         c=735,570 s=195x180   AcceptedTypeId=blue RequiredCount=2 CurrentCount=0 IsFull=false
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  Item_Berry_2                 draggable                    c=960,353 s=143x143   ItemTypeId=blue IsJunk=false IsDeposited=false
+  Item_Berry_1                 draggable                    c=1125,353 s=143x143   ItemTypeId=blue IsJunk=false IsDeposited=false
+  Item_Stone_Junk              draggable                    c=795,353 s=143x143   ItemTypeId=stone IsJunk=true IsDeposited=false
+  Obstacle_Barrier             area      obstacleBarrier    c=960,468 s=960x18   
+  Item_Apple_1                 draggable                    c=1290,353 s=143x143   ItemTypeId=red IsJunk=false IsDeposited=false
+  Bucket_Red                   slot                         c=1185,570 s=195x180   AcceptedTypeId=red RequiredCount=2 CurrentCount=0 IsFull=false
+  Label                        text                         c=1185,455 s=435x33  "0/2" 
+  LocalInstruction             text                         c=960,669 s=1050x36  "Разложите красные яблоки и синие ягоды в соответст" 
+  Item_Apple_2                 draggable                    c=630,353 s=143x143   ItemTypeId=red IsJunk=false IsDeposited=false
+
+## M03_WeightComparator  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M03_WeightComparator","Title":"Механика #3: Балансировка массы / Весовой компаратор","Instruction":"Уравновесьте весы. Наберите ровно 15 кг на правой чаше (10кг + 5кг). Избегайте гири-пустышки (X)!","IsCompleted":false,"ProgressNormalized":0}
+  LocalInstruction             text                         c=960,669 s=1050x36  "Уравновесьте весы: 15 кг слева против 0 кг справа." 
+  LeftPan                      slot                         c=757,456 s=225x143   PanId=left BaseMass=15 IsReferencePan=true AcceptsDrop=false CurrentMass=15
+  ScaleBeam                    area      beamTransform      c=960,585 s=553x210   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=745,493 s=117x110   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=778,394 s=411x164   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  MassLabel_5                  text                         c=1230,362 s=116x104  "<color=#FFAA44>0 кг</color>
+<size=11><color=#FF666" 
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Weight_3kg                   draggable                    c=1050,368 s=128x128   Mass=3 IsJunk=false
+  MassLabel_1                  text                         c=1220,538 s=411x164  "0 кг" 
+  ItemsAnchor_1                draggable                    c=1193,621 s=189x189   
+  MassLabel_4                  text                         c=1050,362 s=116x104  "<b>3 кг</b>" 
+  RightPan                     slot                         c=1200,600 s=225x143   PanId=right BaseMass=0 IsReferencePan=false AcceptsDrop=true CurrentMass=0
+  ItemsAnchor                  draggable                    c=750,477 s=189x189   
+  Label                        text                         c=745,493 s=117x110  "15 кг" 
+  Weight_10kg                  draggable                    c=690,368 s=128x128   Mass=10 IsJunk=false
+  MassLabel                    text                         c=778,394 s=411x164  "<b>15 кг</b>" 
+  Weight_Junk                  draggable                    c=1230,368 s=128x128   Mass=0 IsJunk=true
+  MassLabel_3                  text                         c=870,362 s=116x104  "<b>5 кг</b>" 
+  Weight_5kg                   draggable                    c=870,368 s=128x128   Mass=5 IsJunk=false
+  MassLabel_2                  text                         c=690,362 s=116x104  "<b>10 кг</b>" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1220,538 s=411x164   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=690,362 s=116x104   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=870,362 s=116x104   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1050,362 s=116x104   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#8 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1230,362 s=116x104   
+
+## M04_MultiLayerAttachment  rect={"x":42,"y":78,"w":1836,"h":804}  game={"CurrentStage":1,"CurrentInstalledLayer":0,"MechanicId":"M04_MultiLayerAttachment","Title":"Механика #4: Сборка многокомпонентной иерархии (2 Этапа)","Instruction":"Смонтируйте узлы робота: Этап 1: Ядро -> Броня. Этап 2: Шлем -> Энергоблок. Подсветка сокетов при захвате детали!","IsCompleted":false,"ProgressNormalized":0}
+  Socket_Battery               slot                         c=960,429 s=128x113   Stage=2 LayerIndex=4 RequiredPrerequisiteLayer=3 SlotName=Socket_Battery IsInstalled=false
+  ChassisStation               area      chassisBase        c=960,549 s=255x255   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1260,287 s=300x30   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Socket_Head                  slot                         c=960,677 s=143x143   Stage=2 LayerIndex=3 RequiredPrerequisiteLayer=2 SlotName=Socket_Head IsInstalled=false
+  Socket_Armor                 slot                         c=960,534 s=188x188   Stage=1 LayerIndex=2 RequiredPrerequisiteLayer=1 SlotName=Socket_Armor IsInstalled=false
+  PartLabel_2                  draggable                    c=1260,287 s=300x30   
+  LocalInstruction             text                         c=960,669 s=1050x36  "<b>Этап 1/2:</b> Смонтируйте базу робота (1. Ядро " 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=660,283 s=308x30   
+  Part_Core                    draggable                    c=660,368 s=128x128   Stage=1 LayerIndex=1 PartName=Энергоядро IsJunk=false IsLocked=false
+  Socket_Core                  slot                         c=960,534 s=135x135   Stage=1 LayerIndex=1 RequiredPrerequisiteLayer=0 SlotName=Socket_Core IsInstalled=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1260,287 s=300x30   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,272 s=330x30   
+  Part_Armor                   draggable                    c=960,368 s=150x150   Stage=1 LayerIndex=2 PartName=Бронекорпус IsJunk=false IsLocked=false
+  PartLabel_1                  draggable                    c=960,272 s=330x30   
+  Stage1Tray                   area      stage1Tray         c=960,368 s=930x128   
+  PartLabel                    draggable                    c=660,283 s=308x30   
+  Part_Junk1                   draggable                    c=1260,368 s=120x120   Stage=1 LayerIndex=99 PartName=Дефектный блок IsJunk=true IsLocked=false
+
+## M05_TimelineSequencer  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M05_TimelineSequencer","Title":"Механика #5: Сборка исполняемой очереди команд","Instruction":"Составьте маршрут: Вперед -> Поворот -> Вперед. Запустите программу кнопкой «ПУСК». Не ставьте фишку со сбоем (X)!","IsCompleted":false,"ProgressNormalized":0}
+  Avatar_Bot                   area      avatarTransform    c=660,630 s=96x96   
+  Goal_Flag                    area      goalTransform      c=870,525 s=96x96   
+  Label                        text                         c=1275,468 s=150x75  "ПУСК ▶" 
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Chip_Glitch_Junk             draggable                    c=1268,368 s=143x98   CommandType=Glitch CommandName=Сбой [X] IsJunk=true
+  LocalInstruction             text                         c=960,669 s=1050x36  "Соберите маршрут: 1. Вперед -> 2. Поворот -> 3. Вп" 
+  ChipsTray                    draggable                    c=960,368 s=900x98   
+  Chip_Fwd_2                   draggable                    c=1065,368 s=143x98   CommandType=Forward CommandName=Вперед ↓ IsJunk=false
+  Slot_0                       slot                         c=735,468 s=150x105   StepIndex=0 IsOccupied=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1275,468 s=150x75   
+  Slot_1                       slot                         c=915,468 s=150x105   StepIndex=1 IsOccupied=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  Button_Execute               button                       c=1275,468 s=150x75   
+  StepLabel_1                  text                         c=915,540 s=300x27  "#2" 
+  StepLabel_2                  text                         c=1095,540 s=300x27  "#3" 
+  Slot_2                       slot                         c=1095,468 s=150x105   StepIndex=2 IsOccupied=false
+  Chip_Turn                    draggable                    c=863,368 s=143x98   CommandType=Turn CommandName=Поворот ↷ IsJunk=false
+  StepLabel                    text                         c=735,540 s=300x27  "#1" 
+  Chip_Fwd_1                   draggable                    c=660,368 s=143x98   CommandType=Forward CommandName=Вперед → IsJunk=false
+
+## M06_NodePairing  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M06_NodePairing","Title":"Механика #6: Соединение графовых узлов эластичной связью","Instruction":"Соедините контакты одинакового цвета. Не замыкайте дефектную клемму (X)!","IsCompleted":false,"ProgressNormalized":0}
+  Pin_Tgt_C                    draggable                    c=1290,525 s=84x84   PairId=C IsSource=false IsJunk=false IsConnected=false
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  WiresContainer               slot                         c=960,480 s=1836x804   
+  Pin_Tgt_B                    draggable                    c=1290,615 s=84x84   PairId=B IsSource=false IsJunk=false IsConnected=false
+  Pin_Src_B                    draggable                    c=630,525 s=84x84   PairId=B IsSource=true IsJunk=false IsConnected=false
+  Pin_Tgt_A                    draggable                    c=1290,435 s=84x84   PairId=A IsSource=false IsJunk=false IsConnected=false
+  Pin_Src_A                    draggable                    c=630,615 s=84x84   PairId=A IsSource=true IsJunk=false IsConnected=false
+  Pin_Src_C                    draggable                    c=630,435 s=84x84   PairId=C IsSource=true IsJunk=false IsConnected=false
+  Pin_Src_Junk                 draggable                    c=630,345 s=84x84   PairId=Junk IsSource=true IsJunk=true IsConnected=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  LocalInstruction             text                         c=960,669 s=1050x36  "Протяните провода от левых клемм к парным правым. " 
+  Pin_Tgt_Junk                 draggable                    c=1290,345 s=84x84   PairId=Junk IsSource=false IsJunk=true IsConnected=false
+
+## M07_WobbleAndSnap  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M07_WobbleAndSnap","Title":"Механика #7: Преодоление сопротивления пружины (Wobble & Snap)","Instruction":"Наложите хирургические щипцы на зуб и раскачивайте его до ослабления связки, затем потяните вверх!","IsCompleted":false,"ProgressNormalized":0}
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,669 s=1050x36   
+  GumSocket                    slot                         c=960,428 s=255x113   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=450x27   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1320,611 s=450x30   
+  TrayLabel                    text                         c=1320,611 s=450x30  "ЛОТОК ИНСТРУМЕНТОВ" 
+  LocalInstruction             text                         c=960,669 s=1050x36  "Возьмите щипцы со столика справа и наложите их на " 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1320,611 s=450x30   
+  ToothItem                    draggable                    c=960,480 s=165x210   Fatigue=0 IsSnapped=false RequiresForceps=true IsForcepsAttached=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  FatigueBarFill               area      fatigueProgressBar c=960,624 s=450x27   
+  FatigueLabel                 text                         c=960,624 s=450x27  "Усталость связки: 0%" 
+  DentalForceps                draggable                    c=1305,480 s=143x285   IsAttached=false
+
+## M08_WaypointTracking  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M08_WaypointTracking","Title":"Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)","Instruction":"Проведите инструмент по линии распила строго по контрольным точкам. Не заденьте гвоздь (X)!","IsCompleted":false,"ProgressNormalized":0}
+  Waypoint_4                   area      waypointMarkers    c=1260,480 s=42x42   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  LocalInstruction             text                         c=960,669 s=1050x36  "Проведите пилу через контрольные точки 1 -> 5. Изб" 
+  Waypoint_2                   area      waypointMarkers    c=960,480 s=42x42   
+  Waypoint_3                   area      waypointMarkers    c=1110,480 s=42x42   
+  Waypoint_1                   area      waypointMarkers    c=810,480 s=42x42   
+  HazardKnot                   area      hazardObstacle     c=960,423 s=54x54   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  Waypoint_0                   area      waypointMarkers    c=660,480 s=42x42   
+  ToolSaw                      draggable                    c=660,495 s=113x113   
+
+## M09_CoverageAccumulator  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M09_CoverageAccumulator","Title":"Механика #9: Накопление покрытия / Стирание маски (Coverage Accumulator)","Instruction":"Сотрите пятна грязи губкой. Несмываемый скол (красный X) очистить невозможно.","IsCompleted":false,"ProgressNormalized":0}
+  DirtCell_3_0                 slot                         c=690,353 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_2_0                 slot                         c=690,435 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_3_1                 slot                         c=825,353 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_2_4                 slot                         c=1230,435 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_0_1                 slot                         c=825,600 s=113x72   IsCleaned=false IsPermanentHazard=false
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  DirtCell_2_1                 slot                         c=825,435 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_1_4                 slot                         c=1230,518 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_2_3                 slot                         c=1095,435 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_2_2                 slot                         c=960,435 s=113x72   IsCleaned=false IsPermanentHazard=false
+  LocalInstruction             text                         c=960,669 s=1050x36  "Возьмите губку и круговыми движениями сотрите гряз" 
+  DirtCell_1_2                 slot                         c=960,518 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_0_0                 slot                         c=690,600 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_1_3                 slot                         c=1095,518 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_0_2                 slot                         c=960,600 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_0_4                 slot                         c=1230,600 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_1_0                 slot                         c=690,518 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_1_1                 slot                         c=825,518 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_0_3                 slot                         c=1095,600 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_3_2                 slot                         c=960,353 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_3_3                 slot                         c=1095,353 s=113x72   IsCleaned=false IsPermanentHazard=false
+  DirtCell_3_4                 slot                         c=1230,353 s=113x72   IsCleaned=false IsPermanentHazard=true
+  ToolSponge                   draggable                    c=1305,480 s=120x120   BrushRadius=40
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,669 s=1050x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+
+## M10_TimedAccumulator  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M10_TimedAccumulator","Title":"Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)","Instruction":"Зажмите и удерживайте кнопку «НАКАЧКА». Отпустите в зелёном секторе (70-85%). Перекачка выше 90% приводит к взрыву!","IsCompleted":false,"ProgressNormalized":0}
+  LocalInstruction             text                         c=960,669 s=1050x36  "Зажмите кнопку «НАКАЧКА» и отпустите в зеленой зон" 
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,368 s=240x66   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,368 s=240x66   
+  GaugeNeedle                  area      needleTransform    c=921,518 s=122x85   
+  Label                        text                         c=960,368 s=240x66  "НАКАЧКА ▶" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,669 s=1050x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=1050x36   
+  ButtonPump                   area      interactive_zone   c=960,368 s=240x66   IsPressed=false
+
+## M11_ConeEmitter  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M11_ConeEmitter","Title":"Механика #11: Наведение конуса воздействия с деградацией HP цели (Cone Emitter)","Instruction":"Зажмите и направляйте струю огнетушителя на очаги пожара. Не попадайте на электрощит (молния)!","IsCompleted":false,"ProgressNormalized":0}
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Зажмите и направляйте струю на очаги огня. Остерег" 
+  FireTarget_3                 area      targets            c=1305,608 s=90x90   IsExtinguished=false CurrentHp=100
+  Obstacle_ElectricBox         area      electricHazardBox  c=1080,480 s=83x83   
+  Nozzle                       area      nozzleTransform    c=675,480 s=98x60   
+  FireTarget_1                 area      targets            c=1200,623 s=90x90   IsExtinguished=false CurrentHp=100
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  FireTarget_2                 area      targets            c=1200,338 s=90x90   IsExtinguished=false CurrentHp=100
+
+## M12_AngularDeltaTracker  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M12_AngularDeltaTracker","Title":"Механика #12: Трекер углового смещения (Angular Delta Tracker)","Instruction":"Вращайте рабочий вентиль слева. Заклинивший вентиль справа [X] не вращается!","IsCompleted":false,"ProgressNormalized":0}
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Valve_Jammed_Junk            area      interactive_zone   c=1140,480 s=225x225   IsJammed=true AccumulatedAngle=0
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  ProgressBarFill              area      progressFill       c=960,312 s=390x21   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Поверните рабочий вентиль слева на 2 полных оборот" 
+  Valve_Active                 area      interactive_zone   c=780,480 s=225x225   IsJammed=false AccumulatedAngle=0
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,618 s=360x45   
+
+## M13_LaneSwitcherRunner  rect={"x":42,"y":78,"w":1836,"h":804}  game={"ControlMode":"Swipe","MechanicId":"M13_LaneSwitcherRunner","Title":"Механика #13: Сдвиг по полосам — Свайпы (Lane Switcher: Swipe)","Instruction":"Свайпайте влево или вправо по экрану для смены полосы. Соберите 5 монет и избегайте барьеров [X]!","IsCompleted":false,"ProgressNormalized":0}
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  Barrier#5                    area      spawned:Barrier    c=960,549 s=105x45   
+  Coin#4                       area      spawned:Coin       c=750,549 s=60x60   
+  ScoreText                    text                         c=960,624 s=375x45  "Собрано: 0 / 5" 
+  PlayerAvatar                 area      playerAvatar       c=960,402 s=69x69   
+  SpawnContainer               slot                         c=960,507 s=630x315   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Свайпайте влево или вправо по экрану для смены пол" 
+
+## M14_SlingshotImpulser  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M14_SlingshotImpulser","Title":"Механика #14: Баллистический импульс с обратным вектором (Slingshot Impulser)","Instruction":"Оттяните снаряд назад и отпустите для выстрела. Сбейте 3 банки! Остерегайтесь колонны [X]!","IsCompleted":false,"ProgressNormalized":0}
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  ProjectileBall               area      interactive_zone   c=690,420 s=60x60   
+  SlingshotAnchor              area      slingshotAnchor    c=690,420 s=150x150   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Оттяните снаряд назад и отпустите для выстрела. Сб" 
+  TargetCan_2                  slot                         c=1275,465 s=68x83   IsObstacle=false IsHit=false
+  Obstacle_Pillar              area      obstaclePillar     c=1005,450 s=38x195   
+  ScoreText                    text                         c=960,624 s=375x45  "Сбито: 0 / 3" 
+  TargetCan_1                  slot                         c=1215,555 s=68x83   IsObstacle=false IsHit=false
+  TrajectoryDots               area      trajectoryDotsContainer c=960,480 s=1836x804   
+  TargetCan_3                  slot                         c=1215,375 s=68x83   IsObstacle=false IsHit=false
+
+## M15_TimingInterceptor  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M15_TimingInterceptor","Title":"Механика #15: Перехват объекта во временном окне допуска (Timing Interceptor)","Instruction":"Нажмите «ОТРАЗИТЬ» в момент прохода мяча через зеленую линию. Не отбивайте фантомы [X]!","IsCompleted":false,"ProgressNormalized":0}
+  Label_2                      text                         c=960,330 s=255x63  "ОТРАЗИТЬ ->" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,618 s=450x45   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Нажмите «ОТРАЗИТЬ» в момент прохода мяча через зел" 
+  MovingBall                   area      ballTransform      c=822,480 s=60x60   
+  InterceptorLine              area      interceptorLine    c=810,480 s=53x300   
+  StreakText                   text                         c=960,618 s=450x45  "Серия перехватов: 0 / 3" 
+  HitPaddle                    area      hitPaddle          c=810,516 s=45x120   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,330 s=255x63   
+  BtnIntercept                 button                       c=960,330 s=255x63   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,330 s=255x63   
+
+## M16_RhythmPhaseDetector  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M16_RhythmPhaseDetector","Title":"Механика #16: Синхронизация поочередных фаз движения (Rhythm Phase Detector)","Instruction":"Ритмично чередуйте: ЛЕВЫЙ -> ПРАВЫЙ рычаг (темп 0.3-1.1с). Не жмите средний сломанный [X]!","IsCompleted":false,"ProgressNormalized":0}
+  BtnLeftLever                 button                       c=735,390 s=165x98   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,663 s=975x36   
+  BtnRightLever                button                       c=1185,390 s=165x98   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#8 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,390 s=135x83   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Label_4                      text                         c=960,390 s=135x83  "[X] СЛОМАН" 
+  BeatsText                    text                         c=960,624 s=450x36  "Ритм-такт: 0 / 8" 
+  Label_3                      text                         c=1185,390 s=165x98  "ПРАВЫЙ" 
+  LocalInstruction             text                         c=960,663 s=975x36  "Ритмично чередуйте: ЛЕВЫЙ -> ПРАВЫЙ рычаг (темп 0." 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1185,390 s=165x98   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#9 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,390 s=135x83   
+  BtnJunkLever                 button                       c=960,390 s=135x83   
+  TankFill                     area      tankFill           c=960,582 s=450x30   
+  Label_2                      text                         c=735,390 s=165x98  "ЛЕВЫЙ" 
+  MetronomeTick                area      metronomeTick      c=960,533 s=15x66   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=450x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=735,390 s=165x98   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=735,390 s=165x98   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#6 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1185,390 s=165x98   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,663 s=975x36   
+
+## M17_TugOfWarBalance  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M17_TugOfWarBalance","Title":"Механика #17: Аккумулятор интенсивности ввода с диссипацией (Tug-of-War Balance)","Instruction":"Быстро тапайте «ТЯНИ!», чтобы перетянуть канат в зону победы. Не жмите скользкий узел [X]!","IsCompleted":false,"ProgressNormalized":0.270526052}
+  BtnSlipHazard                button                       c=1155,383 s=180x66   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=795,383 s=240x78   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#8 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=450x45   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1155,383 s=180x66   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Быстро тапайте «ТЯНИ!», чтобы перетянуть канат в з" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#7 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,624 s=450x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  BalanceText                  text                         c=960,624 s=450x45  "Баланс сил: 25% (Цель: 92%)" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=795,383 s=240x78   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1155,383 s=180x66   
+  RopeVisual                   area      ropeVisual         c=945,540 s=690x39   
+  Label_2                      text                         c=795,383 s=240x78  "ТЯНИ! ▶" 
+  RopeMarker                   area      ropeMarker         c=825,540 s=33x66   
+  BalanceBarFill               area      balanceFill        c=960,615 s=510x24   
+  BtnPull                      button                       c=795,383 s=240x78   
+  Label_3                      text                         c=1155,383 s=180x66  "[X] УЗЕЛ" 
+
+## M18_GraphFlowClosure  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M18_GraphFlowClosure","Title":"Механика #18: Дискретный поворот топологического узла (BFS Graph Flow Closure)","Instruction":"Кликайте по трубам для поворота. Соедините Источник (слева-сверху) с Приемником (справа-снизу)!","IsCompleted":false,"ProgressNormalized":0}
+  PipeTile_1_2                 area      interactive_zone   c=960,335 s=102x102   GridX=1 GridY=2 Type=BrokenJunk HasWater=false
+  PipeTile_0_0                 area      interactive_zone   c=852,551 s=102x102   GridX=0 GridY=0 Type=Source HasWater=true
+  StatusText                   text                         c=960,624 s=525x36  "Заполнено узлов: 2 / 9 (Вариант #5)" 
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  PipeTile_1_1                 area      interactive_zone   c=960,443 s=102x102   GridX=1 GridY=1 Type=Corner HasWater=false
+  PipeTile_2_2                 area      interactive_zone   c=1068,335 s=102x102   GridX=2 GridY=2 Type=Sink HasWater=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  PipeTile_1_0                 area      interactive_zone   c=960,551 s=102x102   GridX=1 GridY=0 Type=Corner HasWater=true
+  PipeTile_2_1                 area      interactive_zone   c=1068,443 s=102x102   GridX=2 GridY=1 Type=Corner HasWater=false
+  LocalInstruction             text                         c=960,666 s=1080x36  "Кликайте по трубам для поворота. Соедините Источни" 
+  PipeTile_2_0                 area      interactive_zone   c=1068,551 s=102x102   GridX=2 GridY=0 Type=Corner HasWater=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=525x36   
+  PipesGrid                    area      interactive_zone   c=960,443 s=360x360   
+  PipeTile_0_1                 area      interactive_zone   c=852,443 s=102x102   GridX=0 GridY=1 Type=Straight HasWater=false
+  PipeTile_0_2                 area      interactive_zone   c=852,335 s=102x102   GridX=0 GridY=2 Type=Corner HasWater=false
+
+## M19_FloodFillColoring  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M19_FloodFillColoring","Title":"Механика #19: Присвоение идентификатора сегменту маски (Tag / Flood Fill)","Instruction":"Выберите цвет в палитре и раскрасьте сегменты по эталону. Не используйте грязь [X]!","IsCompleted":false,"ProgressNormalized":0}
+  BtnRed                       button                       c=750,342 s=75x75   
+  EtalonPanel                  slot                         c=1305,503 s=195x255   
+  BtnMudJunk                   button                       c=1170,342 s=75x75   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Preview_4                    area      etalonPreviews     c=1347,455 s=75x60   
+  Segment_2                    area      interactive_zone   c=1058,563 s=165x135   ExpectedColorId=2 CurrentColorId=0 IsCorrect=false
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  BtnGreen                     button                       c=855,342 s=75x75   
+  Preview_1                    area      etalonPreviews     c=1263,527 s=75x60   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1305,596 s=180x39   
+  Preview_2                    area      etalonPreviews     c=1347,527 s=75x60   
+  Preview_3                    area      etalonPreviews     c=1263,455 s=75x60   
+  Segment_3                    area      interactive_zone   c=863,443 s=165x135   ExpectedColorId=4 CurrentColorId=0 IsCorrect=false
+  LocalInstruction             text                         c=960,666 s=1080x36  "Выберите цвет в палитре и раскрасьте сегменты по э" 
+  ActiveColorIndicator         area      activeColorIndicator c=1275,342 s=45x45   
+  BtnYellow                    button                       c=1065,342 s=75x75   
+  BtnBlue                      button                       c=960,342 s=75x75   
+  Segment_1                    area      interactive_zone   c=863,563 s=165x135   ExpectedColorId=1 CurrentColorId=0 IsCorrect=false
+  Segment_4                    area      interactive_zone   c=1058,443 s=165x135   ExpectedColorId=3 CurrentColorId=0 IsCorrect=false
+  EtalonTitle                  text                         c=1305,596 s=180x39  "ЭТАЛОН" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1305,596 s=180x39   
+
+## M20_VerticalStacking  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M20_VerticalStacking","Title":"Механика #20: Своевременный сброс с проверкой устойчивости (Vertical Stacking)","Instruction":"Нажмите «СБРОСИТЬ БЛОК» в момент пролета над башней. Постройте башню из 3 блоков!","IsCompleted":false,"ProgressNormalized":0}
+  ActiveBlock                  area      activeBlock        c=1061,578 s=165x68   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Нажмите «СБРОСИТЬ БЛОК» в момент пролета над башне" 
+  BtnDrop                      button                       c=960,323 s=270x57   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,323 s=270x57   
+  BasePlatform                 area      basePlatform       c=960,383 s=300x60   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  StackText                    text                         c=960,624 s=375x36  "Блоков в башне: 0 / 3" 
+  Label_2                      text                         c=960,323 s=270x57  "СБРОСИТЬ БЛОК" 
+  SwingingArm                  area      swingingArm        c=1061,608 s=24x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,323 s=270x57   
+
+## M21_ReactionProbe  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M21_ReactionProbe","Title":"Механика #21: Реакция на фазовый триггер поклевки (Reaction Time Probe)","Instruction":"Ждите поклёвки (знак «!» и рывок поплавка вниз) и моментально жмите «ПОДСЕЧЬ»!","IsCompleted":false,"ProgressNormalized":0}
+  Bobber                       area      bobber             c=960,471 s=60x98   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  ScoreText                    text                         c=960,624 s=375x45  "Поймано: 0 / 2" 
+  JunkBoot                     area      junkBoot           c=1163,435 s=90x90   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,357 s=240x57   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  Label_2                      text                         c=960,357 s=240x57  "ПОДСЕЧЬ! ->" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,357 s=240x57   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Внимание на поплавок... Ждите поклёвки (знак «!») " 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  BtnStrike                    button                       c=960,357 s=240x57   
+
+## M22_GridPathfinding  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M22_GridPathfinding","Title":"Механика #22: Навигация сущности по дискретной тайловой сетке (Grid Pathfinding)","Instruction":"Нажимайте на соседние доступные ячейки, чтобы довести робота до зеленого флага!","IsCompleted":false,"ProgressNormalized":0}
+  Tile_2_1                     area      interactive_zone   c=960,509 s=60x60   CellX=2 CellY=1 CellType=ObstacleWall
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Tile_3_0                     area      interactive_zone   c=1026,575 s=60x60   CellX=3 CellY=0 CellType=Walkable
+  Tile_4_1                     area      interactive_zone   c=1092,509 s=60x60   CellX=4 CellY=1 CellType=Walkable
+  Tile_2_0                     area      interactive_zone   c=960,575 s=60x60   CellX=2 CellY=0 CellType=Walkable
+  Tile_3_1                     area      interactive_zone   c=1026,509 s=60x60   CellX=3 CellY=1 CellType=ObstacleWall
+  Tile_0_1                     area      interactive_zone   c=828,509 s=60x60   CellX=0 CellY=1 CellType=Walkable
+  LocalInstruction             text                         c=960,666 s=1080x36  "Нажимайте на соседние доступные ячейки, чтобы дове" 
+  Tile_0_0                     area      interactive_zone   c=828,575 s=60x60   CellX=0 CellY=0 CellType=Walkable
+  Tile_1_1                     area      interactive_zone   c=894,509 s=60x60   CellX=1 CellY=1 CellType=GlitchTrapHazard
+  Tile_4_0                     area      interactive_zone   c=1092,575 s=60x60   CellX=4 CellY=0 CellType=Goal
+  GridContainer                slot                         c=960,443 s=360x360   
+  Tile_1_0                     area      interactive_zone   c=894,575 s=60x60   CellX=1 CellY=0 CellType=Walkable
+  Tile_0_2                     area      interactive_zone   c=828,443 s=60x60   CellX=0 CellY=2 CellType=Walkable
+  Tile_1_2                     area      interactive_zone   c=894,443 s=60x60   CellX=1 CellY=2 CellType=Walkable
+  Tile_2_2                     area      interactive_zone   c=960,443 s=60x60   CellX=2 CellY=2 CellType=Walkable
+  Tile_3_2                     area      interactive_zone   c=1026,443 s=60x60   CellX=3 CellY=2 CellType=Walkable
+  Tile_4_2                     area      interactive_zone   c=1092,443 s=60x60   CellX=4 CellY=2 CellType=Walkable
+  Tile_0_3                     area      interactive_zone   c=828,377 s=60x60   CellX=0 CellY=3 CellType=Walkable
+  Tile_1_3                     area      interactive_zone   c=894,377 s=60x60   CellX=1 CellY=3 CellType=ObstacleWall
+  Tile_2_3                     area      interactive_zone   c=960,377 s=60x60   CellX=2 CellY=3 CellType=ObstacleWall
+  Tile_3_3                     area      interactive_zone   c=1026,377 s=60x60   CellX=3 CellY=3 CellType=Walkable
+  Tile_4_3                     area      interactive_zone   c=1092,377 s=60x60   CellX=4 CellY=3 CellType=Walkable
+  Tile_0_4                     area      interactive_zone   c=828,311 s=60x60   CellX=0 CellY=4 CellType=Walkable
+  Tile_1_4                     area      interactive_zone   c=894,311 s=60x60   CellX=1 CellY=4 CellType=Walkable
+  Tile_2_4                     area      interactive_zone   c=960,311 s=60x60   CellX=2 CellY=4 CellType=Walkable
+  Tile_3_4                     area      interactive_zone   c=1026,311 s=60x60   CellX=3 CellY=4 CellType=Walkable
+  Tile_4_4                     area      interactive_zone   c=1092,311 s=60x60   CellX=4 CellY=4 CellType=Walkable
+  RobotAvatar                  area      robotAvatar        c=828,311 s=54x54   
+  StepText                     text                         c=960,624 s=450x36  "Шаги: 0 | Позиция: (0,4)" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,624 s=450x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=450x36   
+
+## M23_StencilReveal  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M23_StencilReveal","Title":"Механика #23: Пространственная фильтрация триггеров лучом/окном (Stencil Reveal)","Instruction":"Перемещайте лупу по области, находите скрытые кристаллы и удерживайте 2 сек для сбора!","IsCompleted":false,"ProgressNormalized":0}
+  ScoreText                    text                         c=960,624 s=420x36  "Найдено: 0 / 3" 
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  HiddenGem_1                  slot                         c=735,503 s=75x75   IsJunkDust=false IsCollected=false
+  StencilLens                  area      lensTransform      c=960,443 s=195x195   
+  LocalInstruction             text                         c=960,666 s=1080x36  "<color=#00FFFF>Изучение кристалла... Удержание: 1," 
+  DarkSearchArea               area      darkSearchArea     c=960,443 s=750x315   
+  HiddenGem_3                  slot                         c=900,375 s=90x90   IsJunkDust=false IsCollected=false
+  JunkDust                     slot                         c=1125,383 s=75x75   IsJunkDust=true IsCollected=false
+  HiddenGem_2                  slot                         c=1170,488 s=75x75   IsJunkDust=false IsCollected=false
+  ProgressRing                 area      lensProgressRing   c=960,443 s=177x177   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=420x36   
+
+## M24_TargetElimination  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M24_TargetElimination","Title":"Механика #24: Прямое поражение движущихся точечных целей (Target Elimination)","Instruction":"Кликайте по всплывающим мыльным пузырям (лопните 6 шт). Не трогайте красные бомбы [X]!","IsCompleted":false,"ProgressNormalized":0}
+  PoppableTarget               area      PoppableTarget     c=883,429 s=98x98   IsHazardBomb=true IsPopped=false
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,624 s=375x45   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Кликайте по всплывающим мыльным пузырям (лопните 6" 
+  SpawnContainer               slot                         c=960,473 s=825x390   
+  PoppableTarget_1             area      PoppableTarget     c=745,245 s=98x98   IsHazardBomb=false IsPopped=false
+  ScoreText                    text                         c=960,624 s=375x45  "Лопнуто: 0 / 6" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x45   
+
+## M25_LaneSwitcherTapHalves  rect={"x":42,"y":78,"w":1836,"h":804}  game={"ControlMode":"HalfScreenTap","MechanicId":"M25_LaneSwitcherTapHalves","Title":"Механика #25: Сдвиг по полосам — Тапы по половинам (Lane Switcher: Half Taps)","Instruction":"Нажимайте на левую или правую половину экрана для смены полосы. Соберите 5 монет и избегайте барьеров [X]!","IsCompleted":false,"ProgressNormalized":0}
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  SpawnContainer               slot                         c=960,495 s=630x390   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Нажимайте на левую или правую половину экрана для " 
+  Coin#4                       area      spawned:Coin       c=1170,541 s=60x60   
+  Barrier#5                    area      spawned:Barrier    c=750,541 s=105x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x45   
+  ScoreText                    text                         c=960,624 s=375x45  "Собрано: 0 / 5" 
+  PlayerAvatar                 area      playerAvatar       c=960,360 s=75x75   
+
+## M26_LaneSwitcherDirectDrag  rect={"x":42,"y":78,"w":1836,"h":804}  game={"ControlMode":"DirectDrag","MechanicId":"M26_LaneSwitcherDirectDrag","Title":"Механика #26: Сдвиг по полосам — Вождение приёмника (Lane Switcher: Drag)","Instruction":"Зажмите приёмник и ведите его влево-вправо мышкой. Соберите 5 монет и избегайте барьеров [X]!","IsCompleted":false,"ProgressNormalized":0}
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  PlayerAvatar                 area      playerAvatar       c=960,360 s=75x75   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Зажмите приёмник и ведите его влево-вправо мышкой." 
+  SpawnContainer               slot                         c=960,495 s=630x390   
+  ScoreText                    text                         c=960,624 s=375x45  "Собрано: 0 / 5" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  Coin#4                       area      spawned:Coin       c=750,542 s=60x60   
+
+## M27_PhysicsCarHills  rect={"x":42,"y":78,"w":1836,"h":804}  game={"IsAirborne":false,"MechanicId":"M27_PhysicsCarHills","Title":"Механика #27: Машинка с холмиками с физикой (Physics Car on Hills)","Instruction":"Преодолейте холмистую трассу! Зажимайте ГАЗ / ТОРМОЗ (или клавиши A/D / стрелки).","IsCompleted":false,"ProgressNormalized":0}
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1860,529 s=69x33   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  DistanceText                 text                         c=1692,848 s=300x39  "Дистанция: 0 / 2400 м" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,806 s=630x39   
+  InstructionText              text                         c=960,806 s=630x39  "Зажимайте ГАЗ (D) / ТОРМОЗ (A). В воздухе управляй" 
+  TrackContainer               slot                         c=1110,469 s=4500x450   
+  Text                         text                         c=1860,529 s=69x33  "500м" 
+  SpeedometerText              text                         c=228,848 s=300x39  "Скорость: 0 км/ч" 
+  CarRoot                      area      carRoot            c=810,448 s=120x60   
+  Chassis                      area      chassis            c=810,466 s=111x39   
+  RearWheel                    area      interactive_zone   c=765,448 s=48x48   
+  FrontWheel                   area      interactive_zone   c=855,448 s=48x48   
+  BtnBrake                     button                       c=189,168 s=210x66   
+  Label_2                      text                         c=189,168 s=210x66  "ТОРМОЗ (A)" 
+  BtnGas                       button                       c=1731,168 s=210x66   
+  Label_3                      text                         c=1731,168 s=210x66  "ГАЗ (D)" 
+  ProgressBarFill              area      progressBarFill    c=960,141 s=390x21   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=228,848 s=300x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=228,848 s=300x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1692,848 s=300x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,806 s=630x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1692,848 s=300x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#11 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=189,168 s=210x66   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#12 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=189,168 s=210x66   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#13 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1731,168 s=210x66   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#14 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1731,168 s=210x66   
+
+## M28_DualBridgeRoute  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M28_DualBridgeRoute","Title":"Механика #28: Построение маршрута с мостиками (Dual Bridge Route)","Instruction":"Перетащите исправные мостики в провалы путей и нажмите 'ПУСК'. Остерегайтесь сломанного мостика [X]!","IsCompleted":false,"ProgressNormalized":0}
+  GoalA                        area      goalA              c=1260,633 s=66x66   
+  Slot_Inv_1                   slot                         c=720,348 s=174x48   
+  SlotBLabel                   slot                         c=960,510 s=165x36   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  ToolboxHeader                draggable                    c=960,384 s=750x24   
+  EntityA                      area      entityA            c=615,593 s=69x69   
+  EntityB                      area      entityB            c=615,488 s=69x69   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=840,593 s=165x36   
+  BridgeToolbox                draggable                    c=960,360 s=795x84   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,510 s=165x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,510 s=165x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#6 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,384 s=750x24   
+  GoalB                        area      goalB              c=1260,552 s=66x66   
+  PlatformA_Start              area      progressFill       c=615,593 s=210x36   
+  Plank_2                      draggable                    c=960,348 s=165x39   BridgeId=2 IsBroken=false InitialPosition={"x":0,"y":0}
+  SlotB                        slot                         c=960,510 s=165x36   
+  SlotLabel                    slot                         c=720,348 s=174x48   
+  SlotLabel_1                  slot                         c=960,348 s=174x48   
+  Plank_1                      draggable                    c=720,348 s=165x39   BridgeId=1 IsBroken=false InitialPosition={"x":0,"y":0}
+  PlankLabel                   draggable                    c=720,348 s=165x39   
+  Slot_Inv_2                   slot                         c=960,348 s=174x48   
+  Plank_Broken_Junk            draggable                    c=1200,348 s=165x39   BridgeId=3 IsBroken=true InitialPosition={"x":0,"y":0}
+  SlotLabel_2                  slot                         c=1200,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,669 s=975x33   
+  Label_2                      text                         c=960,432 s=240x51  "ПУСК >>" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=840,593 s=165x36   
+  SlotALabel                   slot                         c=840,593 s=165x36   
+  LocalInstruction             text                         c=960,669 s=975x33  "Установите оба мостика в разрывы путей (установлен" 
+  SlotA                        slot                         c=840,593 s=165x36   
+  PlankLabel_1                 draggable                    c=960,348 s=165x39   
+  Slot_Inv_3                   slot                         c=1200,348 s=174x48   
+  PlankLabel_2                 draggable                    c=1200,348 s=165x39   
+  BtnStart                     button                       c=960,432 s=240x51   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#7 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,384 s=750x24   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#8 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=720,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#9 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=720,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#10 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=720,348 s=165x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#11 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=720,348 s=165x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#12 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#13 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#14 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,348 s=165x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#15 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,348 s=165x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#16 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1200,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#17 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1200,348 s=174x48   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#18 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1200,348 s=165x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#19 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1200,348 s=165x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#20 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,432 s=240x51   
+
+## M29_ContourCutting  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M29_ContourCutting","Title":"Механика #29: Вырезание по контуру (Contour Scissor Cutting)","Instruction":"Ведите ножницами вдоль пунктирного контура звезды. Не выходите за пределы допуска!","IsCompleted":false,"ProgressNormalized":0}
+  StarPart_2                   draggable                    c=960,498 s=276x276   
+  Point_0                      area      vertexDotVisuals   c=1140,498 s=27x27   
+  Segment_2                    area      interactive_zone   c=1044,610 s=89x36   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Segment_8                    area      interactive_zone   c=821,478 s=86x46   
+  StarPart_1                   draggable                    c=960,498 s=195x195   
+  Segment_4                    area      interactive_zone   c=940,637 s=46x86   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1215,498 s=120x39   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Зажмите инструмент в точке СТАРТ и ведите вдоль пу" 
+  Text                         text                         c=1215,498 s=120x39  "СТАРТ ▶" 
+  Segment_0                    area      interactive_zone   c=1099,518 s=87x48   
+  Segment_1                    area      interactive_zone   c=1072,582 s=36x89   
+  Segment_6                    area      interactive_zone   c=848,582 s=36x89   
+  Segment_5                    area      interactive_zone   c=876,610 s=89x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1215,498 s=120x39   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  Point_7                      area      vertexDotVisuals   c=863,538 s=21x21   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  Segment_3                    area      interactive_zone   c=980,637 s=46x86   
+  Segment_11                   area      interactive_zone   c=940,359 s=46x86   
+  Point_3                      area      vertexDotVisuals   c=1000,595 s=21x21   
+  Segment_15                   area      interactive_zone   c=1099,478 s=86x46   
+  Segment_14                   area      interactive_zone   c=1072,414 s=36x89   
+  Point_8                      area      vertexDotVisuals   c=780,498 s=21x21   
+  Point_15                     area      vertexDotVisuals   c=1057,458 s=21x21   
+  Point_11                     area      vertexDotVisuals   c=920,401 s=21x21   
+  ProgressText                 text                         c=960,624 s=375x39  "Вырезано: 0%" 
+  ContourContainer             slot                         c=960,498 s=510x510   
+  CutShapeVisual               area      cutShapeVisual     c=960,498 s=300x300   
+  Point_6                      area      vertexDotVisuals   c=833,625 s=21x21   
+  StartBadge                   area      startBadge         c=1215,498 s=120x39   
+  Point_14                     area      vertexDotVisuals   c=1087,371 s=21x21   
+  ProgressBarFill              area      progressFill       c=960,312 s=390x21   
+  Segment_7                    area      interactive_zone   c=821,518 s=86x46   
+  Segment_9                    area      interactive_zone   c=848,414 s=36x89   
+  Segment_10                   area      interactive_zone   c=876,386 s=89x36   
+  Segment_12                   area      interactive_zone   c=980,359 s=46x86   
+  Segment_13                   area      interactive_zone   c=1044,386 s=89x36   
+  Point_1                      area      vertexDotVisuals   c=1057,538 s=21x21   
+  Point_2                      area      vertexDotVisuals   c=1087,625 s=21x21   
+  Point_4                      area      vertexDotVisuals   c=960,678 s=21x21   
+  Point_5                      area      vertexDotVisuals   c=920,595 s=21x21   
+  Point_9                      area      vertexDotVisuals   c=863,458 s=21x21   
+  Point_10                     area      vertexDotVisuals   c=833,371 s=21x21   
+  Point_12                     area      vertexDotVisuals   c=960,318 s=21x21   
+  Point_13                     area      vertexDotVisuals   c=1000,401 s=21x21   
+  ScissorTool                  draggable                    c=1140,498 s=88x88   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x39   
+
+## M30_CharacterDressUp  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M30_CharacterDressUp","Title":"Механика #30: Одевание персонажа (Character Dress-Up)","Instruction":"Перетащите элементы экипировки на силуэт робота. Бракованный хлам [X] не подходит!","IsCompleted":false,"ProgressNormalized":0}
+  LocalInstruction             text                         c=960,666 s=1080x36  "Перетащите элементы экипировки на силуэт робота. Б" 
+  Slot_Feet                    slot                         c=795,375 s=83x68   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Item_Accessory               draggable                    c=1238,450 s=68x68   SlotType=Accessory IsJunk=false IsEquipped=false
+  WardrobePanel                slot                         c=1155,473 s=315x330   
+  Slot_Head                    slot                         c=795,570 s=78x78   
+  Slot_Body                    slot                         c=795,488 s=98x98   
+  Item_Body                    draggable                    c=1238,540 s=72x72   SlotType=Body IsJunk=false IsEquipped=false
+  Item_Head                    draggable                    c=1073,540 s=72x72   SlotType=Head IsJunk=false IsEquipped=false
+  Slot_Accessory               slot                         c=885,488 s=68x68   
+  ProgressBarFill              area      progressFill       c=960,353 s=375x21   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x39   
+  CharacterSilhouette          area      characterSilhouette c=795,473 s=240x330   
+  Item_Feet                    draggable                    c=1073,450 s=68x68   SlotType=Feet IsJunk=false IsEquipped=false
+  Item_Junk                    draggable                    c=1155,360 s=68x68   SlotType=Junk IsJunk=true IsEquipped=false
+  ProgressText                 text                         c=960,624 s=375x39  "Экипировано: 0 / 4" 
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+
+## M31_LiquidFilling  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M31_LiquidFilling","Title":"Механика #31: Заполнение лунок раствором (3-Well Solution Dispensing)","Instruction":"Перемещайте раствороподатчик над лунками по очереди (1 → 2 → 3), чтобы заполнить их раствором!","IsCompleted":false,"ProgressNormalized":0}
+  WellLabel_2                  text                         c=1163,527 s=150x30  "Лунка 3" 
+  WellsContainer               slot                         c=960,443 s=675x225   
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  Well_2                       area      wellRoots          c=960,443 s=114x144   
+  PercentText_1                text                         c=960,401 s=120x33  "0%" 
+  LiquidFill                   area      liquidFills        c=758,443 s=102x132   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Перемещайте раствороподатчик над лунками по очеред" 
+  WellLabel                    text                         c=758,527 s=150x30  "Лунка 1" 
+  GlowRing                     area      glowRings          c=758,443 s=120x150   
+  LiquidFill_2                 area      liquidFills        c=1163,443 s=102x132   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  Well_1                       area      wellRoots          c=758,443 s=114x144   
+  WellLabel_1                  text                         c=960,527 s=150x30  "Лунка 2" 
+  NozzleTip                    area      nozzleTip          c=758,533 s=150x150   
+  GlowRing_2                   area      glowRings          c=1163,443 s=120x150   
+  LiquidFill_1                 area      liquidFills        c=960,443 s=102x132   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#3 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=758,527 s=150x30   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#6 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,527 s=150x30   
+  Well_3                       area      wellRoots          c=1163,443 s=114x144   
+  SocketBg_2                   slot                         c=1163,443 s=114x144   
+  SocketBg                     slot                         c=758,443 s=114x144   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,666 s=1080x36   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#9 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,618 s=375x39   
+  PercentText                  text                         c=758,401 s=120x33  "0%" 
+  SocketBg_1                   slot                         c=960,443 s=114x144   
+  GlowRing_1                   area      glowRings          c=960,443 s=120x150   
+  PercentText_2                text                         c=1163,401 s=120x33  "0%" 
+  DispenserTool                draggable                    c=758,585 s=69x105   
+  ProgressText                 text                         c=960,618 s=375x39  "Заполнено лунок: 0 / 3" 
+  ProgressBarFill              area      progressFill       c=960,312 s=390x21   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#4 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=758,527 s=150x30   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#5 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=960,527 s=150x30   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1]#7 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas + LiberationSans SDF Atlas 1] c=1163,527 s=150x30   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#8 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=1163,527 s=150x30   
+
+## M32_AirplaneStarGlider  rect={"x":42,"y":78,"w":1836,"h":804}  game={"MechanicId":"M32_AirplaneStarGlider","Title":"Механика #32: Полет самолетика со сбором звездочек (Airplane Star Glider)","Instruction":"Ведите курсором вверх/вниз для управления самолетиком. Соберите 5 звезд и избегайте туч [X]!","IsCompleted":false,"ProgressNormalized":0}
+  window_2d_suite              window                       c=960,503 s=1872x981   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#1 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,666 s=1080x36   
+  ProgressBarFill              area      progressFill       c=960,353 s=375x21   
+  LocalInstruction             text                         c=960,666 s=1080x36  "Ведите курсором вверх/вниз для управления самолети" 
+  Star_0                       area      activeStars        c=740,581 s=51x51   
+  FlightContainer              slot                         c=960,498 s=930x315   
+  Star_2                       area      activeStars        c=1160,588 s=51x51   
+  StarsCountText               text                         c=960,624 s=375x39  "Звезды: 0 / 5" 
+  Star_4                       area      activeStars        c=1580,558 s=51x51   
+  AirplaneRoot                 area      airplaneRoot       c=690,498 s=75x48   
+  StormCloud_1                 area      activeClouds       c=1331,566 s=69x45   
+  TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]#2 area      spawned:TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas] c=960,624 s=375x39   
+  Star_1                       area      activeStars        c=950,431 s=51x51   
+  Star_3                       area      activeStars        c=1370,468 s=51x51   
+  CloudsContainer              slot                         c=960,498 s=930x315   
+  StarsContainer               slot                         c=960,498 s=930x315   
+  StormCloud_0                 area      activeClouds       c=911,453 s=69x45   

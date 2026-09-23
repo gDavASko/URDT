@@ -48,14 +48,14 @@ namespace KBP.URDT.Inspect
         [TestInspectable]
         public bool IsJunk
         {
-            get { return _isJunk; }
+            get { return UrdtLiveStateReader.ReadBool(gameObject, _isJunk, "IsJunk", "IsBroken", "IsJunkDust", "IsHazardBomb"); }
             set { _isJunk = value; }
         }
 
         [TestInspectable]
         public bool IsSnapped
         {
-            get { return _isSnapped; }
+            get { return UrdtLiveStateReader.ReadBool(gameObject, _isSnapped, "IsLocked", "IsSnapped", "IsInstalled", "IsAttached", "IsEquipped", "IsConnected", "IsDeposited"); }
             set { _isSnapped = value; }
         }
 
@@ -64,6 +64,13 @@ namespace KBP.URDT.Inspect
         {
             get { return _isDragging; }
             set { _isDragging = value; }
+        }
+
+        /// <summary>Live read-only snapshot of the gameplay component(s) on this object.</summary>
+        [TestInspectable]
+        public System.Collections.Generic.Dictionary<string, object> GameState
+        {
+            get { return UrdtLiveStateReader.Read(gameObject); }
         }
 
         [TestInspectable]

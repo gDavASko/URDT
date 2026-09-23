@@ -220,6 +220,8 @@ namespace KBP.URDT.Inspect
                 _commands = ParseCommandString(_supportedCommands);
                 _supportedCommands = string.Empty;
             }
+
+            KBP.URDT.Registry.UrdtBeaconDiscovery.NotifyAwake(this);
         }
 
         protected virtual void OnValidate()

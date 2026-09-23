@@ -42,14 +42,14 @@ namespace KBP.URDT.Inspect
         [TestInspectable]
         public bool IsOccupied
         {
-            get { return _isOccupied; }
+            get { return UrdtLiveStateReader.ReadBool(gameObject, _isOccupied, "IsOccupied", "IsFull"); }
             set { _isOccupied = value; }
         }
 
         [TestInspectable]
         public int CurrentCount
         {
-            get { return _currentCount; }
+            get { return UrdtLiveStateReader.ReadInt(gameObject, _currentCount, "CurrentCount"); }
             set { _currentCount = value; }
         }
 
@@ -58,6 +58,13 @@ namespace KBP.URDT.Inspect
         {
             get { return _requiredCount; }
             set { _requiredCount = value; }
+        }
+
+        /// <summary>Live read-only snapshot of the gameplay component(s) on this object.</summary>
+        [TestInspectable]
+        public System.Collections.Generic.Dictionary<string, object> GameState
+        {
+            get { return UrdtLiveStateReader.Read(gameObject); }
         }
 
         [TestInspectable]

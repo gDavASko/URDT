@@ -38,6 +38,25 @@ namespace KBP.URDT.Inspect
             set { _areaId = value; }
         }
 
+        /// <summary>Live read-only snapshot of the gameplay component(s) on this object.</summary>
+        [TestInspectable]
+        public System.Collections.Generic.Dictionary<string, object> GameState
+        {
+            get { return UrdtLiveStateReader.Read(gameObject); }
+        }
+
+        /// <summary>Tint of the object's graphic — the colour cue a human player sees (e.g. a red decoy).</summary>
+        [TestInspectable]
+        public string ColorHex
+        {
+            get
+            {
+                return TryGetComponent(out UnityEngine.UI.Graphic graphic)
+                    ? ColorUtility.ToHtmlStringRGBA(graphic.color)
+                    : string.Empty;
+            }
+        }
+
         [TestInspectable]
         public string AreaType
         {

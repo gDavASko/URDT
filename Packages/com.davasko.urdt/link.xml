@@ -1,0 +1,13 @@
+<linker>
+  <!-- Must match the Unity asmdef name used by this package. -->
+  <assembly fullname="KBP.URDT" preserve="all"/>
+  <assembly fullname="UnityEngine.UI" preserve="all">
+    <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all"/>
+    <type fullname="UnityEngine.UI.CanvasScaler" preserve="all"/>
+    <type fullname="UnityEngine.EventSystems.PointerEventData" preserve="all"/>
+  </assembly>
+  <assembly fullname="Unity.InputSystem" preserve="all">
+    <type fullname="UnityEngine.InputSystem.Touchscreen" preserve="all"/>
+    <type fullname="UnityEngine.InputSystem.LowLevel.TouchState" preserve="all"/>
+  </assembly>
+</linker>

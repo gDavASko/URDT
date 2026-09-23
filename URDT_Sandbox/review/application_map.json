@@ -1,0 +1,757 @@
+{
+  "generatedAt": "2026-09-23T00:19:44.712Z",
+  "nodes": {
+    "window_2d_suite": {
+      "id": "window_2d_suite",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": null,
+      "buttons": [
+        "btn_2d_back",
+        "btn_2d_catalog_main_menu",
+        "btn_2d_run_sequential",
+        "btn_launch_m01",
+        "btn_launch_m02",
+        "btn_launch_m03",
+        "btn_launch_m04",
+        "btn_launch_m05",
+        "btn_launch_m06",
+        "btn_launch_m07",
+        "btn_launch_m08",
+        "btn_launch_m09",
+        "btn_launch_m10",
+        "btn_launch_m11",
+        "btn_launch_m12",
+        "btn_launch_m13",
+        "btn_launch_m14",
+        "btn_launch_m15",
+        "btn_launch_m16",
+        "btn_launch_m17",
+        "btn_launch_m18",
+        "btn_launch_m19",
+        "btn_launch_m20",
+        "btn_launch_m21",
+        "btn_launch_m22",
+        "btn_launch_m23",
+        "btn_launch_m24",
+        "btn_launch_m25",
+        "btn_launch_m26",
+        "btn_launch_m27",
+        "btn_launch_m28",
+        "btn_launch_m29",
+        "btn_launch_m30",
+        "btn_launch_m31",
+        "btn_launch_m32"
+      ],
+      "firstSeen": "2026-09-23T00:08:57.002Z"
+    },
+    "window_main_menu": {
+      "id": "window_main_menu",
+      "windows": [
+        "window_main_menu"
+      ],
+      "module": null,
+      "buttons": [
+        "btn_open_2d_suite",
+        "btn_open_3d_suite",
+        "btn_open_integration_suite",
+        "btn_open_ui_suite",
+        "btn_run_all_suites"
+      ],
+      "firstSeen": "2026-09-23T00:08:57.426Z"
+    },
+    "window_3d_suite": {
+      "id": "window_3d_suite",
+      "windows": [
+        "window_3d_suite"
+      ],
+      "module": null,
+      "buttons": [
+        "btn_3d_back",
+        "btn_3d_full_cycle",
+        "btn_3d_single"
+      ],
+      "firstSeen": "2026-09-23T00:08:59.068Z"
+    },
+    "window_integration_suite": {
+      "id": "window_integration_suite",
+      "windows": [
+        "window_integration_suite"
+      ],
+      "module": null,
+      "buttons": [
+        "btn_integration_back",
+        "btn_integration_full_cycle",
+        "btn_integration_single"
+      ],
+      "firstSeen": "2026-09-23T00:08:59.802Z"
+    },
+    "window_ui_suite": {
+      "id": "window_ui_suite",
+      "windows": [
+        "window_ui_suite"
+      ],
+      "module": null,
+      "buttons": [
+        "btn_ui_back",
+        "ui.btn_clear_canvas",
+        "ui.btn_draw",
+        "ui.modal_button",
+        "ui.primary_button",
+        "ui.reset_button"
+      ],
+      "firstSeen": "2026-09-23T00:09:00.541Z"
+    },
+    "window_2d_suite#M03_WeightComparator": {
+      "id": "window_2d_suite#M03_WeightComparator",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M03_WeightComparator",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:09:44.927Z"
+    },
+    "window_2d_suite#M04_MultiLayerAttachment": {
+      "id": "window_2d_suite#M04_MultiLayerAttachment",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M04_MultiLayerAttachment",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:09:51.865Z"
+    },
+    "window_2d_suite#M05_TimelineSequencer": {
+      "id": "window_2d_suite#M05_TimelineSequencer",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M05_TimelineSequencer",
+      "buttons": [
+        "Button_Execute",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:03.495Z"
+    },
+    "window_2d_suite#M06_NodePairing": {
+      "id": "window_2d_suite#M06_NodePairing",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M06_NodePairing",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:14.480Z"
+    },
+    "window_2d_suite#M07_WobbleAndSnap": {
+      "id": "window_2d_suite#M07_WobbleAndSnap",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M07_WobbleAndSnap",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:24.280Z"
+    },
+    "window_2d_suite#M08_WaypointTracking": {
+      "id": "window_2d_suite#M08_WaypointTracking",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M08_WaypointTracking",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:31.545Z"
+    },
+    "window_2d_suite#M09_CoverageAccumulator": {
+      "id": "window_2d_suite#M09_CoverageAccumulator",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M09_CoverageAccumulator",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:37.347Z"
+    },
+    "window_2d_suite#M10_TimedAccumulator": {
+      "id": "window_2d_suite#M10_TimedAccumulator",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M10_TimedAccumulator",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:51.797Z"
+    },
+    "window_2d_suite#M11_ConeEmitter": {
+      "id": "window_2d_suite#M11_ConeEmitter",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M11_ConeEmitter",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:10:57.791Z"
+    },
+    "window_2d_suite#M12_AngularDeltaTracker": {
+      "id": "window_2d_suite#M12_AngularDeltaTracker",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M12_AngularDeltaTracker",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:11:04.775Z"
+    },
+    "window_2d_suite#M13_LaneSwitcherRunner": {
+      "id": "window_2d_suite#M13_LaneSwitcherRunner",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M13_LaneSwitcherRunner",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_full_cycle",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset",
+        "btn_2d_single"
+      ],
+      "firstSeen": "2026-09-23T00:11:11.234Z"
+    },
+    "window_2d_suite#M14_SlingshotImpulser": {
+      "id": "window_2d_suite#M14_SlingshotImpulser",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M14_SlingshotImpulser",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:11:22.269Z"
+    },
+    "window_2d_suite#M15_TimingInterceptor": {
+      "id": "window_2d_suite#M15_TimingInterceptor",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M15_TimingInterceptor",
+      "buttons": [
+        "BtnIntercept",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:07.084Z"
+    },
+    "window_2d_suite#M16_RhythmPhaseDetector": {
+      "id": "window_2d_suite#M16_RhythmPhaseDetector",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M16_RhythmPhaseDetector",
+      "buttons": [
+        "BtnJunkLever",
+        "BtnLeftLever",
+        "BtnRightLever",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:18.084Z"
+    },
+    "window_2d_suite#M17_TugOfWarBalance": {
+      "id": "window_2d_suite#M17_TugOfWarBalance",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M17_TugOfWarBalance",
+      "buttons": [
+        "BtnPull",
+        "BtnSlipHazard",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:25.756Z"
+    },
+    "window_2d_suite#M18_GraphFlowClosure": {
+      "id": "window_2d_suite#M18_GraphFlowClosure",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M18_GraphFlowClosure",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:33.443Z"
+    },
+    "window_2d_suite#M19_FloodFillColoring": {
+      "id": "window_2d_suite#M19_FloodFillColoring",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M19_FloodFillColoring",
+      "buttons": [
+        "BtnBlue",
+        "BtnGreen",
+        "BtnMudJunk",
+        "BtnRed",
+        "BtnYellow",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:37.602Z"
+    },
+    "window_2d_suite#M20_VerticalStacking": {
+      "id": "window_2d_suite#M20_VerticalStacking",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M20_VerticalStacking",
+      "buttons": [
+        "BtnDrop",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:41.849Z"
+    },
+    "window_2d_suite#M21_ReactionProbe": {
+      "id": "window_2d_suite#M21_ReactionProbe",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M21_ReactionProbe",
+      "buttons": [
+        "BtnStrike",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:12:54.008Z"
+    },
+    "window_2d_suite#M22_GridPathfinding": {
+      "id": "window_2d_suite#M22_GridPathfinding",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M22_GridPathfinding",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:13:04.139Z"
+    },
+    "window_2d_suite#M23_StencilReveal": {
+      "id": "window_2d_suite#M23_StencilReveal",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M23_StencilReveal",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:13:09.737Z"
+    },
+    "window_2d_suite#M24_TargetElimination": {
+      "id": "window_2d_suite#M24_TargetElimination",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M24_TargetElimination",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:13:25.370Z"
+    },
+    "window_2d_suite#M25_LaneSwitcherTapHalves": {
+      "id": "window_2d_suite#M25_LaneSwitcherTapHalves",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M25_LaneSwitcherTapHalves",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:13:34.580Z"
+    },
+    "window_2d_suite#M26_LaneSwitcherDirectDrag": {
+      "id": "window_2d_suite#M26_LaneSwitcherDirectDrag",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M26_LaneSwitcherDirectDrag",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:13:45.527Z"
+    },
+    "window_2d_suite#M27_PhysicsCarHills": {
+      "id": "window_2d_suite#M27_PhysicsCarHills",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M27_PhysicsCarHills",
+      "buttons": [
+        "BtnBrake",
+        "BtnGas",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:13:56.448Z"
+    },
+    "window_2d_suite#M28_DualBridgeRoute": {
+      "id": "window_2d_suite#M28_DualBridgeRoute",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M28_DualBridgeRoute",
+      "buttons": [
+        "BtnStart",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:14:09.891Z"
+    },
+    "window_2d_suite#M29_ContourCutting": {
+      "id": "window_2d_suite#M29_ContourCutting",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M29_ContourCutting",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:14:20.407Z"
+    },
+    "window_2d_suite#M30_CharacterDressUp": {
+      "id": "window_2d_suite#M30_CharacterDressUp",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M30_CharacterDressUp",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:14:32.584Z"
+    },
+    "window_2d_suite#M31_LiquidFilling": {
+      "id": "window_2d_suite#M31_LiquidFilling",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M31_LiquidFilling",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:14:43.128Z"
+    },
+    "window_2d_suite#M32_AirplaneStarGlider": {
+      "id": "window_2d_suite#M32_AirplaneStarGlider",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M32_AirplaneStarGlider",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:14:57.883Z"
+    },
+    "window_2d_suite#M01_SnapToSlot": {
+      "id": "window_2d_suite#M01_SnapToSlot",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M01_SnapToSlot",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:15:44.169Z"
+    },
+    "window_2d_suite#M02_ContainerSorting": {
+      "id": "window_2d_suite#M02_ContainerSorting",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "module": "M02_ContainerSorting",
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "firstSeen": "2026-09-23T00:15:53.146Z"
+    }
+  },
+  "edges": [
+    {
+      "from": "window_2d_suite",
+      "to": "window_main_menu",
+      "via": "btn_2d_catalog_main_menu",
+      "clicks": 4
+    },
+    {
+      "from": "window_main_menu",
+      "to": "window_2d_suite",
+      "via": "btn_open_2d_suite",
+      "clicks": 6
+    },
+    {
+      "from": "window_main_menu",
+      "to": "window_3d_suite",
+      "via": "btn_open_3d_suite",
+      "clicks": 2
+    },
+    {
+      "from": "window_3d_suite",
+      "to": "window_main_menu",
+      "via": "btn_3d_back",
+      "clicks": 2
+    },
+    {
+      "from": "window_main_menu",
+      "to": "window_integration_suite",
+      "via": "btn_open_integration_suite",
+      "clicks": 2
+    },
+    {
+      "from": "window_integration_suite",
+      "to": "window_main_menu",
+      "via": "btn_integration_back",
+      "clicks": 2
+    },
+    {
+      "from": "window_main_menu",
+      "to": "window_ui_suite",
+      "via": "btn_open_ui_suite",
+      "clicks": 4
+    },
+    {
+      "from": "window_ui_suite",
+      "to": "window_main_menu",
+      "via": "btn_ui_back",
+      "clicks": 4
+    },
+    {
+      "from": "window_2d_suite#M09_CoverageAccumulator",
+      "to": "window_2d_suite",
+      "via": "btn_2d_play_catalog",
+      "clicks": 2
+    },
+    {
+      "from": "window_2d_suite#M12_AngularDeltaTracker",
+      "to": "window_2d_suite",
+      "via": "btn_2d_play_catalog",
+      "clicks": 1
+    },
+    {
+      "from": "window_2d_suite#M23_StencilReveal",
+      "to": "window_2d_suite",
+      "via": "btn_2d_play_catalog",
+      "clicks": 1
+    },
+    {
+      "from": "window_2d_suite#M31_LiquidFilling",
+      "to": "window_2d_suite",
+      "via": "btn_2d_play_catalog",
+      "clicks": 2
+    },
+    {
+      "from": "window_2d_suite#M01_SnapToSlot",
+      "to": "window_2d_suite",
+      "via": "btn_2d_play_catalog",
+      "clicks": 1
+    },
+    {
+      "from": "window_2d_suite#M02_ContainerSorting",
+      "to": "window_2d_suite",
+      "via": "btn_2d_play_catalog",
+      "clicks": 1
+    }
+  ],
+  "structuralDefects": []
+}
