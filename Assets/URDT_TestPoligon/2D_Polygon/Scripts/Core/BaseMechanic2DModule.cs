@@ -186,14 +186,19 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         {
             RectTransform parent = self != null ? self.parent as RectTransform : null;
             if (parent == null) return preferred;
-            for (int ring = 0; ring < 14; ring++)
+            // Pass 1: inside the parent (a tray). Pass 2: a full container may have no room left — then the nearest
+            // free spot next to it is better than lying on top of another object.
+            for (int pass = 0; pass < 2; pass++)
             {
-                int steps = ring == 0 ? 1 : ring * 8;
-                for (int k = 0; k < steps; k++)
+                for (int ring = 0; ring < 14; ring++)
                 {
-                    float ang = k * Mathf.PI * 2f / steps;
-                    Vector2 cand = preferred + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * (ring * minDistance * 0.5f);
-                    if (IsFreeSpot(parent, self, cand, minDistance) && !IsReserved(reserved, cand, minDistance)) return cand;
+                    int steps = ring == 0 ? 1 : ring * 8;
+                    for (int k = 0; k < steps; k++)
+                    {
+                        float ang = k * Mathf.PI * 2f / steps;
+                        Vector2 cand = preferred + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * (ring * minDistance * 0.5f);
+                        if (IsFreeSpot(parent, self, cand, minDistance, pass == 0) && !IsReserved(reserved, cand, minDistance)) return cand;
+                    }
                 }
             }
             return preferred;
@@ -206,11 +211,11 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             return false;
         }
 
-        private static bool IsFreeSpot(RectTransform parent, RectTransform self, Vector2 pos, float minDistance)
+        private static bool IsFreeSpot(RectTransform parent, RectTransform self, Vector2 pos, float minDistance, bool insideParent = true)
         {
             Rect r = parent.rect;
             Vector2 local = pos;   // anchoredPosition ≈ локальная позиция при центральных якорях
-            if (r.width > 0f && (local.x < r.xMin + minDistance * 0.4f || local.x > r.xMax - minDistance * 0.4f
+            if (insideParent && r.width > 0f && (local.x < r.xMin + minDistance * 0.4f || local.x > r.xMax - minDistance * 0.4f
                 || local.y < r.yMin + minDistance * 0.4f || local.y > r.yMax - minDistance * 0.4f)) return false;
             for (int i = 0; i < parent.childCount; i++)
             {

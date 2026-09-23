@@ -240,15 +240,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
                     if (deltaX > 0f) MoveRight();
                     else MoveLeft();
 
+                    // Один жест — одна полоса: дальнейшее движение того же жеста игнорируется до отпускания.
+                    // (Раньше каждые 38 px считались новым свайпом, и обычный свайп перебрасывал сразу к краю —
+                    // средняя полоса была недостижима.)
                     _swipeTriggered = true;
-                    _pointerDownPos = eventData.position;
-                }
-                else if (_swipeTriggered && Mathf.Abs(deltaX) >= threshold)
-                {
-                    // Позволяет делать повторные свайпы без отпускания пальца/мыши
-                    if (deltaX > 0f) MoveRight();
-                    else MoveLeft();
-                    _pointerDownPos = eventData.position;
                 }
             }
             else if (_controlMode == RunnerControlMode.DirectDrag)
