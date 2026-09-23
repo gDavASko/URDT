@@ -55,3 +55,10 @@ sysinfo.txt
 node_modules/
 /.npm_cache/
 /CoreAgent/tmp/
+
+# URDT L3 local sense models and llama.cpp binaries (fetch with CoreAgent/scripts/fetch_models.sh)
+/CoreAgent/models/*.gguf
+/CoreAgent/models/*.onnx
+/CoreAgent/tools/
+# L3 task outputs (result.json, screenshots) — task definitions (*.json at the top level) stay tracked
+/URDT_Sandbox/tasks/*/
