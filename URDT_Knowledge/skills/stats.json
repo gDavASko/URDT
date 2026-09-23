@@ -13,27 +13,27 @@
     }
   },
   "program_sequencer": {
-    "runs": 7,
-    "ok": 7,
-    "ms": 140622,
-    "lastRun": 1790190833517,
-    "lastOk": 1790190833517,
+    "runs": 8,
+    "ok": 8,
+    "ms": 158104,
+    "lastRun": 1790195037944,
+    "lastOk": 1790195037944,
     "byContext": {
       "M05_TimelineSequencer": {
-        "runs": 7,
-        "ok": 7
+        "runs": 8,
+        "ok": 8
       }
     }
   },
   "rotate_wheel": {
-    "runs": 3,
+    "runs": 4,
     "ok": 0,
-    "ms": 46072,
-    "lastRun": 1790190969835,
+    "ms": 59996,
+    "lastRun": 1790195764065,
     "lastOk": 0,
     "byContext": {
       "M12_AngularDeltaTracker": {
-        "runs": 3,
+        "runs": 4,
         "ok": 0
       }
     }
@@ -74,6 +74,58 @@
       "M16_RhythmPhaseDetector": {
         "runs": 1,
         "ok": 1
+      }
+    }
+  },
+  "balance_scale": {
+    "runs": 1,
+    "ok": 0,
+    "ms": 9079,
+    "lastRun": 1790194710216,
+    "lastOk": 0,
+    "byContext": {
+      "M03_WeightComparator": {
+        "runs": 1,
+        "ok": 0
+      }
+    }
+  },
+  "wobble_extract": {
+    "runs": 1,
+    "ok": 0,
+    "ms": 54883,
+    "lastRun": 1790195148504,
+    "lastOk": 0,
+    "byContext": {
+      "M07_WobbleAndSnap": {
+        "runs": 1,
+        "ok": 0
+      }
+    }
+  },
+  "spray_targets": {
+    "runs": 1,
+    "ok": 0,
+    "ms": 3356,
+    "lastRun": 1790195688337,
+    "lastOk": 0,
+    "byContext": {
+      "M11_ConeEmitter": {
+        "runs": 1,
+        "ok": 0
+      }
+    }
+  },
+  "lane_runner": {
+    "runs": 3,
+    "ok": 2,
+    "ms": 208200,
+    "lastRun": 1790196204394,
+    "lastOk": 1790196204394,
+    "byContext": {
+      "M13_LaneSwitcherRunner": {
+        "runs": 3,
+        "ok": 2
       }
     }
   }

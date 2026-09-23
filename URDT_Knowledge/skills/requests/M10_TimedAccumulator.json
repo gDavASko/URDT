@@ -1,0 +1,608 @@
+{
+  "module": "M10_TimedAccumulator",
+  "goal": "Complete every stage of M10_TimedAccumulator",
+  "createdAt": "2026-09-23T20:34:18.228Z",
+  "realtime": false,
+  "instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+  "design": "## M10 — «Точный манометр»\r\n\r\n### Питч\r\nИгрок работает ручным насосом: удерживая кнопку, накачивает давление и должен отпустить её строго в зелёной зоне манометра. Каждый следующий этап делает зелёную зону всё уже.\r\n\r\n### Цель\r\nОтпустить кнопку «НАКАЧКА» так, чтобы стрелка остановилась в целевом диапазоне.\r\n\r\n### Управление\r\nОдна кнопка — «НАКАЧКА». Пока её удерживают, давление растёт; когда отпускают — плавно стравливается.\r\n\r\n### Основные правила\r\n- При удержании кнопки давление растёт со скоростью, зависящей от этапа.\r\n- При отпускании давление медленно падает. Можно снова зажать и «подрулить» стрелкой.\r\n- Успех — отпустить в зелёной зоне. Перебор при отпускании или срабатывание предохранительного клапана — провал.\r\n\r\n### Объекты\r\n- Манометр со стрелкой.\r\n- Кнопка «НАКАЧКА».\r\n- Цифровой индикатор давления в процентах.\r\n\r\n### Этапы\r\n| Этап | Зелёная зона | Скорость накачки | Клапан срывает при |\r\n|------|--------------|-------------------|--------------------|\r\n| 1/3  | 70–85%       | средняя           | 92% |\r\n| 2/3  | 75–82%       | быстрее           | 90% |\r\n| 3/3  | 78–82%       | ещё быстрее       | 88% |\r\n\r\n### Провалы и последствия\r\n- **Взрыв клапана**: если во время удержания давление превысило порог этапа — этап провален, стрелка возвращается на 0.\r\n- **Перебор при отпускании**: отпустили выше верхней границы зелёной зоны — этап провален.\r\n- **Недобор** (отпустили ниже нижней границы) — мягкая ошибка: показывается предупреждение, давление стравливается, можно попробовать ещё раз без сброса этапа.\r\n\r\nПри провале — короткая пауза и перезапуск этапа с нуля.\r\n\r\n### Тексты и обратная связь\r\n- Инструкция сверху пересобирается на каждый этап и указывает целевой диапазон.\r\n- Цвет цифры давления становится зелёным, когда стрелка внутри целевой зоны.\r\n- Успех: «Идеально (NN%). Этап N/3 пройден!».\r\n- Взрыв: «Взрыв клапана: давление превысило NN%.»\r\n- Перебор: «Перебор давления: NN% (нужно ≤ NN%).»\r\n\r\n### Крайние случаи\r\n- Отпустить кнопку при 0% нельзя (недобор в чистом виде) — просто ничего не происходит и остаётся предупреждение.\r\n- Если игрок сразу перекачивает — этап моментально провалится, что и должно случиться.",
+  "state": {
+    "keys": [
+      "StageCount",
+      "TargetMin",
+      "TargetMax",
+      "BlowoutThreshold",
+      "CurrentValue",
+      "MechanicId",
+      "Title",
+      "Instruction",
+      "IsCompleted",
+      "ProgressNormalized",
+      "CurrentStage",
+      "FailCount",
+      "LastFailReason",
+      "IsInTransition"
+    ],
+    "changingWithoutInput": [],
+    "samples": [
+      {
+        "t": 227,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 445,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 663,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 886,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1100,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1318,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1542,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1762,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1988,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2213,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2431,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2650,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2871,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 3099,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 3311,
+        "state": {
+          "StageCount": 3,
+          "TargetMin": 0.75,
+          "TargetMax": 0.82,
+          "BlowoutThreshold": 0.9,
+          "CurrentValue": 0,
+          "MechanicId": "M10_TimedAccumulator",
+          "Title": "Механика #10: Временной интегратор с контролем диапазона (Timed Accumulator)",
+          "Instruction": "Этап 2/3: узкая зона 75–82%. Клапан срабатывает раньше!",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.333333343,
+          "CurrentStage": 2,
+          "FailCount": 6,
+          "LastFailReason": "Взрыв клапана: давление превысило 90%.",
+          "IsInTransition": false
+        },
+        "moving": {}
+      }
+    ]
+  },
+  "beacons": [
+    {
+      "id": "window_2d_suite",
+      "kind": "window",
+      "center": [
+        960,
+        503
+      ],
+      "size": [
+        1872,
+        981
+      ],
+      "game": {}
+    },
+    {
+      "id": "LocalInstruction",
+      "kind": "text",
+      "center": [
+        960,
+        669
+      ],
+      "size": [
+        1050,
+        36
+      ],
+      "game": {}
+    },
+    {
+      "id": "Label",
+      "kind": "text",
+      "center": [
+        960,
+        368
+      ],
+      "size": [
+        240,
+        66
+      ],
+      "game": {}
+    },
+    {
+      "id": "ButtonPump",
+      "kind": "area",
+      "role": "interactive_zone",
+      "center": [
+        960,
+        368
+      ],
+      "size": [
+        240,
+        66
+      ],
+      "game": {
+        "IsPressed": false
+      }
+    },
+    {
+      "id": "GaugeNeedle",
+      "kind": "area",
+      "role": "needleTransform",
+      "center": [
+        921,
+        518
+      ],
+      "size": [
+        122,
+        85
+      ],
+      "game": {}
+    }
+  ],
+  "attempts": [
+    {
+      "t": 1790195576466,
+      "step": "explorer:hold ButtonPump 3200ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195583442,
+      "step": "explorer:stagnation consult #1 (screenshot + 6 failed attempts)",
+      "outcome": "vision after stagnation: Increase gauge to at least 75% by pressing the 'НАКАЧКА' button until the needle enters the green zone."
+    },
+    {
+      "t": 1790195584794,
+      "step": "explorer:hold GaugeNeedle 800ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195586996,
+      "step": "explorer:hold GaugeNeedle 1600ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195589764,
+      "step": "explorer:hold GaugeNeedle 2200ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195592860,
+      "step": "explorer:hold GaugeNeedle 2500ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195596618,
+      "step": "explorer:hold GaugeNeedle 3200ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195596619,
+      "step": "explorer:escalate to tier 1",
+      "outcome": "taps and drags"
+    },
+    {
+      "t": 1790195596922,
+      "step": "explorer:tap ButtonPump",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195597194,
+      "step": "explorer:tap GaugeNeedle",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195597194,
+      "step": "explorer:escalate to tier 2",
+      "outcome": "holds, dwell drags, traces, scrubs, rotations"
+    },
+    {
+      "t": 1790195597194,
+      "step": "explorer:escalate to tier 3",
+      "outcome": "rhythm, mashing"
+    },
+    {
+      "t": 1790195597198,
+      "step": "universal explorer (21 actions)",
+      "outcome": "goal not reached"
+    },
+    {
+      "t": 1790195600291,
+      "step": "explorer:FAIL after \"vision step 1: hold ButtonPump 2500ms (The gauge is at 0% and needs to reach 75% minimum. The 'НАКА)\"",
+      "outcome": "Взрыв клапана: давление превысило 90%."
+    },
+    {
+      "t": 1790195600291,
+      "step": "explorer:vision step 1: hold ButtonPump 2500ms (The gauge is at 0% and needs to reach 75% minimum. The 'НАКА)",
+      "outcome": "penalty -26.0"
+    },
+    {
+      "t": 1790195601673,
+      "step": "explorer:hold ButtonPump 800ms",
+      "outcome": "penalty -2.0"
+    },
+    {
+      "t": 1790195605233,
+      "step": "explorer:hold ButtonPump 1600ms",
+      "outcome": "reward +2.5 (progress 0.43→0.56)"
+    },
+    {
+      "t": 1790195611496,
+      "step": "explorer:FAIL after \"hold ButtonPump 2200ms\"",
+      "outcome": "Взрыв клапана: давление превысило 90%."
+    },
+    {
+      "t": 1790195611496,
+      "step": "explorer:hold ButtonPump 2200ms",
+      "outcome": "penalty -30.5"
+    },
+    {
+      "t": 1790195612882,
+      "step": "explorer:hold ButtonPump 800ms",
+      "outcome": "penalty -1.9"
+    },
+    {
+      "t": 1790195616384,
+      "step": "explorer:hold ButtonPump 1600ms",
+      "outcome": "reward +2.3 (progress 0.44→0.55)"
+    },
+    {
+      "t": 1790195622447,
+      "step": "explorer:FAIL after \"hold ButtonPump 2500ms\"",
+      "outcome": "Взрыв клапана: давление превысило 90%."
+    },
+    {
+      "t": 1790195622447,
+      "step": "explorer:hold ButtonPump 2500ms",
+      "outcome": "penalty -30.4"
+    },
+    {
+      "t": 1790195623831,
+      "step": "explorer:hold ButtonPump 800ms",
+      "outcome": "penalty -2.3"
+    },
+    {
+      "t": 1790195627088,
+      "step": "explorer:hold ButtonPump 1600ms",
+      "outcome": "reward +2.7 (progress 0.42→0.56)"
+    },
+    {
+      "t": 1790195633605,
+      "step": "explorer:FAIL after \"hold ButtonPump 3200ms\"",
+      "outcome": "Взрыв клапана: давление превысило 90%."
+    },
+    {
+      "t": 1790195633605,
+      "step": "explorer:hold ButtonPump 3200ms",
+      "outcome": "penalty -34.5"
+    },
+    {
+      "t": 1790195634986,
+      "step": "explorer:hold ButtonPump 800ms",
+      "outcome": "reward +2.1 (progress 0.33→0.44)"
+    },
+    {
+      "t": 1790195638478,
+      "step": "explorer:hold ButtonPump 1600ms",
+      "outcome": "reward +2.3 (progress 0.44→0.55)"
+    },
+    {
+      "t": 1790195642550,
+      "step": "explorer:hold GaugeNeedle 800ms",
+      "outcome": "penalty -4.4"
+    },
+    {
+      "t": 1790195644737,
+      "step": "explorer:hold GaugeNeedle 1600ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195647489,
+      "step": "explorer:hold GaugeNeedle 2200ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195650564,
+      "step": "explorer:hold GaugeNeedle 2500ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195654319,
+      "step": "explorer:hold GaugeNeedle 3200ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195654319,
+      "step": "explorer:escalate to tier 1",
+      "outcome": "taps and drags"
+    },
+    {
+      "t": 1790195654585,
+      "step": "explorer:tap ButtonPump",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195654875,
+      "step": "explorer:tap GaugeNeedle",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195654875,
+      "step": "explorer:escalate to tier 2",
+      "outcome": "holds, dwell drags, traces, scrubs, rotations"
+    },
+    {
+      "t": 1790195654875,
+      "step": "explorer:escalate to tier 3",
+      "outcome": "rhythm, mashing"
+    },
+    {
+      "t": 1790195654888,
+      "step": "explorer (second pass, remaining budget) (19 actions)",
+      "outcome": "goal not reached"
+    }
+  ],
+  "failReasons": [
+    "Взрыв клапана: давление превысило 92%.",
+    "Взрыв клапана: давление превысило 90%."
+  ],
+  "controllerApi": "export default async function (api) {\n  // api.state()   -> Promise<object>: public state of the mechanic (the scope beacon's game.* + IsCompleted, ProgressNormalized)\n  // api.parts()   -> Promise<Array<{testId, kind, center:{x,y}, rect:{x,y,w,h}, game, props, visible}>> beacons in the scope\n  // api.inspect(testId), api.sleep(ms), api.expired(), api.say(msg), api.params\n  // api.motor.tap({testId}|{point:{x,y}}, holdMs?), drag(from, to, {durationMs, dwellEndMs}), hold(point, {maxMs}),\n  //          press(point, pointerId?), release(point, pointerId?), slice(points[], {speedPxPerS})\n  // Screen space: Unity's (origin bottom-left, y up). Only honest input — never call game code.\n  // Loop until api.state().IsCompleted; wait while IsInTransition (stage change / fail restart).\n  return 'COMPLETED' | 'TIMEOUT';\n}",
+  "submit": "MCP urdt_submit_skill { name, description, requires: { scopeGame?: string[], beacons?: string[], buttons?: string[] }, source } — then re-run the task; the candidate runs first when its requirements match."
+}

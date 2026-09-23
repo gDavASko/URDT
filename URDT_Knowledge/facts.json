@@ -69,72 +69,53 @@
     "value": "program_sequencer",
     "module": "M05_TimelineSequencer",
     "build": "0.1+editor",
-    "updatedAt": 1790190833520,
+    "updatedAt": 1790195037950,
     "evidence": [
-      "gate_program_sequencer_0_M05_TimelineSequencer",
       "gate_cand_program_sequencer_M05_TimelineSequencer",
       "gate_program_sequencer_0_M05_TimelineSequencer",
       "gate_program_sequencer_1_M05_TimelineSequencer",
-      "gate_cand_program_sequencer_M05_TimelineSequencer"
+      "gate_cand_program_sequencer_M05_TimelineSequencer",
+      "campaign_2026-09-23T20-16-32__M05_TimelineSequencer"
     ],
     "confidence": 1
   },
   {
     "key": "route:M01_SnapToSlot",
     "value": [
-      "btn_launch_m16",
-      "btn_2d_play_catalog",
       "btn_launch_m01"
     ],
     "module": "M01_SnapToSlot",
     "build": "0.1+editor",
-    "updatedAt": 1790192871616,
+    "updatedAt": 1790194493054,
     "evidence": [
+      "try_M01_SnapToSlot",
+      "try_M01_SnapToSlot",
+      "try_M01_SnapToSlot",
+      "try_M01_SnapToSlot",
       "try_M01_SnapToSlot"
     ],
-    "confidence": 0.5
-  },
-  {
-    "key": "fail:M01_SnapToSlot",
-    "value": [
-      "plan:vision:0:drag:Item_Circle>Slot_Circle",
-      "plan:vision:1:drag:Item_Square>Slot_Square",
-      "drag:Item_Junk_Defective>SlotsTargetArea",
-      "drag:Item_Junk_Defective>Slot_Circle",
-      "drag:Item_Circle>Slot_Circle",
-      "drag:Item_Circle>SlotsTargetArea",
-      "plan:vision:2:drag:Item_Circle>Slot_Circle"
-    ],
-    "module": "M01_SnapToSlot",
-    "build": "0.1+editor",
-    "updatedAt": 1790192698599,
-    "evidence": [
-      "campaign_2026-09-23T19-43-10__M01_SnapToSlot"
-    ],
-    "confidence": 0.5
+    "confidence": 1
   },
   {
     "key": "rules:M01_SnapToSlot",
     "value": [
-      "match rule: item.game.ItemId == receptacle.game.SlotId (from Item_Square → Slot_Square)",
-      "match rule: item.game.ItemId == receptacle.id:suffix (from Item_Square → Slot_Square)",
-      "match rule: item.game.ItemId == receptacle.id:tokens (from Item_Square → Slot_Square)",
-      "match rule: item.id:suffix == receptacle.game.SlotId (from Item_Square → Slot_Square)",
-      "match rule: item.id:suffix == receptacle.id:suffix (from Item_Square → Slot_Square)",
-      "match rule: item.id:suffix == receptacle.id:tokens (from Item_Square → Slot_Square)",
-      "match rule: item.id:tokens == receptacle.game.SlotId (from Item_Square → Slot_Square)",
-      "match rule: item.id:tokens == receptacle.id:suffix (from Item_Square → Slot_Square)",
-      "match rule: item.id:tokens == receptacle.id:tokens (from Item_Square → Slot_Square)"
+      "match rule: item.game.ItemId == receptacle.game.SlotId (from Item_Circle → Slot_Circle)",
+      "match rule: item.game.ItemId == receptacle.id:suffix (from Item_Circle → Slot_Circle)",
+      "match rule: item.game.ItemId == receptacle.id:tokens (from Item_Circle → Slot_Circle)",
+      "match rule: item.id:suffix == receptacle.game.SlotId (from Item_Circle → Slot_Circle)",
+      "match rule: item.id:suffix == receptacle.id:suffix (from Item_Circle → Slot_Circle)",
+      "match rule: item.id:suffix == receptacle.id:tokens (from Item_Circle → Slot_Circle)",
+      "match rule: item.id:tokens == receptacle.game.SlotId (from Item_Circle → Slot_Circle)",
+      "match rule: item.id:tokens == receptacle.id:suffix (from Item_Circle → Slot_Circle)",
+      "match rule: item.id:tokens == receptacle.id:tokens (from Item_Circle → Slot_Circle)"
     ],
     "module": "M01_SnapToSlot",
-    "build": "0.1+editor",
-    "updatedAt": 1790192698600,
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196889795,
     "evidence": [
-      "gate_cand_program_sequencer_M01_SnapToSlot",
-      "gate_cand_program_sequencer_M01_SnapToSlot",
-      "campaign_2026-09-23T19-43-10__M01_SnapToSlot"
+      "campaign_2026-09-23T20-50-32__M01_SnapToSlot"
     ],
-    "confidence": 0.8
+    "confidence": 0.5
   },
   {
     "key": "route:M09_CoverageAccumulator",
@@ -168,20 +149,19 @@
   },
   {
     "key": "fail:M12_AngularDeltaTracker",
-    "value": [
-      "tap:Valve_Jammed_Junk",
-      "hold:Valve_Jammed_Junk:800",
-      "rotate:Valve_Jammed_Junk",
-      "hold:Valve_Jammed_Junk:2200"
-    ],
+    "value": {
+      "tap:Valve_Jammed_Junk": 1,
+      "hold:Valve_Jammed_Junk:800": 1,
+      "rotate:Valve_Jammed_Junk": 1,
+      "hold:Valve_Jammed_Junk:2200": 1
+    },
     "module": "M12_AngularDeltaTracker",
     "build": "0.1+editor",
-    "updatedAt": 1790191030141,
+    "updatedAt": 1790195769711,
     "evidence": [
-      "gate_cand_program_sequencer_M12_AngularDeltaTracker",
-      "gate_cand_program_sequencer_M12_AngularDeltaTracker"
+      "campaign_2026-09-23T20-16-32__M12_AngularDeltaTracker"
     ],
-    "confidence": 0.65
+    "confidence": 0.5
   },
   {
     "key": "route:M16_RhythmPhaseDetector",
@@ -302,14 +282,14 @@
   },
   {
     "key": "fail:M09_CoverageAccumulator",
-    "value": [
-      "trace:DirtCell:true"
-    ],
+    "value": {
+      "trace:DirtCell:true": 1
+    },
     "module": "M09_CoverageAccumulator",
     "build": "0.1+editor",
-    "updatedAt": 1790190938966,
+    "updatedAt": 1790195519765,
     "evidence": [
-      "gate_cand_program_sequencer_M09_CoverageAccumulator"
+      "campaign_2026-09-23T20-16-32__M09_CoverageAccumulator"
     ],
     "confidence": 0.5
   },
@@ -359,5 +339,266 @@
       "try_M16_RhythmPhaseDetector"
     ],
     "confidence": 0.5
+  },
+  {
+    "key": "route:M02_ContainerSorting",
+    "value": [
+      "btn_launch_m02"
+    ],
+    "module": "M02_ContainerSorting",
+    "build": "0.1+editor",
+    "updatedAt": 1790194538366,
+    "evidence": [
+      "try_M02_ContainerSorting",
+      "try_M02_ContainerSorting",
+      "try_M02_ContainerSorting",
+      "try_M02_ContainerSorting",
+      "try_M02_ContainerSorting"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "rules:M02_ContainerSorting",
+    "value": [
+      "match rule: item.game.ItemTypeId == receptacle.game.AcceptedTypeId (from Item_Berry_1 → Bucket_Blue)",
+      "match rule: item.game.ItemTypeId == receptacle.id:suffix (from Item_Berry_1 → Bucket_Blue)",
+      "match rule: item.id:suffix == receptacle.game.CurrentCount (from Item_Berry_1 → Bucket_Blue)"
+    ],
+    "module": "M02_ContainerSorting",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196945603,
+    "evidence": [
+      "campaign_2026-09-23T20-50-32__M02_ContainerSorting"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M01_SnapToSlot",
+    "value": {},
+    "module": "M01_SnapToSlot",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196889793,
+    "evidence": [
+      "campaign_2026-09-23T20-50-32__M01_SnapToSlot",
+      "campaign_2026-09-23T20-50-32__M01_SnapToSlot"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "key": "fail:M02_ContainerSorting",
+    "value": {},
+    "module": "M02_ContainerSorting",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196945601,
+    "evidence": [
+      "try_M02_ContainerSorting",
+      "try_M02_ContainerSorting",
+      "try_M02_ContainerSorting",
+      "campaign_2026-09-23T20-16-32__M02_ContainerSorting",
+      "campaign_2026-09-23T20-50-32__M02_ContainerSorting"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "fail:M03_WeightComparator",
+    "value": {},
+    "module": "M03_WeightComparator",
+    "build": "0.1+editor",
+    "updatedAt": 1790194932651,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M03_WeightComparator",
+      "campaign_2026-09-23T20-16-32__M03_WeightComparator"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "key": "rules:M03_WeightComparator",
+    "value": [
+      "match rule: item.game.Mass == receptacle.game.Mass (from Weight_5kg → Weight_10kg_2)"
+    ],
+    "module": "M03_WeightComparator",
+    "build": "0.1+editor",
+    "updatedAt": 1790194932653,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M03_WeightComparator"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M04_MultiLayerAttachment",
+    "value": {},
+    "module": "M04_MultiLayerAttachment",
+    "build": "0.1+editor",
+    "updatedAt": 1790194993976,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M04_MultiLayerAttachment"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "rules:M04_MultiLayerAttachment",
+    "value": [
+      "match rule: item.game.Stage == receptacle.game.Stage (from Part_Head → Socket_Head)",
+      "match rule: item.game.Stage == receptacle.game.RequiredPrerequisiteLayer (from Part_Head → Socket_Head)",
+      "match rule: item.game.LayerIndex == receptacle.game.LayerIndex (from Part_Head → Socket_Head)",
+      "match rule: item.id:suffix == receptacle.id:suffix (from Part_Head → Socket_Head)",
+      "match rule: item.game.Stage == receptacle.game.LayerIndex (from Part_Core → Socket_Core)",
+      "match rule: item.game.LayerIndex == receptacle.game.Stage (from Part_Core → Socket_Core)"
+    ],
+    "module": "M04_MultiLayerAttachment",
+    "build": "0.1+editor",
+    "updatedAt": 1790194993978,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M04_MultiLayerAttachment"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "rules:M06_NodePairing",
+    "value": [
+      "match rule: item.game.PairId == receptacle.game.PairId (from Pin_Tgt_B → Pin_Src_B)",
+      "match rule: item.game.PairId == receptacle.id:suffix (from Pin_Tgt_B → Pin_Src_B)",
+      "match rule: item.id:suffix == receptacle.game.PairId (from Pin_Tgt_B → Pin_Src_B)",
+      "match rule: item.id:suffix == receptacle.id:suffix (from Pin_Tgt_B → Pin_Src_B)"
+    ],
+    "module": "M06_NodePairing",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196579513,
+    "evidence": [
+      "try_M06_NodePairing",
+      "try_M06_NodePairing",
+      "try_M06_NodePairing",
+      "try_M06_NodePairing"
+    ],
+    "confidence": 0.9500000000000001
+  },
+  {
+    "key": "fail:M07_WobbleAndSnap",
+    "value": {},
+    "module": "M07_WobbleAndSnap",
+    "build": "0.1+editor",
+    "updatedAt": 1790195186524,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M07_WobbleAndSnap"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M08_WaypointTracking",
+    "value": {
+      "plan:vision:3:trace:ToolSaw>Waypoint_2": 2,
+      "plan:vision:4:trace:ToolSaw>Waypoint_3": 2,
+      "plan:vision:5:trace:ToolSaw>Waypoint_4": 2,
+      "trace:Waypoint:true": 2,
+      "plan:vision:1:trace:ToolSaw>Waypoint_0": 2,
+      "plan:vision:1:trace:ToolSaw>Waypoint_4": 1,
+      "plan:vision:2:trace:ToolSaw>Waypoint_1": 1,
+      "trace:Waypoint:false": 1
+    },
+    "module": "M08_WaypointTracking",
+    "build": "0.1+editor",
+    "updatedAt": 1790195427670,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M08_WaypointTracking"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M10_TimedAccumulator",
+    "value": {
+      "plan:vision:0:hold:ButtonPump>": 2,
+      "hold:ButtonPump:2500": 2,
+      "hold:ButtonPump:2200": 1,
+      "hold:ButtonPump:3200": 1
+    },
+    "module": "M10_TimedAccumulator",
+    "build": "0.1+editor",
+    "updatedAt": 1790195654877,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M10_TimedAccumulator"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M11_ConeEmitter",
+    "value": {
+      "dwell:FireTarget_3>FireTarget_1_2": 1,
+      "dwell:FireTarget_1_2>FireTarget_3": 1
+    },
+    "module": "M11_ConeEmitter",
+    "build": "0.1+editor",
+    "updatedAt": 1790195738712,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M11_ConeEmitter"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M13_LaneSwitcherRunner",
+    "value": {
+      "hold:Barrier#201:800": 1,
+      "hold:Barrier#207:800": 1,
+      "tap:Barrier#213": 1,
+      "hold:Barrier#221:800": 1,
+      "hold:Barrier#237:800": 1,
+      "tap:Barrier#243": 1,
+      "hold:PlayerAvatar:1600": 1,
+      "hold:Coin#248:800": 1,
+      "hold:Coin#250:800": 1,
+      "hold:PlayerAvatar:2200": 1,
+      "tap:Barrier#259": 1,
+      "hold:PlayerAvatar:2500": 1,
+      "hold:Coin#264:800": 1
+    },
+    "module": "M13_LaneSwitcherRunner",
+    "build": "0.1+editor",
+    "updatedAt": 1790195976273,
+    "evidence": [
+      "campaign_2026-09-23T20-16-32__M13_LaneSwitcherRunner"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "route:M13_LaneSwitcherRunner",
+    "value": [
+      "btn_launch_m13"
+    ],
+    "module": "M13_LaneSwitcherRunner",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196147316,
+    "evidence": [
+      "try_M13_LaneSwitcherRunner",
+      "try_M13_LaneSwitcherRunner"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "key": "solvedBy:M13_LaneSwitcherRunner",
+    "value": "lane_runner",
+    "module": "M13_LaneSwitcherRunner",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196204399,
+    "evidence": [
+      "try_M13_LaneSwitcherRunner",
+      "try_M13_LaneSwitcherRunner"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "key": "route:M06_NodePairing",
+    "value": [
+      "btn_launch_m06"
+    ],
+    "module": "M06_NodePairing",
+    "build": "0.1+editor-12e21c64d6",
+    "updatedAt": 1790196480677,
+    "evidence": [
+      "try_M06_NodePairing",
+      "try_M06_NodePairing",
+      "try_M06_NodePairing",
+      "try_M06_NodePairing",
+      "try_M06_NodePairing"
+    ],
+    "confidence": 1
   }
 ]

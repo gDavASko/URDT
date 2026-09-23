@@ -1,0 +1,658 @@
+{
+  "module": "M08_WaypointTracking",
+  "goal": "Complete every stage of M08_WaypointTracking",
+  "createdAt": "2026-09-23T20:30:31.064Z",
+  "realtime": false,
+  "instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+  "design": "## M08. Аккуратный распил доски\r\n\r\n### Пич\r\nИгрок — столяр. На верстаке лежит доска с прочерченной линией распила, отмеченной контрольными точками. Задача — провести пилой по всем точкам подряд, не задев торчащий из доски сучок с гвоздём.\r\n\r\n### Цель\r\nПровести инструмент через все контрольные точки в правильном порядке, не касаясь опасных сучков.\r\n\r\n### Управление\r\nМышь / касание: захват пилы, ведение непрерывным движением по доске, отпускание после завершения.\r\n\r\n### Ключевые правила\r\n- Точки должны быть пройдены строго в порядке 1 → N.\r\n- Достаточно попасть инструментом в радиус захвата точки.\r\n- Если пила входит в опасную зону вокруг сучка — распил сорван.\r\n- Отпускание пилы до завершения — не провал, но выдаётся предупреждение продолжить движение.\r\n\r\n### Объекты\r\n- **Пила** (перетаскиваемый инструмент).\r\n- **Контрольные точки распила** (5 маркеров).\r\n- **Сучок с гвоздём (X)** — опасная зона (появляются дополнительные экземпляры на поздних этапах).\r\n\r\n### Этапы\r\n\r\n| Этап | Что происходит | Условие победы | Ограничения |\r\n|------|----------------|----------------|-------------|\r\n| 1 из 3 | 5 точек, один сучок. | Все точки пройдены. | — |\r\n| 2 из 3 | 5 точек, два сучка. | Как на этапе 1. | Больше опасных участков. |\r\n| 3 из 3 | 5 точек, три сучка, радиус опасной зоны увеличен на ~25%. | Как на этапе 1. | Требуется максимальная точность траектории. |\r\n\r\n### Провалы и последствия\r\n- **Пила задела сучок с гвоздём (X)** → распил сорван, этап начнётся заново, доска пересобирается.\r\n\r\n### Тексты игроку\r\n- Инструкция: «Проведите пилу через контрольные точки 1 → 5. Избегайте сучка с гвоздём (X).»\r\n- «Точка N/5 пройдена!»\r\n- При провале: «Пила задела гвоздь (X)! Этап начнётся заново.»\r\n\r\n### Крайние случаи\r\n- Точки, пройденные не по порядку, не засчитываются (пропускать нельзя).\r\n- Отпустив пилу, игрок может продолжить движение с той же позиции — прогресс не теряется.",
+  "state": {
+    "keys": [
+      "StageCount",
+      "CurrentWaypointIndex",
+      "WaypointCount",
+      "MechanicId",
+      "Title",
+      "Instruction",
+      "IsCompleted",
+      "ProgressNormalized",
+      "CurrentStage",
+      "FailCount",
+      "LastFailReason",
+      "IsInTransition"
+    ],
+    "changingWithoutInput": [],
+    "samples": [
+      {
+        "t": 225,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 493,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 714,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 933,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1169,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1392,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1610,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1825,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2053,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2275,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2495,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2709,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2928,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 3145,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 3360,
+        "state": {
+          "StageCount": 3,
+          "CurrentWaypointIndex": 0,
+          "WaypointCount": 5,
+          "MechanicId": "M08_WaypointTracking",
+          "Title": "Механика #8: Трассировка пути по путевым точкам (Waypoint Tracking)",
+          "Instruction": "Этап 3/3. Максимум опасных участков и повышенный радиус срыва. Ведите пилу максимально аккуратно.",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.6666667,
+          "CurrentStage": 3,
+          "FailCount": 15,
+          "LastFailReason": "Пила задела дополнительный сучок с гвоздём",
+          "IsInTransition": false
+        },
+        "moving": {}
+      }
+    ]
+  },
+  "beacons": [
+    {
+      "id": "HazardKnot",
+      "kind": "area",
+      "role": "hazardObstacle",
+      "center": [
+        960,
+        423
+      ],
+      "size": [
+        54,
+        54
+      ],
+      "game": {}
+    },
+    {
+      "id": "window_2d_suite",
+      "kind": "window",
+      "center": [
+        960,
+        503
+      ],
+      "size": [
+        1872,
+        981
+      ],
+      "game": {}
+    },
+    {
+      "id": "Waypoint_4",
+      "kind": "area",
+      "role": "waypointMarkers",
+      "center": [
+        1260,
+        480
+      ],
+      "size": [
+        42,
+        42
+      ],
+      "game": {}
+    },
+    {
+      "id": "Waypoint_2",
+      "kind": "area",
+      "role": "waypointMarkers",
+      "center": [
+        960,
+        480
+      ],
+      "size": [
+        42,
+        42
+      ],
+      "game": {}
+    },
+    {
+      "id": "HazardKnot_2",
+      "kind": "area",
+      "role": "hazardObstacle",
+      "center": [
+        1140,
+        468
+      ],
+      "size": [
+        54,
+        54
+      ],
+      "game": {}
+    },
+    {
+      "id": "HazardKnot_1",
+      "kind": "area",
+      "role": "hazardObstacle",
+      "center": [
+        750,
+        446
+      ],
+      "size": [
+        54,
+        54
+      ],
+      "game": {}
+    },
+    {
+      "id": "LocalInstruction",
+      "kind": "text",
+      "center": [
+        960,
+        669
+      ],
+      "size": [
+        1050,
+        36
+      ],
+      "game": {}
+    },
+    {
+      "id": "ToolSaw",
+      "kind": "draggable",
+      "center": [
+        660,
+        495
+      ],
+      "size": [
+        113,
+        113
+      ],
+      "game": {}
+    },
+    {
+      "id": "Waypoint_0",
+      "kind": "area",
+      "role": "waypointMarkers",
+      "center": [
+        660,
+        480
+      ],
+      "size": [
+        42,
+        42
+      ],
+      "game": {}
+    },
+    {
+      "id": "Waypoint_1",
+      "kind": "area",
+      "role": "waypointMarkers",
+      "center": [
+        810,
+        480
+      ],
+      "size": [
+        42,
+        42
+      ],
+      "game": {}
+    },
+    {
+      "id": "Waypoint_3",
+      "kind": "area",
+      "role": "waypointMarkers",
+      "center": [
+        1110,
+        480
+      ],
+      "size": [
+        42,
+        42
+      ],
+      "game": {}
+    }
+  ],
+  "attempts": [
+    {
+      "t": 1790195355393,
+      "step": "explorer:FAIL after \"vision step 2: trace ToolSaw → Waypoint_0 (The saw must be guided along the waypoints in sequence: 0 ->)\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195355393,
+      "step": "explorer:vision step 2: trace ToolSaw → Waypoint_0 (The saw must be guided along the waypoints in sequence: 0 ->)",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195356251,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195357415,
+      "step": "explorer:FAIL after \"vision step 3: trace ToolSaw → Waypoint_1 (Continue tracing from Waypoint_0 to Waypoint_1, avoiding Haz)\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195357415,
+      "step": "explorer:vision step 3: trace ToolSaw → Waypoint_1 (Continue tracing from Waypoint_0 to Waypoint_1, avoiding Haz)",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195358290,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195359772,
+      "step": "explorer:FAIL after \"vision step 4: trace ToolSaw → Waypoint_2 (Continue tracing from Waypoint_1 to Waypoint_2, avoiding Haz)\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195359772,
+      "step": "explorer:vision step 4: trace ToolSaw → Waypoint_2 (Continue tracing from Waypoint_1 to Waypoint_2, avoiding Haz)",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195360627,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195362503,
+      "step": "explorer:FAIL after \"vision step 5: trace ToolSaw → Waypoint_3 (Continue tracing from Waypoint_2 to Waypoint_3, avoiding Haz)\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195362503,
+      "step": "explorer:vision step 5: trace ToolSaw → Waypoint_3 (Continue tracing from Waypoint_2 to Waypoint_3, avoiding Haz)",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195363372,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195365801,
+      "step": "explorer:FAIL after \"vision step 6: trace ToolSaw → Waypoint_4 (Continue tracing from Waypoint_3 to Waypoint_4, avoiding any)\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195365801,
+      "step": "explorer:vision step 6: trace ToolSaw → Waypoint_4 (Continue tracing from Waypoint_3 to Waypoint_4, avoiding any)",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195366707,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195370877,
+      "step": "explorer:FAIL after \"trace ToolSaw through Waypoint_0..4\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195370877,
+      "step": "explorer:trace ToolSaw through Waypoint_0..4",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195371760,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195376662,
+      "step": "explorer:FAIL after \"trace ToolSaw through Waypoint_0..4 (closed)\"",
+      "outcome": "Пила задела дополнительный сучок с гвоздём"
+    },
+    {
+      "t": 1790195376662,
+      "step": "explorer:trace ToolSaw through Waypoint_0..4 (closed)",
+      "outcome": "penalty -30.0"
+    },
+    {
+      "t": 1790195377558,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195377559,
+      "step": "explorer:escalate to tier 1",
+      "outcome": "taps and drags"
+    },
+    {
+      "t": 1790195377835,
+      "step": "explorer:tap Waypoint_4",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195378121,
+      "step": "explorer:tap Waypoint_2",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195378396,
+      "step": "explorer:tap Waypoint_0",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195378679,
+      "step": "explorer:tap HazardKnot",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195378960,
+      "step": "explorer:tap HazardKnot_2",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195379242,
+      "step": "explorer:tap HazardKnot_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195397969,
+      "step": "explorer:stagnation consult #1 (screenshot + 8 failed attempts)",
+      "outcome": "vision after stagnation: Complete the path from Waypoint_0 to Waypoint_4 by tracing the saw through all waypoints while avoiding hazardObstacles, without releasing the saw until the cut"
+    },
+    {
+      "t": 1790195398861,
+      "step": "explorer:vision step 1: tap ToolSaw (The saw must be initiated to begin tracing the path. The ins)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195398861,
+      "step": "explorer:escalate to tier 1",
+      "outcome": "taps and drags"
+    },
+    {
+      "t": 1790195398861,
+      "step": "explorer:escalate to tier 2",
+      "outcome": "holds, dwell drags, traces, scrubs, rotations"
+    },
+    {
+      "t": 1790195400266,
+      "step": "explorer:hold Waypoint_4 800ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195401659,
+      "step": "explorer:hold Waypoint_2 800ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195403068,
+      "step": "explorer:hold Waypoint_0 800ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195404422,
+      "step": "explorer:hold Waypoint_1 800ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195405853,
+      "step": "explorer:hold Waypoint_3 800ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195408042,
+      "step": "explorer:hold Waypoint_4 1600ms",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790195427668,
+      "step": "explorer:stagnation consult #2 (screenshot + 15 failed attempts)",
+      "outcome": "vision after stagnation: Trace the path from Waypoint_0 to Waypoint_4, avoiding HazardKnots, without releasing the saw until completion."
+    },
+    {
+      "t": 1790195427673,
+      "step": "explorer (second pass, remaining budget) (28 actions)",
+      "outcome": "goal not reached"
+    }
+  ],
+  "failReasons": [
+    "Пила задела сучок с гвоздём",
+    "Пила задела дополнительный сучок с гвоздём"
+  ],
+  "controllerApi": "export default async function (api) {\n  // api.state()   -> Promise<object>: public state of the mechanic (the scope beacon's game.* + IsCompleted, ProgressNormalized)\n  // api.parts()   -> Promise<Array<{testId, kind, center:{x,y}, rect:{x,y,w,h}, game, props, visible}>> beacons in the scope\n  // api.inspect(testId), api.sleep(ms), api.expired(), api.say(msg), api.params\n  // api.motor.tap({testId}|{point:{x,y}}, holdMs?), drag(from, to, {durationMs, dwellEndMs}), hold(point, {maxMs}),\n  //          press(point, pointerId?), release(point, pointerId?), slice(points[], {speedPxPerS})\n  // Screen space: Unity's (origin bottom-left, y up). Only honest input — never call game code.\n  // Loop until api.state().IsCompleted; wait while IsInTransition (stage change / fail restart).\n  return 'COMPLETED' | 'TIMEOUT';\n}",
+  "submit": "MCP urdt_submit_skill { name, description, requires: { scopeGame?: string[], beacons?: string[], buttons?: string[] }, source } — then re-run the task; the candidate runs first when its requirements match."
+}

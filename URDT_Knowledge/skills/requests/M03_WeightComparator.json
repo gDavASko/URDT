@@ -1,0 +1,866 @@
+{
+  "module": "M03_WeightComparator",
+  "goal": "Complete every stage of M03_WeightComparator",
+  "createdAt": "2026-09-23T20:22:16.023Z",
+  "realtime": false,
+  "instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+  "design": "## M03. Весовой компаратор\r\n\r\n### Пич\r\nИгрок стоит у старинных рычажных весов. На левой чаше — эталон. Задача — набрать точно такую же массу на правой чаше, комбинируя гири и не поддаваясь на бракованные экземпляры.\r\n\r\n### Цель\r\nУравновесить весы: масса правой чаши должна совпасть с эталоном с заданной точностью и удерживаться указанное время.\r\n\r\n### Управление\r\nМышь / касание: перетаскивание гири с полки на правую чашу или обратно.\r\n\r\n### Ключевые правила\r\n- На левой чаше — эталонная масса, зависящая от этапа.\r\n- На правую чашу игрок кладёт гири; каждая гиря имеет свою массу.\r\n- Баланс считается достигнутым, если разница в массах не превышает допуска этапа.\r\n- Для победы баланс нужно удерживать 1 секунду.\r\n- Бракованная гиря (X) весит 0 кг; её постановка на чашу — грубая ошибка.\r\n\r\n### Объекты\r\n- **Эталонная гиря** (левая чаша, зафиксирована): масса зависит от этапа.\r\n- **Обычные гири**: 5 кг и 10 кг.\r\n- **Бракованная гиря (X)**: 0 кг, обманывает начинающего игрока.\r\n\r\n### Этапы\r\n\r\n| Этап | Эталон | Допуск | Что нового |\r\n|------|--------|--------|------------|\r\n| 1 из 3 | 15 кг | ±0,5 кг | Базовый набор гирь. |\r\n| 2 из 3 | 20 кг | ±0,35 кг | Добавлена дополнительная гиря 5 кг; более узкий допуск. |\r\n| 3 из 3 | 25 кг | ±0,25 кг | Добавлены гири 5 и 10 кг, а также ещё одна бракованная (X); минимальный допуск. |\r\n\r\n### Провалы и последствия\r\n- **Постановка бракованной гири (X) на чашу** → этап провален, чаша очищается, гири возвращаются на полку.\r\n\r\n### Тексты игроку\r\n- Инструкция под весами описывает нужную массу и допуск.\r\n- Статус: «Справа X кг из Y кг», «Перегруз!», «Баланс достигнут! Фиксация: NN%».\r\n- При провале: «Бракованная гиря на весах! Этап провален.»\r\n\r\n### Крайние случаи\r\n- Гирю можно снять с чаши и вернуть в лоток; масса пересчитывается.\r\n- Перегруз (правая тяжелее эталона) не является провалом — просто требует снять лишнее.",
+  "state": {
+    "keys": [
+      "StageCount",
+      "StageTargetMass",
+      "StageTolerance",
+      "CurrentRightMass",
+      "MechanicId",
+      "Title",
+      "Instruction",
+      "IsCompleted",
+      "ProgressNormalized",
+      "CurrentStage",
+      "FailCount",
+      "LastFailReason",
+      "IsInTransition"
+    ],
+    "changingWithoutInput": [],
+    "samples": [
+      {
+        "t": 226,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 457,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 676,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 896,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1119,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1344,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1568,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1784,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 1999,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2215,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2442,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2662,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 2893,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 3109,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      },
+      {
+        "t": 3328,
+        "state": {
+          "StageCount": 3,
+          "StageTargetMass": 25,
+          "StageTolerance": 0.25,
+          "CurrentRightMass": 33,
+          "MechanicId": "M03_WeightComparator",
+          "Title": "Механика #3: Балансировка массы / Весовой компаратор",
+          "Instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
+          "IsCompleted": false,
+          "ProgressNormalized": 0.8333333,
+          "CurrentStage": 3,
+          "FailCount": 0,
+          "LastFailReason": "",
+          "IsInTransition": false
+        },
+        "moving": {}
+      }
+    ]
+  },
+  "beacons": [
+    {
+      "id": "ItemsAnchor_1",
+      "kind": "draggable",
+      "center": [
+        1178,
+        497
+      ],
+      "size": [
+        180,
+        180
+      ],
+      "game": {}
+    },
+    {
+      "id": "window_2d_suite",
+      "kind": "window",
+      "center": [
+        960,
+        503
+      ],
+      "size": [
+        1872,
+        981
+      ],
+      "game": {}
+    },
+    {
+      "id": "Label",
+      "kind": "text",
+      "center": [
+        729,
+        616
+      ],
+      "size": [
+        112,
+        103
+      ],
+      "game": {}
+    },
+    {
+      "id": "MassLabel_1",
+      "kind": "text",
+      "center": [
+        1159,
+        411
+      ],
+      "size": [
+        418,
+        128
+      ],
+      "game": {}
+    },
+    {
+      "id": "MassLabel",
+      "kind": "text",
+      "center": [
+        706,
+        514
+      ],
+      "size": [
+        418,
+        128
+      ],
+      "game": {}
+    },
+    {
+      "id": "Weight_3kg",
+      "kind": "draggable",
+      "center": [
+        1186,
+        529
+      ],
+      "size": [
+        176,
+        176
+      ],
+      "game": {
+        "Mass": 3,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "MassLabel_3",
+      "kind": "text",
+      "center": [
+        1112,
+        544
+      ],
+      "size": [
+        117,
+        128
+      ],
+      "game": {}
+    },
+    {
+      "id": "LocalInstruction",
+      "kind": "text",
+      "center": [
+        960,
+        669
+      ],
+      "size": [
+        1050,
+        36
+      ],
+      "game": {}
+    },
+    {
+      "id": "RightPan",
+      "kind": "slot",
+      "center": [
+        1173,
+        475
+      ],
+      "size": [
+        223,
+        127
+      ],
+      "game": {
+        "PanId": "right",
+        "BaseMass": 0,
+        "IsReferencePan": false,
+        "AcceptsDrop": true,
+        "CurrentMass": 33
+      }
+    },
+    {
+      "id": "Weight_10kg",
+      "kind": "draggable",
+      "center": [
+        1253,
+        514
+      ],
+      "size": [
+        180,
+        180
+      ],
+      "game": {
+        "Mass": 10,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "ItemsAnchor",
+      "kind": "draggable",
+      "center": [
+        725,
+        600
+      ],
+      "size": [
+        180,
+        180
+      ],
+      "game": {}
+    },
+    {
+      "id": "LeftPan",
+      "kind": "slot",
+      "center": [
+        720,
+        578
+      ],
+      "size": [
+        223,
+        127
+      ],
+      "game": {
+        "PanId": "left",
+        "BaseMass": 25,
+        "IsReferencePan": true,
+        "AcceptsDrop": false,
+        "CurrentMass": 25
+      }
+    },
+    {
+      "id": "MassLabel_2",
+      "kind": "text",
+      "center": [
+        1249,
+        518
+      ],
+      "size": [
+        155,
+        155
+      ],
+      "game": {}
+    },
+    {
+      "id": "Weight_Junk",
+      "kind": "draggable",
+      "center": [
+        1230,
+        368
+      ],
+      "size": [
+        128,
+        128
+      ],
+      "game": {
+        "Mass": 0,
+        "IsJunk": true
+      }
+    },
+    {
+      "id": "Weight_5kg",
+      "kind": "draggable",
+      "center": [
+        1118,
+        544
+      ],
+      "size": [
+        143,
+        143
+      ],
+      "game": {
+        "Mass": 5,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "MassLabel_4",
+      "kind": "text",
+      "center": [
+        1182,
+        524
+      ],
+      "size": [
+        153,
+        150
+      ],
+      "game": {}
+    },
+    {
+      "id": "ScaleBeam",
+      "kind": "area",
+      "role": "beamTransform",
+      "center": [
+        960,
+        585
+      ],
+      "size": [
+        564,
+        161
+      ],
+      "game": {}
+    },
+    {
+      "id": "MassLabel_5",
+      "kind": "text",
+      "center": [
+        1230,
+        362
+      ],
+      "size": [
+        116,
+        104
+      ],
+      "game": {}
+    },
+    {
+      "id": "Weight_10kg_1",
+      "kind": "draggable",
+      "center": [
+        1051,
+        560
+      ],
+      "size": [
+        149,
+        149
+      ],
+      "game": {
+        "Mass": 10,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "MassLabel_6",
+      "kind": "text",
+      "center": [
+        1045,
+        561
+      ],
+      "size": [
+        123,
+        133
+      ],
+      "game": {}
+    },
+    {
+      "id": "Weight_10kg_2",
+      "kind": "draggable",
+      "center": [
+        1320,
+        499
+      ],
+      "size": [
+        178,
+        178
+      ],
+      "game": {
+        "Mass": 5,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "MassLabel_7",
+      "kind": "text",
+      "center": [
+        1315,
+        502
+      ],
+      "size": [
+        151,
+        154
+      ],
+      "game": {}
+    },
+    {
+      "id": "Weight_Junk_1",
+      "kind": "draggable",
+      "center": [
+        1095,
+        368
+      ],
+      "size": [
+        128,
+        128
+      ],
+      "game": {
+        "Mass": 0,
+        "IsJunk": true
+      }
+    },
+    {
+      "id": "MassLabel_8",
+      "kind": "text",
+      "center": [
+        1095,
+        362
+      ],
+      "size": [
+        116,
+        104
+      ],
+      "game": {}
+    }
+  ],
+  "attempts": [
+    {
+      "t": 1790194879873,
+      "step": "explorer:drag Weight_3kg → LeftPan",
+      "outcome": "penalty -0.4"
+    },
+    {
+      "t": 1790194879889,
+      "step": "explorer:grab Weight_5kg",
+      "outcome": "centre overlapped by ItemsAnchor, Weight_10kg_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194881694,
+      "step": "explorer:drag Weight_5kg → LeftPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194882651,
+      "step": "explorer:drag Weight_10kg_1 → LeftPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194883429,
+      "step": "explorer:drag Weight_10kg → Weight_10kg_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194884195,
+      "step": "explorer:drag Weight_10kg_1 → Weight_10kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194884211,
+      "step": "explorer:grab Weight_5kg",
+      "outcome": "centre overlapped by ItemsAnchor, Weight_10kg_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194886188,
+      "step": "explorer:drag Weight_5kg → Weight_10kg_2",
+      "outcome": "reward +0.7 (progress 0.77→0.80)"
+    },
+    {
+      "t": 1790194886953,
+      "step": "explorer:drag Weight_10kg_2 → Weight_5kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194886973,
+      "step": "explorer:grab Weight_10kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_5kg, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194888310,
+      "step": "explorer:drag Weight_10kg → RightPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194888350,
+      "step": "explorer:grab Weight_10kg_2",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_5kg — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194889652,
+      "step": "explorer:drag Weight_10kg_2 → RightPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194890406,
+      "step": "explorer:drag Weight_10kg → ScaleBeam",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194891976,
+      "step": "explorer:drag Weight_10kg_1 → RightPan",
+      "outcome": "reward +0.7 (progress 0.80→0.83)"
+    },
+    {
+      "t": 1790194891995,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_Junk_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194893819,
+      "step": "explorer:drag Weight_3kg → ScaleBeam",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194894571,
+      "step": "explorer:drag Weight_10kg_2 → ScaleBeam",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194894600,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_Junk_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194896929,
+      "step": "explorer:drag Weight_3kg → ItemsAnchor",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194897726,
+      "step": "explorer:drag Weight_10kg → ItemsAnchor",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194898547,
+      "step": "explorer:drag Weight_10kg → Weight_5kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194899321,
+      "step": "explorer:drag Weight_10kg_2 → ItemsAnchor",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194909737,
+      "step": "explorer:stagnation consult #2 (screenshot + 27 failed attempts)",
+      "outcome": "vision after stagnation: Balance the scale to 25 kg ±0.3 kg on the right pan by placing weights correctly. The current right pan has 30 kg, so reduce by 5 kg."
+    },
+    {
+      "t": 1790194909757,
+      "step": "explorer:grab Weight_5kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194911547,
+      "step": "explorer:vision step 1: drag Weight_5kg → RightPan (The right pan is overloaded (30 kg) and needs to be reduced )",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194911569,
+      "step": "explorer:grab Weight_5kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg_1, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194913704,
+      "step": "explorer:vision step 2: drag Weight_5kg → RightPan (The 5 kg weight must be placed on the right pan to reduce th)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194913705,
+      "step": "explorer:escalate to tier 1",
+      "outcome": "taps and drags"
+    },
+    {
+      "t": 1790194913721,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_Junk_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194916189,
+      "step": "explorer:drag Weight_3kg → Weight_5kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194916969,
+      "step": "explorer:drag Weight_10kg_2 → ItemsAnchor_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194917727,
+      "step": "explorer:drag Weight_10kg_2 → Weight_10kg_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194917743,
+      "step": "explorer:grab Weight_10kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg_1, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194919755,
+      "step": "explorer:drag Weight_10kg → Weight_10kg_2",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194920532,
+      "step": "explorer:drag Weight_3kg → ItemsAnchor_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194920548,
+      "step": "explorer:grab Weight_10kg_2",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_5kg, Weight_10kg_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790194923322,
+      "step": "explorer:drag Weight_10kg_2 → Weight_10kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790194932649,
+      "step": "explorer:stagnation consult #3 (screenshot + 35 failed attempts)",
+      "outcome": "vision after stagnation: Balance the scale by placing exactly 25 kg ±0.3 kg on the right pan. The current right pan weight is 33 kg, so it must be reduced by 8 kg."
+    },
+    {
+      "t": 1790194932657,
+      "step": "explorer (second pass, remaining budget) (39 actions)",
+      "outcome": "goal not reached"
+    }
+  ],
+  "failReasons": [],
+  "controllerApi": "export default async function (api) {\n  // api.state()   -> Promise<object>: public state of the mechanic (the scope beacon's game.* + IsCompleted, ProgressNormalized)\n  // api.parts()   -> Promise<Array<{testId, kind, center:{x,y}, rect:{x,y,w,h}, game, props, visible}>> beacons in the scope\n  // api.inspect(testId), api.sleep(ms), api.expired(), api.say(msg), api.params\n  // api.motor.tap({testId}|{point:{x,y}}, holdMs?), drag(from, to, {durationMs, dwellEndMs}), hold(point, {maxMs}),\n  //          press(point, pointerId?), release(point, pointerId?), slice(points[], {speedPxPerS})\n  // Screen space: Unity's (origin bottom-left, y up). Only honest input — never call game code.\n  // Loop until api.state().IsCompleted; wait while IsInTransition (stage change / fail restart).\n  return 'COMPLETED' | 'TIMEOUT';\n}",
+  "submit": "MCP urdt_submit_skill { name, description, requires: { scopeGame?: string[], beacons?: string[], buttons?: string[] }, source } — then re-run the task; the candidate runs first when its requirements match."
+}

@@ -1,7 +1,9 @@
 {
   "product": "URDT_gen",
   "builds": [
-    "0.1+editor"
+    "0.1+editor",
+    "0.1+editor-12e21c64d6",
+    "test"
   ],
-  "updatedAt": 1790192862352
+  "updatedAt": 1790196632497
 }

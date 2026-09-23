@@ -17,7 +17,32 @@
     "description": "lane runner (swipe / tap halves / drag)",
     "requires": {},
     "createdAt": 1790187887263,
-    "evidence": []
+    "evidence": [
+      {
+        "runId": "campaign_2026-09-23T20-16-32__M13_LaneSwitcherRunner",
+        "project": "URDT_gen",
+        "module": "M13_LaneSwitcherRunner",
+        "ok": false,
+        "ms": 136932,
+        "at": 1790195920374
+      },
+      {
+        "runId": "try_M13_LaneSwitcherRunner",
+        "project": "URDT_gen",
+        "module": "M13_LaneSwitcherRunner",
+        "ok": true,
+        "ms": 31874,
+        "at": 1790196101167
+      },
+      {
+        "runId": "try_M13_LaneSwitcherRunner",
+        "project": "URDT_gen",
+        "module": "M13_LaneSwitcherRunner",
+        "ok": true,
+        "ms": 39394,
+        "at": 1790196204395
+      }
+    ]
   },
   {
     "name": "slingshot",
@@ -138,7 +163,16 @@
     "description": "balance weights",
     "requires": {},
     "createdAt": 1790187887263,
-    "evidence": []
+    "evidence": [
+      {
+        "runId": "campaign_2026-09-23T20-16-32__M03_WeightComparator",
+        "project": "URDT_gen",
+        "module": "M03_WeightComparator",
+        "ok": false,
+        "ms": 9079,
+        "at": 1790194710217
+      }
+    ]
   },
   {
     "name": "lens_dwell",
@@ -168,7 +202,16 @@
     "description": "wobble then extract",
     "requires": {},
     "createdAt": 1790187887263,
-    "evidence": []
+    "evidence": [
+      {
+        "runId": "campaign_2026-09-23T20-16-32__M07_WobbleAndSnap",
+        "project": "URDT_gen",
+        "module": "M07_WobbleAndSnap",
+        "ok": false,
+        "ms": 54883,
+        "at": 1790195148505
+      }
+    ]
   },
   {
     "name": "spray_targets",
@@ -178,7 +221,16 @@
     "description": "spray targets while avoiding hazards",
     "requires": {},
     "createdAt": 1790187887263,
-    "evidence": []
+    "evidence": [
+      {
+        "runId": "campaign_2026-09-23T20-16-32__M11_ConeEmitter",
+        "project": "URDT_gen",
+        "module": "M11_ConeEmitter",
+        "ok": false,
+        "ms": 3356,
+        "at": 1790195688338
+      }
+    ]
   },
   {
     "name": "pop_targets",
@@ -232,6 +284,14 @@
         "ok": false,
         "ms": 22433,
         "at": 1790190969836
+      },
+      {
+        "runId": "campaign_2026-09-23T20-16-32__M12_AngularDeltaTracker",
+        "project": "URDT_gen",
+        "module": "M12_AngularDeltaTracker",
+        "ok": false,
+        "ms": 13924,
+        "at": 1790195764066
       }
     ]
   },
@@ -432,6 +492,14 @@
         "ok": true,
         "ms": 18672,
         "at": 1790190833518
+      },
+      {
+        "runId": "campaign_2026-09-23T20-16-32__M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 17482,
+        "at": 1790195037945
       }
     ]
   }
