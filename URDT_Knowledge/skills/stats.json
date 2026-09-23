@@ -13,15 +13,15 @@
     }
   },
   "program_sequencer": {
-    "runs": 8,
-    "ok": 8,
-    "ms": 158104,
-    "lastRun": 1790195037944,
-    "lastOk": 1790195037944,
+    "runs": 9,
+    "ok": 9,
+    "ms": 177048,
+    "lastRun": 1790197288185,
+    "lastOk": 1790197288185,
     "byContext": {
       "M05_TimelineSequencer": {
-        "runs": 8,
-        "ok": 8
+        "runs": 9,
+        "ok": 9
       }
     }
   },
@@ -78,27 +78,27 @@
     }
   },
   "balance_scale": {
-    "runs": 1,
+    "runs": 2,
     "ok": 0,
-    "ms": 9079,
-    "lastRun": 1790194710216,
+    "ms": 17862,
+    "lastRun": 1790196966831,
     "lastOk": 0,
     "byContext": {
       "M03_WeightComparator": {
-        "runs": 1,
+        "runs": 2,
         "ok": 0
       }
     }
   },
   "wobble_extract": {
-    "runs": 1,
+    "runs": 2,
     "ok": 0,
-    "ms": 54883,
-    "lastRun": 1790195148504,
+    "ms": 85876,
+    "lastRun": 1790197393870,
     "lastOk": 0,
     "byContext": {
       "M07_WobbleAndSnap": {
-        "runs": 1,
+        "runs": 2,
         "ok": 0
       }
     }

@@ -171,6 +171,14 @@
         "ok": false,
         "ms": 9079,
         "at": 1790194710217
+      },
+      {
+        "runId": "campaign_2026-09-23T20-50-32__M03_WeightComparator",
+        "project": "URDT_gen",
+        "module": "M03_WeightComparator",
+        "ok": false,
+        "ms": 8783,
+        "at": 1790196966831
       }
     ]
   },
@@ -210,6 +218,14 @@
         "ok": false,
         "ms": 54883,
         "at": 1790195148505
+      },
+      {
+        "runId": "campaign_2026-09-23T20-50-32__M07_WobbleAndSnap",
+        "project": "URDT_gen",
+        "module": "M07_WobbleAndSnap",
+        "ok": false,
+        "ms": 30993,
+        "at": 1790197393870
       }
     ]
   },
@@ -500,6 +516,14 @@
         "ok": true,
         "ms": 17482,
         "at": 1790195037945
+      },
+      {
+        "runId": "campaign_2026-09-23T20-50-32__M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 18944,
+        "at": 1790197288185
       }
     ]
   }

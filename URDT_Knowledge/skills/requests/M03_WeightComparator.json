@@ -1,7 +1,7 @@
 {
   "module": "M03_WeightComparator",
   "goal": "Complete every stage of M03_WeightComparator",
-  "createdAt": "2026-09-23T20:22:16.023Z",
+  "createdAt": "2026-09-23T20:59:52.577Z",
   "realtime": false,
   "instruction": "Этап 3/3. Тонкая настройка: 25 кг, допуск ±0,3 кг. Не используйте гирю (X).",
   "design": "## M03. Весовой компаратор\r\n\r\n### Пич\r\nИгрок стоит у старинных рычажных весов. На левой чаше — эталон. Задача — набрать точно такую же массу на правой чаше, комбинируя гири и не поддаваясь на бракованные экземпляры.\r\n\r\n### Цель\r\nУравновесить весы: масса правой чаши должна совпасть с эталоном с заданной точностью и удерживаться указанное время.\r\n\r\n### Управление\r\nМышь / касание: перетаскивание гири с полки на правую чашу или обратно.\r\n\r\n### Ключевые правила\r\n- На левой чаше — эталонная масса, зависящая от этапа.\r\n- На правую чашу игрок кладёт гири; каждая гиря имеет свою массу.\r\n- Баланс считается достигнутым, если разница в массах не превышает допуска этапа.\r\n- Для победы баланс нужно удерживать 1 секунду.\r\n- Бракованная гиря (X) весит 0 кг; её постановка на чашу — грубая ошибка.\r\n\r\n### Объекты\r\n- **Эталонная гиря** (левая чаша, зафиксирована): масса зависит от этапа.\r\n- **Обычные гири**: 5 кг и 10 кг.\r\n- **Бракованная гиря (X)**: 0 кг, обманывает начинающего игрока.\r\n\r\n### Этапы\r\n\r\n| Этап | Эталон | Допуск | Что нового |\r\n|------|--------|--------|------------|\r\n| 1 из 3 | 15 кг | ±0,5 кг | Базовый набор гирь. |\r\n| 2 из 3 | 20 кг | ±0,35 кг | Добавлена дополнительная гиря 5 кг; более узкий допуск. |\r\n| 3 из 3 | 25 кг | ±0,25 кг | Добавлены гири 5 и 10 кг, а также ещё одна бракованная (X); минимальный допуск. |\r\n\r\n### Провалы и последствия\r\n- **Постановка бракованной гири (X) на чашу** → этап провален, чаша очищается, гири возвращаются на полку.\r\n\r\n### Тексты игроку\r\n- Инструкция под весами описывает нужную массу и допуск.\r\n- Статус: «Справа X кг из Y кг», «Перегруз!», «Баланс достигнут! Фиксация: NN%».\r\n- При провале: «Бракованная гиря на весах! Этап провален.»\r\n\r\n### Крайние случаи\r\n- Гирю можно снять с чаши и вернуть в лоток; масса пересчитывается.\r\n- Перегруз (правая тяжелее эталона) не является провалом — просто требует снять лишнее.",
@@ -24,7 +24,7 @@
     "changingWithoutInput": [],
     "samples": [
       {
-        "t": 226,
+        "t": 229,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -43,7 +43,7 @@
         "moving": {}
       },
       {
-        "t": 457,
+        "t": 447,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -62,7 +62,7 @@
         "moving": {}
       },
       {
-        "t": 676,
+        "t": 667,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -81,7 +81,7 @@
         "moving": {}
       },
       {
-        "t": 896,
+        "t": 895,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -100,7 +100,7 @@
         "moving": {}
       },
       {
-        "t": 1119,
+        "t": 1118,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -119,7 +119,7 @@
         "moving": {}
       },
       {
-        "t": 1344,
+        "t": 1336,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -138,7 +138,7 @@
         "moving": {}
       },
       {
-        "t": 1568,
+        "t": 1555,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -157,7 +157,7 @@
         "moving": {}
       },
       {
-        "t": 1784,
+        "t": 1773,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -195,7 +195,7 @@
         "moving": {}
       },
       {
-        "t": 2215,
+        "t": 2219,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -214,7 +214,7 @@
         "moving": {}
       },
       {
-        "t": 2442,
+        "t": 2434,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -233,7 +233,7 @@
         "moving": {}
       },
       {
-        "t": 2662,
+        "t": 2652,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -252,7 +252,7 @@
         "moving": {}
       },
       {
-        "t": 2893,
+        "t": 2869,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -271,7 +271,7 @@
         "moving": {}
       },
       {
-        "t": 3109,
+        "t": 3091,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -290,7 +290,7 @@
         "moving": {}
       },
       {
-        "t": 3328,
+        "t": 3307,
         "state": {
           "StageCount": 3,
           "StageTargetMass": 25,
@@ -312,11 +312,11 @@
   },
   "beacons": [
     {
-      "id": "ItemsAnchor_1",
+      "id": "ItemsAnchor",
       "kind": "draggable",
       "center": [
-        1178,
-        497
+        725,
+        600
       ],
       "size": [
         180,
@@ -325,85 +325,20 @@
       "game": {}
     },
     {
-      "id": "window_2d_suite",
-      "kind": "window",
-      "center": [
-        960,
-        503
-      ],
-      "size": [
-        1872,
-        981
-      ],
-      "game": {}
-    },
-    {
-      "id": "Label",
-      "kind": "text",
-      "center": [
-        729,
-        616
-      ],
-      "size": [
-        112,
-        103
-      ],
-      "game": {}
-    },
-    {
-      "id": "MassLabel_1",
-      "kind": "text",
-      "center": [
-        1159,
-        411
-      ],
-      "size": [
-        418,
-        128
-      ],
-      "game": {}
-    },
-    {
-      "id": "MassLabel",
-      "kind": "text",
-      "center": [
-        706,
-        514
-      ],
-      "size": [
-        418,
-        128
-      ],
-      "game": {}
-    },
-    {
-      "id": "Weight_3kg",
+      "id": "Weight_Junk",
       "kind": "draggable",
       "center": [
-        1186,
-        529
+        1230,
+        368
       ],
       "size": [
-        176,
-        176
-      ],
-      "game": {
-        "Mass": 3,
-        "IsJunk": false
-      }
-    },
-    {
-      "id": "MassLabel_3",
-      "kind": "text",
-      "center": [
-        1112,
-        544
-      ],
-      "size": [
-        117,
+        128,
         128
       ],
-      "game": {}
+      "game": {
+        "Mass": 0,
+        "IsJunk": true
+      }
     },
     {
       "id": "LocalInstruction",
@@ -419,26 +354,7 @@
       "game": {}
     },
     {
-      "id": "RightPan",
-      "kind": "slot",
-      "center": [
-        1173,
-        475
-      ],
-      "size": [
-        223,
-        127
-      ],
-      "game": {
-        "PanId": "right",
-        "BaseMass": 0,
-        "IsReferencePan": false,
-        "AcceptsDrop": true,
-        "CurrentMass": 33
-      }
-    },
-    {
-      "id": "Weight_10kg",
+      "id": "Weight_5kg",
       "kind": "draggable",
       "center": [
         1253,
@@ -449,20 +365,75 @@
         180
       ],
       "game": {
-        "Mass": 10,
+        "Mass": 5,
         "IsJunk": false
       }
     },
     {
-      "id": "ItemsAnchor",
+      "id": "window_2d_suite",
+      "kind": "window",
+      "center": [
+        960,
+        503
+      ],
+      "size": [
+        1872,
+        981
+      ],
+      "game": {}
+    },
+    {
+      "id": "ItemsAnchor_1",
       "kind": "draggable",
       "center": [
-        725,
-        600
+        1178,
+        497
       ],
       "size": [
         180,
         180
+      ],
+      "game": {}
+    },
+    {
+      "id": "Weight_3kg",
+      "kind": "draggable",
+      "center": [
+        1320,
+        499
+      ],
+      "size": [
+        146,
+        146
+      ],
+      "game": {
+        "Mass": 3,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "MassLabel_4",
+      "kind": "text",
+      "center": [
+        1314,
+        498
+      ],
+      "size": [
+        121,
+        131
+      ],
+      "game": {}
+    },
+    {
+      "id": "MassLabel_3",
+      "kind": "text",
+      "center": [
+        1248,
+        510
+      ],
+      "size": [
+        154,
+        155
       ],
       "game": {}
     },
@@ -486,60 +457,54 @@
       }
     },
     {
-      "id": "MassLabel_2",
+      "id": "MassLabel_1",
       "kind": "text",
       "center": [
-        1249,
-        518
+        1159,
+        411
       ],
       "size": [
-        155,
-        155
+        418,
+        128
       ],
       "game": {}
     },
     {
-      "id": "Weight_Junk",
-      "kind": "draggable",
-      "center": [
-        1230,
-        368
-      ],
-      "size": [
-        128,
-        128
-      ],
-      "game": {
-        "Mass": 0,
-        "IsJunk": true
-      }
-    },
-    {
-      "id": "Weight_5kg",
-      "kind": "draggable",
-      "center": [
-        1118,
-        544
-      ],
-      "size": [
-        143,
-        143
-      ],
-      "game": {
-        "Mass": 5,
-        "IsJunk": false
-      }
-    },
-    {
-      "id": "MassLabel_4",
+      "id": "Label_4",
       "kind": "text",
       "center": [
-        1182,
-        524
+        729,
+        616
       ],
       "size": [
-        153,
-        150
+        112,
+        103
+      ],
+      "game": {}
+    },
+    {
+      "id": "MassLabel",
+      "kind": "text",
+      "center": [
+        706,
+        514
+      ],
+      "size": [
+        418,
+        128
+      ],
+      "game": {}
+    },
+    {
+      "id": "MassLabel_2",
+      "kind": "text",
+      "center": [
+        1045,
+        559
+      ],
+      "size": [
+        108,
+        120
       ],
       "game": {}
     },
@@ -571,15 +536,50 @@
       "game": {}
     },
     {
-      "id": "Weight_10kg_1",
+      "id": "RightPan",
+      "kind": "slot",
+      "center": [
+        1173,
+        475
+      ],
+      "size": [
+        223,
+        127
+      ],
+      "game": {
+        "PanId": "right",
+        "BaseMass": 0,
+        "IsReferencePan": false,
+        "AcceptsDrop": true,
+        "CurrentMass": 33
+      }
+    },
+    {
+      "id": "Weight_10kg",
       "kind": "draggable",
       "center": [
         1051,
         560
       ],
       "size": [
-        149,
-        149
+        133,
+        133
+      ],
+      "game": {
+        "Mass": 10,
+        "IsJunk": false
+      }
+    },
+    {
+      "id": "Weight_10kg_1",
+      "kind": "draggable",
+      "center": [
+        1118,
+        544
+      ],
+      "size": [
+        133,
+        133
       ],
       "game": {
         "Mass": 10,
@@ -590,12 +590,12 @@
       "id": "MassLabel_6",
       "kind": "text",
       "center": [
-        1045,
-        561
+        1112,
+        544
       ],
       "size": [
-        123,
-        133
+        108,
+        120
       ],
       "game": {}
     },
@@ -603,12 +603,12 @@
       "id": "Weight_10kg_2",
       "kind": "draggable",
       "center": [
-        1320,
-        499
+        1186,
+        529
       ],
       "size": [
-        178,
-        178
+        160,
+        160
       ],
       "game": {
         "Mass": 5,
@@ -619,12 +619,12 @@
       "id": "MassLabel_7",
       "kind": "text",
       "center": [
-        1315,
-        502
+        1180,
+        527
       ],
       "size": [
-        151,
-        154
+        133,
+        141
       ],
       "game": {}
     },
@@ -660,203 +660,203 @@
   ],
   "attempts": [
     {
-      "t": 1790194879873,
-      "step": "explorer:drag Weight_3kg → LeftPan",
-      "outcome": "penalty -0.4"
-    },
-    {
-      "t": 1790194879889,
-      "step": "explorer:grab Weight_5kg",
-      "outcome": "centre overlapped by ItemsAnchor, Weight_10kg_1 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194881694,
-      "step": "explorer:drag Weight_5kg → LeftPan",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194882651,
-      "step": "explorer:drag Weight_10kg_1 → LeftPan",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194883429,
-      "step": "explorer:drag Weight_10kg → Weight_10kg_1",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194884195,
-      "step": "explorer:drag Weight_10kg_1 → Weight_10kg",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194884211,
-      "step": "explorer:grab Weight_5kg",
-      "outcome": "centre overlapped by ItemsAnchor, Weight_10kg_1 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194886188,
-      "step": "explorer:drag Weight_5kg → Weight_10kg_2",
-      "outcome": "reward +0.7 (progress 0.77→0.80)"
-    },
-    {
-      "t": 1790194886953,
-      "step": "explorer:drag Weight_10kg_2 → Weight_5kg",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194886973,
-      "step": "explorer:grab Weight_10kg",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_5kg, Weight_10kg_2 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194888310,
-      "step": "explorer:drag Weight_10kg → RightPan",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194888350,
-      "step": "explorer:grab Weight_10kg_2",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_5kg — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194889652,
-      "step": "explorer:drag Weight_10kg_2 → RightPan",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194890406,
-      "step": "explorer:drag Weight_10kg → ScaleBeam",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194891976,
-      "step": "explorer:drag Weight_10kg_1 → RightPan",
-      "outcome": "reward +0.7 (progress 0.80→0.83)"
-    },
-    {
-      "t": 1790194891995,
-      "step": "explorer:grab Weight_3kg",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_Junk_1 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194893819,
-      "step": "explorer:drag Weight_3kg → ScaleBeam",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194894571,
-      "step": "explorer:drag Weight_10kg_2 → ScaleBeam",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194894600,
-      "step": "explorer:grab Weight_3kg",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_Junk_1 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194896929,
-      "step": "explorer:drag Weight_3kg → ItemsAnchor",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194897726,
-      "step": "explorer:drag Weight_10kg → ItemsAnchor",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194898547,
-      "step": "explorer:drag Weight_10kg → Weight_5kg",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194899321,
-      "step": "explorer:drag Weight_10kg_2 → ItemsAnchor",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194909737,
-      "step": "explorer:stagnation consult #2 (screenshot + 27 failed attempts)",
-      "outcome": "vision after stagnation: Balance the scale to 25 kg ±0.3 kg on the right pan by placing weights correctly. The current right pan has 30 kg, so reduce by 5 kg."
-    },
-    {
-      "t": 1790194909757,
-      "step": "explorer:grab Weight_5kg",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg, Weight_10kg_2 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194911547,
-      "step": "explorer:vision step 1: drag Weight_5kg → RightPan (The right pan is overloaded (30 kg) and needs to be reduced )",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194911569,
-      "step": "explorer:grab Weight_5kg",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg_1, Weight_10kg_2 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194913704,
-      "step": "explorer:vision step 2: drag Weight_5kg → RightPan (The 5 kg weight must be placed on the right pan to reduce th)",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194913705,
+      "t": 1790197115077,
       "step": "explorer:escalate to tier 1",
       "outcome": "taps and drags"
     },
     {
-      "t": 1790194913721,
+      "t": 1790197115358,
+      "step": "explorer:tap RightPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197116123,
+      "step": "explorer:drag Weight_3kg → RightPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197116881,
+      "step": "explorer:drag Weight_3kg → LeftPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197118670,
+      "step": "explorer:drag Weight_10kg → Weight_10kg_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197119444,
+      "step": "explorer:drag Weight_10kg_1 → Weight_10kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197120346,
+      "step": "explorer:drag Weight_3kg → ScaleBeam",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197121119,
+      "step": "explorer:drag Weight_5kg → Weight_10kg_2",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197121135,
+      "step": "explorer:grab Weight_10kg_2",
+      "outcome": "centre overlapped by ItemsAnchor, Weight_5kg, Weight_10kg_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197123094,
+      "step": "explorer:drag Weight_10kg_2 → Weight_5kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197123962,
+      "step": "explorer:drag Weight_5kg → RightPan",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197133287,
+      "step": "explorer:drag Weight_10kg → RightPan",
+      "outcome": "reward +1.3 (progress 0.69→0.75)"
+    },
+    {
+      "t": 1790197133314,
+      "step": "explorer:grab Weight_10kg_1",
+      "outcome": "centre overlapped by ItemsAnchor, Weight_5kg, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197134956,
+      "step": "explorer:drag Weight_10kg_1 → RightPan",
+      "outcome": "reward +1.3 (progress 0.75→0.82)"
+    },
+    {
+      "t": 1790197134973,
+      "step": "explorer:grab Weight_10kg_2",
+      "outcome": "centre overlapped by Weight_5kg — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197137064,
+      "step": "explorer:drag Weight_10kg_2 → RightPan",
+      "outcome": "reward +0.3 (progress 0.82→0.83)"
+    },
+    {
+      "t": 1790197147884,
+      "step": "explorer:drag Weight_5kg → Weight_10kg_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197147901,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg, Weight_10kg_1 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197156449,
+      "step": "explorer:drag Weight_3kg → Weight_10kg_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197157228,
+      "step": "explorer:drag Weight_5kg → ScaleBeam",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197157994,
+      "step": "explorer:drag Weight_5kg → ItemsAnchor",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197158904,
+      "step": "explorer:drag Weight_5kg → ItemsAnchor_1",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197159666,
+      "step": "explorer:drag Weight_5kg → Weight_10kg",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197175484,
+      "step": "explorer:stagnation consult #2 (screenshot + 23 failed attempts)",
+      "outcome": "vision after stagnation: Balance the scale: left pan has 15 kg, right pan must have 25 kg ±0.3 kg. Add weights to right pan to reach target."
+    },
+    {
+      "t": 1790197176260,
+      "step": "explorer:vision step 1: drag Weight_5kg → Weight_10kg_2 (The right pan currently has 33 kg (overloaded). We need to r)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197177069,
+      "step": "explorer:vision step 2: drag Weight_5kg → Weight_10kg_2 (Remove 5 kg from right pan by moving it to the junk slot. Th)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197177090,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by Weight_Junk, Weight_5kg, ItemsAnchor_1, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197178679,
+      "step": "explorer:vision step 3: drag Weight_3kg → Weight_10kg_2 (Now right pan has 28 kg. We need 25 kg, so remove 3 kg. The )",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197178702,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by Weight_Junk, Weight_5kg, ItemsAnchor_1, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197180551,
+      "step": "explorer:vision step 4: drag Weight_3kg → Weight_10kg_2 (Remove 3 kg from right pan. This brings total to 25 kg, whic)",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197180551,
+      "step": "explorer:escalate to tier 1",
+      "outcome": "taps and drags"
+    },
+    {
+      "t": 1790197180569,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by Weight_Junk, Weight_5kg, ItemsAnchor_1, Weight_10kg_2 — grabbing at an uncovered point"
+    },
+    {
+      "t": 1790197182746,
+      "step": "explorer:drag Weight_3kg → ItemsAnchor",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197182763,
       "step": "explorer:grab Weight_3kg",
       "outcome": "centre overlapped by ItemsAnchor_1, Weight_Junk_1 — grabbing at an uncovered point"
     },
     {
-      "t": 1790194916189,
-      "step": "explorer:drag Weight_3kg → Weight_5kg",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194916969,
-      "step": "explorer:drag Weight_10kg_2 → ItemsAnchor_1",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194917727,
-      "step": "explorer:drag Weight_10kg_2 → Weight_10kg_1",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194917743,
-      "step": "explorer:grab Weight_10kg",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_10kg_1, Weight_10kg_2 — grabbing at an uncovered point"
-    },
-    {
-      "t": 1790194919755,
-      "step": "explorer:drag Weight_10kg → Weight_10kg_2",
-      "outcome": "no effect"
-    },
-    {
-      "t": 1790194920532,
+      "t": 1790197184694,
       "step": "explorer:drag Weight_3kg → ItemsAnchor_1",
       "outcome": "no effect"
     },
     {
-      "t": 1790194920548,
-      "step": "explorer:grab Weight_10kg_2",
-      "outcome": "centre overlapped by ItemsAnchor_1, Weight_5kg, Weight_10kg_1 — grabbing at an uncovered point"
+      "t": 1790197184713,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by Weight_Junk, Weight_5kg, ItemsAnchor_1, Weight_10kg_2 — grabbing at an uncovered point"
     },
     {
-      "t": 1790194923322,
-      "step": "explorer:drag Weight_10kg_2 → Weight_10kg",
+      "t": 1790197186996,
+      "step": "explorer:drag Weight_3kg → Weight_10kg",
       "outcome": "no effect"
     },
     {
-      "t": 1790194932649,
-      "step": "explorer:stagnation consult #3 (screenshot + 35 failed attempts)",
-      "outcome": "vision after stagnation: Balance the scale by placing exactly 25 kg ±0.3 kg on the right pan. The current right pan weight is 33 kg, so it must be reduced by 8 kg."
+      "t": 1790197187024,
+      "step": "explorer:grab Weight_3kg",
+      "outcome": "centre overlapped by Weight_Junk, Weight_5kg, ItemsAnchor_1, Weight_10kg_2 — grabbing at an uncovered point"
     },
     {
-      "t": 1790194932657,
-      "step": "explorer (second pass, remaining budget) (39 actions)",
+      "t": 1790197189227,
+      "step": "explorer:drag Weight_3kg → Weight_10kg_2",
+      "outcome": "no effect"
+    },
+    {
+      "t": 1790197189232,
+      "step": "explorer (second pass, remaining budget) (34 actions)",
       "outcome": "goal not reached"
     }
   ],
