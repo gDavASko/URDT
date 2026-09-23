@@ -48,6 +48,8 @@ namespace KBP.URDT.Net
         public const string ACTION_POINTER_DOWN = "pointer_down";
         public const string ACTION_POINTER_UP = "pointer_up";
         public const string ACTION_INPUT_STATUS = "input_status";
+        public const string ACTION_AUDIO = "audio";
+        public const string ACTION_COVERAGE = "coverage";
 
         /// <summary>Payload value of <c>pacing</c> that plays a gesture one pointer state per game frame.</summary>
         public const string PACING_REALTIME = "realtime";

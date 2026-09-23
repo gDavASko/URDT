@@ -43,6 +43,23 @@ namespace URDT.Runtime.Inspectors
         private Texture2D _readbackTex;
 
         public bool IsFrozen => _isFrozen;
+
+        // One-shot full-resolution frame for vision analysis (requested by `capture {hd:true}`).
+        private volatile bool _hdRequested;
+        private string _hdFrame;
+        private long _hdFrameMs;
+
+        /// <summary>Asks for a full-resolution JPEG at the next end of frame.</summary>
+        public void RequestHdFrame()
+        {
+            _hdRequested = true;
+        }
+
+        /// <summary>Returns the latest HD frame (data URI) if it was taken after <paramref name="sinceMs"/>.</summary>
+        public string TakeHdFrame(long sinceMs)
+        {
+            return _hdFrame != null && _hdFrameMs >= sinceMs ? _hdFrame : null;
+        }
         public int TotalCaptured => _totalCaptured;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -137,6 +154,12 @@ namespace URDT.Runtime.Inspectors
             {
                 yield return new WaitForEndOfFrame();
 
+                if (_hdRequested && SystemInfo.graphicsDeviceType != GraphicsDeviceType.Null)
+                {
+                    _hdRequested = false;
+                    CaptureHdFrame();
+                }
+
                 if (_isFrozen)
                 {
                     // Freeze() may be called from a logging thread; stamp and expire the hold on the main thread
@@ -196,6 +219,25 @@ namespace URDT.Runtime.Inspectors
             catch (Exception ex)
             {
                 Debug.LogWarning($"[URDT] Dashcam capture error: {ex.Message}");
+            }
+        }
+
+        private void CaptureHdFrame()
+        {
+            Texture2D tex = null;
+            try
+            {
+                tex = ScreenCapture.CaptureScreenshotAsTexture();
+                _hdFrame = "data:image/jpeg;base64," + Convert.ToBase64String(tex.EncodeToJPG(85));
+                _hdFrameMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[URDT] HD frame capture failed: {ex.Message}");
+            }
+            finally
+            {
+                if (tex != null) Destroy(tex);
             }
         }
 

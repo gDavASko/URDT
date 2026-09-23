@@ -159,6 +159,8 @@ namespace KBP.URDT
             _lastError = string.Empty;
             _token = token ?? string.Empty;
             EnableRunInBackground();
+            EnableInputWithoutGameViewFocus();
+            global::URDT.Runtime.Inspectors.UrdtAudioTap.Ensure();
 
             try
             {
@@ -398,6 +400,7 @@ namespace KBP.URDT
             _runtime = null;
             _token = null;
             RestoreRunInBackground();
+            RestoreInputFocusSettings();
             Interlocked.Exchange(ref _lastMainThreadTickUtcTicks, 0L);
 
             while (_visualizerCommands.TryDequeue(out _))
@@ -416,6 +419,49 @@ namespace KBP.URDT
             _previousRunInBackground = false;
             _restoreRunInBackground = true;
             Application.runInBackground = true;
+#endif
+        }
+
+#if UNITY_EDITOR
+        private bool _restoreInputFocusSettings;
+        private InputSettings.EditorInputBehaviorInPlayMode _previousEditorInputBehavior;
+        private InputSettings.BackgroundBehavior _previousBackgroundBehavior;
+#endif
+
+        /// <summary>
+        /// In the Editor the Input System drops pointer/keyboard events while the Game view is not focused
+        /// (default PointersAndKeyboardsRespectGameViewFocus). An externally driven session (Play Mode entered
+        /// by a script, Editor minimized) then accepts clicks but uGUI never fires onClick. Route all device
+        /// input to the game for the lifetime of the URDT session and restore the settings on stop.
+        /// </summary>
+        private void EnableInputWithoutGameViewFocus()
+        {
+#if UNITY_EDITOR
+            InputSettings settings = InputSystem.settings;
+            if (settings == null || _restoreInputFocusSettings)
+            {
+                return;
+            }
+
+            _previousEditorInputBehavior = settings.editorInputBehaviorInPlayMode;
+            _previousBackgroundBehavior = settings.backgroundBehavior;
+            settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+            settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            _restoreInputFocusSettings = true;
+#endif
+        }
+
+        private void RestoreInputFocusSettings()
+        {
+#if UNITY_EDITOR
+            if (!_restoreInputFocusSettings || InputSystem.settings == null)
+            {
+                return;
+            }
+
+            InputSystem.settings.editorInputBehaviorInPlayMode = _previousEditorInputBehavior;
+            InputSystem.settings.backgroundBehavior = _previousBackgroundBehavior;
+            _restoreInputFocusSettings = false;
 #endif
         }
 

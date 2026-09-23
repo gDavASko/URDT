@@ -62,6 +62,25 @@ namespace KBP.URDT.Handlers
             }
 
             // Failure-evidence dashcam: the last ~5 s of low-res JPEG frames kept in RAM (oldest first).
+            // Full-resolution frame for vision: first call requests it (taken at end of frame), a later call
+            // with the returned `hd_since_ms` collects it.
+            if (PayloadReader.GetBool(payload, "hd", false) && dashcam != null)
+            {
+                long since = payload != null && payload["hd_since_ms"] != null ? payload["hd_since_ms"].Value<long>() : 0L;
+                string hd = since > 0 ? dashcam.TakeHdFrame(since) : null;
+                if (hd != null)
+                {
+                    result["hd_jpeg_datauri"] = hd;
+                }
+                else
+                {
+                    long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    dashcam.RequestHdFrame();
+                    result["hd_pending"] = true;
+                    result["hd_since_ms"] = since > 0 ? since : now;
+                }
+            }
+
             if (PayloadReader.GetBool(payload, "dashcam", false) && dashcam != null)
             {
                 result["dashcam_jpeg_b64"] = new JArray(dashcam.ExportBase64Frames());
