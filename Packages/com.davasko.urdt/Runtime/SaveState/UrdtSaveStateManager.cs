@@ -274,7 +274,7 @@ namespace URDT.Runtime.SaveState
             PurgeTweensReflection();
 
             // Stop all coroutines on active scene MonoBehaviours
-            var allMonoBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude);
+            var allMonoBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             for (int i = 0; i < allMonoBehaviours.Length; i++)
             {
                 var mb = allMonoBehaviours[i];
