@@ -13,7 +13,7 @@
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [
-        "URDT_ENABLED"
+        "URDT_ENABLED || UNITY_EDITOR || DEVELOPMENT_BUILD"
     ],
     "versionDefines": [],
     "noEngineReferences": false
