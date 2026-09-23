@@ -7,10 +7,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
 {
     /// <summary>
     /// Механика #15: Перехват объекта во временном окне допуска (Timing Interceptor).
-    /// Задача: отбить приближающийся мяч ровно в момент его нахождения в зеленой зоне перехвата (3 раза подряд).
-    /// Мешающие факторы:
-    /// 1. Ложный фантомный мяч [X] красного цвета — при попытке отбить его серия сбрасывается.
-    /// 2. Узкое окно допуска (допуск по координате +/- 25px) и переменная скорость подачи.
+    /// Три этапа: сужение окна, ускорение подачи, рост требуемой серии. Промах, попытка отбить
+    /// фантомный мяч [X] и «упущенный» мяч — провал этапа.
     /// </summary>
     public class M15_TimingInterceptorMechanic : BaseMechanic2DModule
     {
@@ -22,13 +20,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
 
         [Header("Параметры перехвата")]
         [SerializeField] private float _targetLineX = -100f;
-        [SerializeField] private float _tolerance = 30f;
-        [SerializeField] private int _requiredStreak = 3;
 
         [Header("UI обратная связь")]
         [SerializeField] private TMP_Text _streakText = null;
         [SerializeField] private TMP_Text _instructionText = null;
         [SerializeField] private Image _ballImage = null;
+
+        // Допуск, требуемая серия и диапазон скорости по этапам.
+        private static readonly float[] _stageTolerance      = { 30f, 22f, 16f };
+        private static readonly int[]   _stageRequiredStreak = { 3,   3,   4   };
+        private static readonly float[] _stageSpeedMin       = { 170f, 210f, 235f };
+        private static readonly float[] _stageSpeedMax       = { 230f, 260f, 285f };
+        private static readonly float[] _stageDecoyChance    = { 0.28f, 0.32f, 0.35f };
 
         private int _currentStreak = 0;
         private float _ballSpeed = 190f;
@@ -36,6 +39,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
         private bool _isDecoy = false;
         private bool _isDeflected = false;
         private float _deflectTimer = 0f;
+
+        public override int StageCount => 3;
+        public int CurrentStreak => _currentStreak;
+        public int RequiredStreak => _stageRequiredStreak[Mathf.Clamp(CurrentStage - 1, 0, _stageRequiredStreak.Length - 1)];
+        public float Tolerance => _stageTolerance[Mathf.Clamp(CurrentStage - 1, 0, _stageTolerance.Length - 1)];
+        public bool IsDecoy => _isDecoy;
+        public float BallX => _ballX;
+        public float TargetLineX => _targetLineX;
 
         protected override void Awake()
         {
@@ -49,11 +60,24 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
             if (_interceptButton != null) _interceptButton.onClick.RemoveListener(AttemptInterception);
         }
 
+        protected override string GetStageInstruction(int stage)
+        {
+            float tol = _stageTolerance[Mathf.Clamp(stage - 1, 0, _stageTolerance.Length - 1)];
+            int need = _stageRequiredStreak[Mathf.Clamp(stage - 1, 0, _stageRequiredStreak.Length - 1)];
+            switch (stage)
+            {
+                case 1: return $"Этап 1/3: отбейте мяч у линии ±{tol:F0}px, серия {need} подряд. Не бейте фантом [X]!";
+                case 2: return $"Этап 2/3: подача быстрее, допуск ±{tol:F0}px, серия {need}.";
+                default: return $"Этап 3/3: молниеносная подача, ±{tol:F0}px, серия {need}. Не ошибиться!";
+            }
+        }
+
         public override void Initialize()
         {
             base.Initialize();
             _currentStreak = 0;
             ResetBallCycle();
+            if (_instructionText != null) _instructionText.text = GetStageInstruction(CurrentStage);
             UpdateUI();
             SetProgress(0f);
         }
@@ -65,74 +89,54 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
 
         public void AttemptInterception()
         {
-            if (_isCompleted || _isDeflected) return;
+            if (_isCompleted || IsInTransition || _isDeflected) return;
 
-            // Анимация взмаха ракетки
-            if (_hitPaddle != null)
-            {
-                _hitPaddle.localRotation = Quaternion.Euler(0f, 0f, 35f);
-            }
-
-            float offset = Mathf.Abs(_ballX - _targetLineX);
+            if (_hitPaddle != null) _hitPaddle.localRotation = Quaternion.Euler(0f, 0f, 35f);
 
             if (_isDecoy)
             {
-                // Попытка отбить фантомный мяч [X]
-                _currentStreak = 0;
-                UpdateUI();
-                if (_instructionText != null)
-                {
-                    _instructionText.text = "<color=#FF4444>Ошибка! Это был ложный мяч-фантом [X]! Серия сброшена.</color>";
-                }
-                ResetBallCycle();
+                FailStage("Ошибка: попытка отбить ложный мяч-фантом [X].");
                 return;
             }
 
-            if (offset <= _tolerance)
+            float offset = Mathf.Abs(_ballX - _targetLineX);
+            float tol = Tolerance;
+            if (offset <= tol)
             {
-                // Успешный перехват
                 _isDeflected = true;
                 _deflectTimer = 0f;
                 _currentStreak++;
                 UpdateUI();
 
-                float progress = Mathf.Clamp01((float)_currentStreak / _requiredStreak);
+                int need = RequiredStreak;
+                float progress = Mathf.Clamp01((float)_currentStreak / need);
                 SetProgress(progress);
 
                 if (_instructionText != null)
                 {
-                    _instructionText.text = $"<color=#00FF99>Точный перехват! Серия: {_currentStreak}/{_requiredStreak}</color>";
+                    _instructionText.text = $"<color=#00FF99>Точный перехват! Серия: {_currentStreak}/{need}</color>";
                 }
 
-                if (_currentStreak >= _requiredStreak)
+                if (_currentStreak >= need)
                 {
                     CompleteMechanic();
                     if (_instructionText != null)
                     {
-                        _instructionText.text = "<color=#00FF99>Идеальный тайминг! 3 перехвата подряд выполнены!</color>";
+                        _instructionText.text = $"<color=#00FF99>Этап {CurrentStage}/3 пройден идеально!</color>";
                     }
                 }
             }
             else
             {
-                // Промах
-                _currentStreak = 0;
-                UpdateUI();
-                if (_instructionText != null)
-                {
-                    string msg = _ballX > _targetLineX ? "Слишком рано!" : "Слишком поздно!";
-                    _instructionText.text = $"<color=#FF8844>{msg} Серия сброшена.</color>";
-                }
+                string msg = _ballX > _targetLineX ? "Слишком рано!" : "Слишком поздно!";
+                FailStage($"Промах: {msg} (сдвиг {offset:F0}px, допуск {tol:F0}px).");
             }
         }
 
         private void Update()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Space)) AttemptInterception();
-
-            // Возврат ракетки в исходное положение
             if (_hitPaddle != null && _hitPaddle.localRotation != Quaternion.identity)
             {
                 _hitPaddle.localRotation = Quaternion.Lerp(_hitPaddle.localRotation, Quaternion.identity, Time.unscaledDeltaTime * 10f);
@@ -143,31 +147,24 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
                 _deflectTimer += Time.unscaledDeltaTime;
                 _ballX += _ballSpeed * 2f * Time.unscaledDeltaTime;
                 if (_ballTransform != null) _ballTransform.anchoredPosition = new Vector2(_ballX, 0f);
-
-                if (_ballX > 250f || _deflectTimer > 1.2f)
-                {
-                    ResetBallCycle();
-                }
+                if (_ballX > 250f || _deflectTimer > 1.2f) ResetBallCycle();
                 return;
             }
 
-            // Движение мяча влево
             _ballX -= _ballSpeed * Time.unscaledDeltaTime;
             if (_ballTransform != null) _ballTransform.anchoredPosition = new Vector2(_ballX, 0f);
 
-            // Мяч пролетел мимо линии без перехвата
             if (_ballX < -190f)
             {
-                if (!_isDecoy && _currentStreak > 0)
+                if (_isDecoy)
                 {
-                    _currentStreak = 0;
-                    UpdateUI();
-                    if (_instructionText != null)
-                    {
-                        _instructionText.text = "<color=#FF5555>Мяч упущен за пределы! Серия сброшена.</color>";
-                    }
+                    // Фантом прошёл мимо — это правильно, просто следующая подача.
+                    ResetBallCycle();
                 }
-                ResetBallCycle();
+                else
+                {
+                    FailStage("Мяч упущен за пределы линии перехвата.");
+                }
             }
         }
 
@@ -177,27 +174,26 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M15_TimingInterceptor
             _isDeflected = false;
             _deflectTimer = 0f;
 
-            // С вероятностью 25% спавним фантомный мяч-обманку
-            _isDecoy = UnityEngine.Random.value < 0.28f;
+            float decoyChance = _stageDecoyChance[Mathf.Clamp(CurrentStage - 1, 0, _stageDecoyChance.Length - 1)];
+            _isDecoy = UnityEngine.Random.value < decoyChance;
 
-            _ballSpeed = UnityEngine.Random.Range(170f, 230f);
+            float sMin = _stageSpeedMin[Mathf.Clamp(CurrentStage - 1, 0, _stageSpeedMin.Length - 1)];
+            float sMax = _stageSpeedMax[Mathf.Clamp(CurrentStage - 1, 0, _stageSpeedMax.Length - 1)];
+            _ballSpeed = UnityEngine.Random.Range(sMin, sMax);
 
             if (_ballImage != null)
             {
                 _ballImage.color = _isDecoy ? new Color(1f, 0.3f, 0.3f, 0.7f) : Color.white;
             }
 
-            if (_ballTransform != null)
-            {
-                _ballTransform.anchoredPosition = new Vector2(_ballX, 0f);
-            }
+            if (_ballTransform != null) _ballTransform.anchoredPosition = new Vector2(_ballX, 0f);
         }
 
         private void UpdateUI()
         {
             if (_streakText != null)
             {
-                _streakText.text = $"Серия перехватов: {_currentStreak} / {_requiredStreak}";
+                _streakText.text = $"Серия перехватов: {_currentStreak} / {RequiredStreak}";
             }
         }
     }

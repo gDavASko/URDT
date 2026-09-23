@@ -43,6 +43,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M20_VerticalStacking
         private float _currentTopX = 0f;
         private List<GameObject> _placedBlocks = new List<GameObject>();
         private Image _activeBlockImage;
+        private int _missesUsed = 0;
+
+        private static readonly int[] StageTarget = new int[] { 3, 4, 5 };
+        private static readonly float[] StageTolerance = new float[] { 35f, 30f, 25f };
+        private static readonly float[] StageSwingSpeed = new float[] { 2.4f, 3.0f, 3.6f };
+        private static readonly int[] StageMissBudget = new int[] { 5, 3, 2 };
+
+        public override int StageCount => 3;
+        public int MissesUsed => _missesUsed;
+        public int MissesBudget => StageMissBudget[Mathf.Clamp(CurrentStage - 1, 0, StageMissBudget.Length - 1)];
+        public int StackedCount => _stackedCount;
+        public int StageTargetStack => _targetStackCount;
 
         protected override void Awake()
         {
@@ -64,11 +76,30 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M20_VerticalStacking
             _stackedCount = 0;
             _isFalling = false;
             _currentTopX = 0f;
+            _missesUsed = 0;
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, StageTarget.Length - 1);
+            _targetStackCount = StageTarget[idx];
+            _maxOffsetTolerance = StageTolerance[idx];
+            _swingSpeed = StageSwingSpeed[idx];
 
             ClearPlacedBlocks();
             ResetSwingingBlock();
             UpdateUI();
             SetProgress(0f);
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int target = StageTarget[Mathf.Clamp(stage - 1, 0, StageTarget.Length - 1)];
+            int budget = StageMissBudget[Mathf.Clamp(stage - 1, 0, StageMissBudget.Length - 1)];
+            switch (stage)
+            {
+                case 1: return $"Этап 1/3. Постройте башню из {target} блоков. Сбрасывайте блок точно по центру. Допустимо промахов: {budget}.";
+                case 2: return $"Этап 2/3. Кран быстрее, окно точности уже. Соберите {target} блоков. Промахов не более: {budget}.";
+                case 3: return $"Этап 3/3. Максимальный темп и минимальный допуск. {target} блоков, промахов: {budget}.";
+                default: return _instruction;
+            }
         }
 
         public override void ResetMechanic()
@@ -78,7 +109,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M20_VerticalStacking
 
         public void DropBlock()
         {
-            if (_isCompleted || _isFalling) return;
+            if (_isCompleted || _isFalling || IsInTransition) return;
             _isFalling = true;
         }
 
@@ -102,7 +133,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M20_VerticalStacking
 
         private void Update()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.Space)) DropBlock();
 
@@ -177,9 +208,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M20_VerticalStacking
                         else
                         {
                             // Падение/соскальзывание блока
+                            _missesUsed++;
                             if (_instructionText != null)
                             {
-                                _instructionText.text = $"<color=#FF5555>Перекос! Смещение {offset:F0}px превысило допуск ({tolerance:F0}px). Попробуйте еще раз!</color>";
+                                _instructionText.text = $"<color=#FF5555>Перекос! Смещение {offset:F0}px > допуск ({tolerance:F0}px). Промахов: {_missesUsed}/{MissesBudget}</color>";
+                            }
+                            if (_missesUsed >= MissesBudget)
+                            {
+                                FailStage($"исчерпан лимит промахов ({MissesBudget})");
+                                return;
                             }
                         }
 

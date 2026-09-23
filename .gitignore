@@ -62,3 +62,8 @@ node_modules/
 /CoreAgent/tools/
 # L3 task outputs (result.json, screenshots) — task definitions (*.json at the top level) stay tracked
 /URDT_Sandbox/tasks/*/
+
+/URDT_Sandbox/experiments/
+
+# agent-side fallback when a game does not report its knowledge folder
+/CoreAgent/knowledge/unbound/

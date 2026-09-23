@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
@@ -161,6 +161,7 @@ namespace KBP.URDT
             EnableRunInBackground();
             EnableInputWithoutGameViewFocus();
             global::URDT.Runtime.Inspectors.UrdtAudioTap.Ensure();
+            UrdtKnowledge.Resolve();
 
             try
             {

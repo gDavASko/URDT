@@ -1,0 +1,77 @@
+{
+  "name": "program_sequencer",
+  "version": 1,
+  "tier": "archived",
+  "source": "synthesized",
+  "description": "fill timeline slots in the required command order, never junk, then run",
+  "requires": {
+    "beacons": [
+      "^Slot_\\d+$",
+      "^Chip_"
+    ],
+    "buttons": [
+      "execute|run"
+    ]
+  },
+  "entry": "controller.ts",
+  "project": "URDT_gen",
+  "createdAt": 1790188881858,
+  "evidence": [
+    {
+      "runId": "try_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 24031,
+      "at": 1790189128586
+    },
+    {
+      "runId": "gate_baseline_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 19077,
+      "at": 1790189202604
+    },
+    {
+      "runId": "gate_program_sequencer_0_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 14586,
+      "at": 1790189751506
+    },
+    {
+      "runId": "gate_cand_program_sequencer_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 22928,
+      "at": 1790189882815
+    },
+    {
+      "runId": "gate_program_sequencer_0_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 18352,
+      "at": 1790190712956
+    },
+    {
+      "runId": "gate_program_sequencer_1_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 22976,
+      "at": 1790190754446
+    },
+    {
+      "runId": "gate_cand_program_sequencer_M05_TimelineSequencer",
+      "project": "URDT_gen",
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "ms": 18672,
+      "at": 1790190833518
+    }
+  ]
+}

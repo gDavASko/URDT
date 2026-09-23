@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -338,6 +338,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
 
             _activeInstance.OnCompleted += HandleMechanicCompleted;
             _activeInstance.OnProgressChanged += HandleMechanicProgress;
+            _activeInstance.OnStageCleared += HandleStageCleared;
+            _activeInstance.OnStageFailed += HandleStageFailed;
             _activeInstance.Initialize();
 
             KBP.URDT.UrdtServerHost.Instance?.RegisterHierarchy(_activeInstance.transform);
@@ -352,6 +354,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             {
                 _activeInstance.OnCompleted -= HandleMechanicCompleted;
                 _activeInstance.OnProgressChanged -= HandleMechanicProgress;
+                _activeInstance.OnStageCleared -= HandleStageCleared;
+                _activeInstance.OnStageFailed -= HandleStageFailed;
                 Destroy(_activeInstance.gameObject);
                 _activeInstance = null;
             }
@@ -495,7 +499,50 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         {
             if (_progressText != null)
             {
-                _progressText.text = $"Прогресс: {(progress * 100f):F0}%";
+                _progressText.text = $"{StageLabel()}Прогресс: {(progress * 100f):F0}%";
+            }
+            // Инструкция зависит от этапа: обновляем её при каждом изменении (в т.ч. после перехода этапа).
+            if (_instructionText != null && _activeInstance != null && _instructionText.text != _activeInstance.Instruction)
+            {
+                _instructionText.text = _activeInstance.Instruction;
+            }
+            if (_failBannerUntil > 0f && Time.unscaledTime > _failBannerUntil)
+            {
+                _failBannerUntil = 0f;
+                UpdateStatusUI(false);
+            }
+        }
+
+        private float _failBannerUntil;
+
+        private string StageLabel()
+        {
+            return _activeInstance != null && _activeInstance.StageCount > 1
+                ? $"Этап {_activeInstance.CurrentStage}/{_activeInstance.StageCount} · "
+                : string.Empty;
+        }
+
+        private void HandleStageCleared(BaseMechanic2DModule module, int stage)
+        {
+            if (_statusBadgeText != null)
+            {
+                _statusBadgeText.text = $"ЭТАП {stage}/{module.StageCount} ПРОЙДЕН";
+                _statusBadgeText.color = new Color(0.1f, 1f, 0.5f);
+            }
+        }
+
+        private void HandleStageFailed(BaseMechanic2DModule module, string reason)
+        {
+            _failBannerUntil = Time.unscaledTime + 2.5f;
+            if (_statusBadgeText != null)
+            {
+                _statusBadgeText.text = "ПРОВАЛ — ЗАНОВО";
+                _statusBadgeText.color = new Color(1f, 0.35f, 0.3f);
+            }
+            if (_statusBadgeBg != null) _statusBadgeBg.color = new Color(0.6f, 0.12f, 0.1f, 0.65f);
+            if (_instructionText != null && !string.IsNullOrEmpty(reason))
+            {
+                _instructionText.text = $"Провал: {reason}";
             }
         }
 
@@ -537,7 +584,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         {
             if (_statusBadgeText != null)
             {
-                _statusBadgeText.text = completed ? "ЗАВЕРШЕНО" : "В ПРОЦЕССЕ";
+                _statusBadgeText.text = completed ? "ЗАВЕРШЕНО"
+                    : _activeInstance != null && _activeInstance.StageCount > 1 ? $"ЭТАП {_activeInstance.CurrentStage}/{_activeInstance.StageCount}" : "В ПРОЦЕССЕ";
                 _statusBadgeText.color = completed ? new Color(0.1f, 1f, 0.5f) : new Color(1f, 0.8f, 0.2f);
             }
 
@@ -552,7 +600,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             {
                 _progressText.text = completed
                     ? "Прогресс: 100% (Успех!)"
-                    : $"Прогресс: {(_activeInstance.ProgressNormalized * 100f):F0}%";
+                    : $"{StageLabel()}Прогресс: {(_activeInstance.ProgressNormalized * 100f):F0}%";
             }
         }
 
@@ -576,7 +624,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
         {
             if (_activeInstance != null)
             {
-                _activeInstance.ResetMechanic();
+                _activeInstance.RestartFromFirstStage();
                 UpdateStatusUI(false);
             }
         }
@@ -1452,7 +1500,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             {
                 target = btn.gameObject.AddComponent<KBP.URDT.Inspect.UrdtUiButtonTarget>();
             }
-            target.TargetId = targetId;
+            target.TargetId = targetId;   // смена id перерегистрирует кнопку в реестре URDT (UrdtDebugTarget.TargetId)
         }
 
         private static Sprite _cachedProceduralNavSprite = null;

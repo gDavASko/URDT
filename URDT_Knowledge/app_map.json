@@ -1,0 +1,1088 @@
+{
+  "nodes": {
+    "window_2d_suite|-|14j4chg": {
+      "id": "window_2d_suite|-|14j4chg",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [],
+      "buttons": [
+        "btn_2d_catalog_main_menu",
+        "btn_2d_run_sequential",
+        "btn_launch_m01",
+        "btn_launch_m02",
+        "btn_launch_m03",
+        "btn_launch_m04",
+        "btn_launch_m05",
+        "btn_launch_m06",
+        "btn_launch_m07",
+        "btn_launch_m08",
+        "btn_launch_m09",
+        "btn_launch_m10",
+        "btn_launch_m11",
+        "btn_launch_m12",
+        "btn_launch_m13",
+        "btn_launch_m14",
+        "btn_launch_m15",
+        "btn_launch_m16",
+        "btn_launch_m17",
+        "btn_launch_m18",
+        "btn_launch_m19",
+        "btn_launch_m20",
+        "btn_launch_m21",
+        "btn_launch_m22",
+        "btn_launch_m23",
+        "btn_launch_m24",
+        "btn_launch_m25",
+        "btn_launch_m26",
+        "btn_launch_m27",
+        "btn_launch_m28",
+        "btn_launch_m29",
+        "btn_launch_m30",
+        "btn_launch_m31",
+        "btn_launch_m32",
+        "btn_launch_m33",
+        "btn_launch_m34",
+        "btn_launch_m35",
+        "btn_launch_m36"
+      ],
+      "visits": 127,
+      "firstSeen": 1790188487933,
+      "lastSeen": 1790191859661,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M34_Snake|11zijfi": {
+      "id": "window_2d_suite|M34_Snake|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M34_Snake"
+      ],
+      "buttons": [
+        "BtnDown",
+        "BtnLeft",
+        "BtnRight",
+        "BtnUp",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 17,
+      "firstSeen": 1790188495394,
+      "lastSeen": 1790191860535,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M17_TugOfWarBalance|11zijfi": {
+      "id": "window_2d_suite|M17_TugOfWarBalance|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M17_TugOfWarBalance"
+      ],
+      "buttons": [
+        "BtnPull",
+        "BtnSlipHazard",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 10,
+      "firstSeen": 1790188654430,
+      "lastSeen": 1790188756489,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|-|1www4nt": {
+      "id": "window_2d_suite|-|1www4nt",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [],
+      "buttons": [
+        "btn_2d_catalog_main_menu",
+        "btn_2d_run_sequential"
+      ],
+      "visits": 4,
+      "firstSeen": 1790188757465,
+      "lastSeen": 1790190940758,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M05_TimelineSequencer|11zijfi": {
+      "id": "window_2d_suite|M05_TimelineSequencer|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M05_TimelineSequencer"
+      ],
+      "buttons": [
+        "Button_Execute",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 32,
+      "firstSeen": 1790188805301,
+      "lastSeen": 1790190834351,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M01_SnapToSlot|11zijfi": {
+      "id": "window_2d_suite|M01_SnapToSlot|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M01_SnapToSlot"
+      ],
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 23,
+      "firstSeen": 1790189131449,
+      "lastSeen": 1790192871637,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M09_CoverageAccumulator|11zijfi": {
+      "id": "window_2d_suite|M09_CoverageAccumulator|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M09_CoverageAccumulator"
+      ],
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 15,
+      "firstSeen": 1790189205554,
+      "lastSeen": 1790190939787,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M12_AngularDeltaTracker|11zijfi": {
+      "id": "window_2d_suite|M12_AngularDeltaTracker|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M12_AngularDeltaTracker"
+      ],
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 21,
+      "firstSeen": 1790189283181,
+      "lastSeen": 1790191031732,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M16_RhythmPhaseDetector|11zijfi": {
+      "id": "window_2d_suite|M16_RhythmPhaseDetector|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M16_RhythmPhaseDetector"
+      ],
+      "buttons": [
+        "BtnJunkLever",
+        "BtnLane_0",
+        "BtnLane_1",
+        "BtnLane_2",
+        "BtnLeftLever",
+        "BtnRightLever",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 19,
+      "firstSeen": 1790189352927,
+      "lastSeen": 1790192868933,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M22_GridPathfinding|11zijfi": {
+      "id": "window_2d_suite|M22_GridPathfinding|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M22_GridPathfinding"
+      ],
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 22,
+      "firstSeen": 1790189393499,
+      "lastSeen": 1790192284183,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M28_DualBridgeRoute|11zijfi": {
+      "id": "window_2d_suite|M28_DualBridgeRoute|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M28_DualBridgeRoute"
+      ],
+      "buttons": [
+        "BtnStart",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 21,
+      "firstSeen": 1790189639723,
+      "lastSeen": 1790191858248,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_main_menu|-|1boa90k": {
+      "id": "window_main_menu|-|1boa90k",
+      "windows": [
+        "window_main_menu"
+      ],
+      "modules": [],
+      "buttons": [
+        "btn_open_2d_suite",
+        "btn_open_3d_suite",
+        "btn_open_integration_suite",
+        "btn_open_ui_suite",
+        "btn_run_all_suites"
+      ],
+      "visits": 3,
+      "firstSeen": 1790192005285,
+      "lastSeen": 1790192592292,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|-|1n6e16s": {
+      "id": "window_2d_suite|-|1n6e16s",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [],
+      "buttons": [
+        "btn_2d_catalog_main_menu",
+        "btn_2d_run_sequential",
+        "btn_launch_m01",
+        "btn_launch_m02",
+        "btn_launch_m03",
+        "btn_launch_m04",
+        "btn_launch_m05",
+        "btn_launch_m06",
+        "btn_launch_m07",
+        "btn_launch_m08",
+        "btn_launch_m09",
+        "btn_launch_m10",
+        "btn_launch_m11",
+        "btn_launch_m12",
+        "btn_launch_m13",
+        "btn_launch_m14",
+        "btn_launch_m15",
+        "btn_launch_m16",
+        "btn_launch_m17",
+        "btn_launch_m18",
+        "btn_launch_m19",
+        "btn_launch_m20",
+        "btn_launch_m21",
+        "btn_launch_m22",
+        "btn_launch_m23",
+        "btn_launch_m24",
+        "btn_launch_m25",
+        "btn_launch_m26",
+        "btn_launch_m27",
+        "btn_launch_m28",
+        "btn_launch_m29",
+        "btn_launch_m30",
+        "btn_launch_m31",
+        "btn_launch_m32",
+        "btn_launch_m33",
+        "btn_launch_m34",
+        "btn_launch_m35",
+        "btn_launch_m36",
+        "btn_launch_m37"
+      ],
+      "visits": 16,
+      "firstSeen": 1790192007983,
+      "lastSeen": 1790192870761,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M37_AlternateRunner|11zijfi": {
+      "id": "window_2d_suite|M37_AlternateRunner|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M37_AlternateRunner"
+      ],
+      "buttons": [
+        "BtnJump_Junk",
+        "BtnLeftFoot",
+        "BtnRightFoot",
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 4,
+      "firstSeen": 1790192008767,
+      "lastSeen": 1790192387143,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_ui_suite|-|s5lv8l": {
+      "id": "window_ui_suite|-|s5lv8l",
+      "windows": [
+        "window_ui_suite"
+      ],
+      "modules": [],
+      "buttons": [
+        "btn_ui_back",
+        "ui.btn_clear_canvas",
+        "ui.btn_draw",
+        "ui.modal_button",
+        "ui.primary_button",
+        "ui.reset_button"
+      ],
+      "visits": 1,
+      "firstSeen": 1790192591568,
+      "lastSeen": 1790192591568,
+      "builds": [
+        "0.1+editor"
+      ]
+    },
+    "window_2d_suite|M02_ContainerSorting|11zijfi": {
+      "id": "window_2d_suite|M02_ContainerSorting|11zijfi",
+      "windows": [
+        "window_2d_suite"
+      ],
+      "modules": [
+        "M02_ContainerSorting"
+      ],
+      "buttons": [
+        "StatusBadge",
+        "World2DSuiteWindow_Title",
+        "btn_2d_next",
+        "btn_2d_play_catalog",
+        "btn_2d_play_main_menu",
+        "btn_2d_prev",
+        "btn_2d_reset"
+      ],
+      "visits": 1,
+      "firstSeen": 1790192700515,
+      "lastSeen": 1790192700515,
+      "builds": [
+        "0.1+editor"
+      ]
+    }
+  },
+  "edges": [
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M34_Snake|11zijfi",
+      "testId": "btn_launch_m34",
+      "count": 8,
+      "lastMs": 853,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|M34_Snake|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 3,
+      "lastMs": 919,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M17_TugOfWarBalance|11zijfi",
+      "testId": "btn_launch_m17",
+      "count": 2,
+      "lastMs": 838,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M17_TugOfWarBalance|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 2,
+      "lastMs": 731,
+      "lastOk": false,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|M17_TugOfWarBalance|11zijfi",
+      "to": "window_2d_suite|-|1www4nt",
+      "testId": "btn_2d_play_catalog",
+      "count": 1,
+      "lastMs": 976,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M05_TimelineSequencer|11zijfi",
+      "testId": "btn_launch_m05",
+      "count": 8,
+      "lastMs": 834,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M01_SnapToSlot|11zijfi",
+      "testId": "btn_launch_m01",
+      "count": 3,
+      "lastMs": 847,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M01_SnapToSlot|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 6,
+      "lastMs": 793,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|M05_TimelineSequencer|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 9,
+      "lastMs": 800,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M09_CoverageAccumulator|11zijfi",
+      "testId": "btn_launch_m09",
+      "count": 3,
+      "lastMs": 834,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M09_CoverageAccumulator|11zijfi",
+      "to": "window_2d_suite|-|1www4nt",
+      "testId": "btn_2d_play_catalog",
+      "count": 5,
+      "lastMs": 971,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M12_AngularDeltaTracker|11zijfi",
+      "testId": "btn_launch_m12",
+      "count": 6,
+      "lastMs": 847,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M12_AngularDeltaTracker|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 9,
+      "lastMs": 815,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M16_RhythmPhaseDetector|11zijfi",
+      "testId": "btn_launch_m16",
+      "count": 4,
+      "lastMs": 845,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M22_GridPathfinding|11zijfi",
+      "testId": "btn_launch_m22",
+      "count": 8,
+      "lastMs": 969,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M22_GridPathfinding|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 8,
+      "lastMs": 1292,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|14j4chg",
+      "to": "window_2d_suite|M28_DualBridgeRoute|11zijfi",
+      "testId": "btn_launch_m28",
+      "count": 3,
+      "lastMs": 851,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M28_DualBridgeRoute|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 7,
+      "lastMs": 806,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": [
+        "0.1+editor"
+      ]
+    },
+    {
+      "from": "window_2d_suite|M16_RhythmPhaseDetector|11zijfi",
+      "to": "window_2d_suite|-|14j4chg",
+      "testId": "btn_2d_play_catalog",
+      "count": 2,
+      "lastMs": 1299,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|1n6e16s",
+      "to": "window_2d_suite|M37_AlternateRunner|11zijfi",
+      "testId": "btn_launch_m37",
+      "count": 2,
+      "lastMs": 884,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|1n6e16s",
+      "to": "window_2d_suite|M16_RhythmPhaseDetector|11zijfi",
+      "testId": "btn_launch_m16",
+      "count": 4,
+      "lastMs": 855,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M16_RhythmPhaseDetector|11zijfi",
+      "to": "window_2d_suite|-|1n6e16s",
+      "testId": "btn_2d_play_catalog",
+      "count": 3,
+      "lastMs": 1273,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|1n6e16s",
+      "to": "window_2d_suite|M22_GridPathfinding|11zijfi",
+      "testId": "btn_launch_m22",
+      "count": 1,
+      "lastMs": 869,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_ui_suite|-|s5lv8l",
+      "to": "window_main_menu|-|1boa90k",
+      "testId": "btn_ui_back",
+      "count": 1,
+      "lastMs": 724,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|M01_SnapToSlot|11zijfi",
+      "to": "window_2d_suite|-|1n6e16s",
+      "testId": "btn_2d_play_catalog",
+      "count": 1,
+      "lastMs": 1240,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    },
+    {
+      "from": "window_2d_suite|-|1n6e16s",
+      "to": "window_2d_suite|M01_SnapToSlot|11zijfi",
+      "testId": "btn_launch_m01",
+      "count": 1,
+      "lastMs": 851,
+      "lastOk": true,
+      "builds": [
+        "0.1+editor"
+      ],
+      "failedOn": []
+    }
+  ],
+  "layers": {
+    "window_2d_suite|M34_Snake|11zijfi": {
+      "screen": "window_2d_suite|M34_Snake|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M34_Snake",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 11
+    },
+    "window_2d_suite|M17_TugOfWarBalance|11zijfi": {
+      "screen": "window_2d_suite|M17_TugOfWarBalance|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M17_TugOfWarBalance",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 9
+    },
+    "window_2d_suite|M05_TimelineSequencer|11zijfi": {
+      "screen": "window_2d_suite|M05_TimelineSequencer|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M05_TimelineSequencer",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 8
+    },
+    "window_2d_suite|M01_SnapToSlot|11zijfi": {
+      "screen": "window_2d_suite|M01_SnapToSlot|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M01_SnapToSlot",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 7
+    },
+    "window_2d_suite|M09_CoverageAccumulator|11zijfi": {
+      "screen": "window_2d_suite|M09_CoverageAccumulator|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M09_CoverageAccumulator",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 7
+    },
+    "window_2d_suite|M12_AngularDeltaTracker|11zijfi": {
+      "screen": "window_2d_suite|M12_AngularDeltaTracker|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M12_AngularDeltaTracker",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 7
+    },
+    "window_2d_suite|M16_RhythmPhaseDetector|11zijfi": {
+      "screen": "window_2d_suite|M16_RhythmPhaseDetector|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M16_RhythmPhaseDetector",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 10
+    },
+    "window_2d_suite|M22_GridPathfinding|11zijfi": {
+      "screen": "window_2d_suite|M22_GridPathfinding|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M22_GridPathfinding",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 7
+    },
+    "window_2d_suite|M28_DualBridgeRoute|11zijfi": {
+      "screen": "window_2d_suite|M28_DualBridgeRoute|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M28_DualBridgeRoute",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 8
+    },
+    "window_2d_suite|M37_AlternateRunner|11zijfi": {
+      "screen": "window_2d_suite|M37_AlternateRunner|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M37_AlternateRunner",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 10
+    },
+    "window_2d_suite|M02_ContainerSorting|11zijfi": {
+      "screen": "window_2d_suite|M02_ContainerSorting|11zijfi",
+      "stack": [
+        {
+          "id": "window_2d_suite",
+          "kind": "window",
+          "rect": {
+            "x": 24,
+            "y": 12,
+            "w": 1872,
+            "h": 981
+          }
+        },
+        {
+          "id": "M02_ContainerSorting",
+          "kind": "module",
+          "rect": {
+            "x": 42,
+            "y": 78,
+            "w": 1836,
+            "h": 804
+          }
+        }
+      ],
+      "modal": null,
+      "covered": [],
+      "controls": 7
+    }
+  }
+}

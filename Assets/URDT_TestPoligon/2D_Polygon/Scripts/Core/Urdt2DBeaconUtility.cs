@@ -96,12 +96,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.Core
             bool isSlot = HasSlotComponent(go) ||
                           nameLower.Contains("slot") || nameLower.Contains("bucket") || nameLower.Contains("container") ||
                           nameLower.Contains("pan") || nameLower.Contains("socket") || nameLower.Contains("dropzone") ||
-                          nameLower.Contains("target_can") || nameLower.Contains("targetcan");
+                          nameLower.Contains("target_can") || nameLower.Contains("targetcan") || nameLower.StartsWith("cell_");
 
             // Check if object is an interactive tile, dial, or area
             bool isInteractiveArea = HasInteractiveAreaComponent(go) ||
                                      nameLower.Contains("tile") || nameLower.Contains("pipe") || nameLower.Contains("segment") ||
-                                     nameLower.Contains("halves") || nameLower.Contains("wheel") || nameLower.Contains("rotary");
+                                     nameLower.Contains("halves") || nameLower.Contains("wheel") || nameLower.Contains("rotary") ||
+                                     // arcade objects: moving/visible gameplay entities the player reacts to
+                                     nameLower.Contains("paddle") || nameLower.Contains("ball") || nameLower.StartsWith("brick_") ||
+                                     nameLower.StartsWith("snake") || nameLower == "food" || nameLower == "field";
 
             // Check if object has a standard Button
             bool hasButton = go.GetComponent<Button>() != null;

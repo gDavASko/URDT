@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,14 +8,10 @@ using KBP.URDT.TestPoligon.Mechanics2D.Core;
 namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
 {
     /// <summary>
-    /// Механика #4: Сборка многокомпонентной иерархии (Multi-layer Attachment) в 2 этапа.
-    /// Этап 1: Внутренняя база (1. Энергоядро -> 2. Бронекорпус).
-    /// Этап 2: Внешние модули (3. Сенсорный шлем -> 4. Энергоблок).
-    /// Фичи:
-    /// - Интерактивная неоновая подсветка слота ("СЮДА") при взятии детали.
-    /// - 2 независимых лотка деталей для каждого этапа.
-    /// - Бракованные детали со знаком 'X', блокирующие установку.
-    /// - Проверка технологической последовательности.
+    /// Механика #4: Многослойная сборка робота с внутренними шагами.
+    /// Стадии URDT-этапов: этапы 1-3 — три последовательные сборки с растущей сложностью.
+    /// Внутри одной сборки два "шага" (Шаг 1 — база, Шаг 2 — внешние модули); это лишь части одного игрового этапа.
+    /// Провал: установка бракованной детали или попытка нарушения порядка на 2-3 этапах.
     /// </summary>
     public class M04_MultiLayerAttachmentMechanic : BaseMechanic2DModule
     {
@@ -28,19 +25,20 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
         [Header("UI обратная связь")]
         [SerializeField] private TMP_Text _instructionText = null;
 
-        private int _currentStage = 1;
+        private int _currentPhase = 1;                 // Внутренний шаг сборки (1 или 2)
         private int _currentInstalledLayer = 0;
         private const int TOTAL_TARGET_LAYERS = 4;
         private Coroutine _transitionRoutine;
+        private readonly List<GameObject> _spawnedExtras = new List<GameObject>();
 
-        public int CurrentStage => _currentStage;
+        public override int StageCount => 3;
+        public int CurrentPhase => _currentPhase;
         public int CurrentInstalledLayer => _currentInstalledLayer;
 
         protected override void Awake()
         {
             base.Awake();
-            EnsureTwoStageSetup();
-            BindEvents();
+            // EnsureTwoPhaseSetup и BindEvents уже вызваны через base.Awake -> Initialize.
         }
 
         private void OnDestroy()
@@ -56,6 +54,16 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
             }
         }
 
+        protected override string GetStageInstruction(int stage)
+        {
+            switch (stage)
+            {
+                case 1: return "Этап 1/3. Сборка робота: Шаг 1 — база (Ядро → Броня), Шаг 2 — внешние модули (Шлем → Энергоблок). Не берите бракованные детали (X).";
+                case 2: return "Этап 2/3. Сборка второго корпуса. Добавились лишние бракованные детали. Установка бракованной детали — провал этапа.";
+                default: return "Этап 3/3. Финальная сборка. Любое нарушение порядка монтажа или бракованная деталь — этап начнётся заново.";
+            }
+        }
+
         private void BindEvents()
         {
             if (_parts != null)
@@ -67,6 +75,16 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
                         p.OnPartSnapped += HandlePartSnapped;
                         p.OnPartFailed += HandlePartFailed;
                     }
+                }
+            }
+            foreach (var extra in _spawnedExtras)
+            {
+                if (extra == null) continue;
+                var ap = extra.GetComponent<AttachmentPart>();
+                if (ap != null)
+                {
+                    ap.OnPartSnapped += HandlePartSnapped;
+                    ap.OnPartFailed += HandlePartFailed;
                 }
             }
         }
@@ -84,9 +102,19 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
                     }
                 }
             }
+            foreach (var extra in _spawnedExtras)
+            {
+                if (extra == null) continue;
+                var ap = extra.GetComponent<AttachmentPart>();
+                if (ap != null)
+                {
+                    ap.OnPartSnapped -= HandlePartSnapped;
+                    ap.OnPartFailed -= HandlePartFailed;
+                }
+            }
         }
 
-        private void EnsureTwoStageSetup()
+        private void EnsureTwoPhaseSetup()
         {
             if (_instructionText == null)
             {
@@ -101,7 +129,6 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
 
             Transform chassisTr = _chassisBase != null ? _chassisBase.transform : transform;
 
-            // Сокеты
             AttachmentSlot slotCore = FindOrCreateSlot(chassisTr, "Socket_Core", 1, 1, 0, new Vector2(0f, -10f), new Vector2(90f, 90f));
             AttachmentSlot slotArmor = FindOrCreateSlot(chassisTr, "Socket_Armor", 1, 2, 1, new Vector2(0f, -10f), new Vector2(125f, 125f));
             AttachmentSlot slotHead = FindOrCreateSlot(chassisTr, "Socket_Head", 2, 3, 2, new Vector2(0f, 85f), new Vector2(95f, 95f));
@@ -109,7 +136,6 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
 
             _slots = new AttachmentSlot[] { slotCore, slotArmor, slotHead, slotBattery };
 
-            // Лотки
             Transform tray1Tr = transform.Find("Stage1Tray");
             if (tray1Tr == null)
             {
@@ -143,20 +169,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
             }
             _stage2Tray = tray2Tr.gameObject;
 
-            // Детали Этапа 1
             AttachmentPart pCore = FindOrCreatePart(tray1Tr, "Part_Core", 1, 1, "Энергоядро", false, new Vector2(-200f, 0f), new Vector2(85f, 85f), new Color(0f, 0.8f, 1f, 1f));
             AttachmentPart pArmor = FindOrCreatePart(tray1Tr, "Part_Armor", 1, 2, "Бронекорпус", false, new Vector2(0f, 0f), new Vector2(100f, 100f), new Color(1f, 0.6f, 0f, 1f));
             AttachmentPart pJunk1 = FindOrCreatePart(tray1Tr, "Part_Junk1", 1, 99, "Дефектный блок", true, new Vector2(200f, 0f), new Vector2(80f, 80f), new Color(0.9f, 0.2f, 0.2f, 1f));
 
-            // Детали Этапа 2
             AttachmentPart pHead = FindOrCreatePart(tray2Tr, "Part_Head", 2, 3, "Сенсорный шлем", false, new Vector2(-200f, 0f), new Vector2(90f, 90f), new Color(0.8f, 0.3f, 1f, 1f));
             AttachmentPart pBattery = FindOrCreatePart(tray2Tr, "Part_Battery", 2, 4, "Энергоблок", false, new Vector2(0f, 0f), new Vector2(85f, 85f), new Color(0f, 1f, 0.7f, 1f));
             AttachmentPart pJunk2 = FindOrCreatePart(tray2Tr, "Part_Junk2", 2, 99, "Сломанный чип", true, new Vector2(200f, 0f), new Vector2(80f, 80f), new Color(0.9f, 0.2f, 0.2f, 1f));
 
             _parts = new AttachmentPart[] { pCore, pArmor, pJunk1, pHead, pBattery, pJunk2 };
-
-            UnbindEvents();
-            BindEvents();
         }
 
         private AttachmentSlot FindOrCreateSlot(Transform parent, string name, int stage, int layer, int prereq, Vector2 pos, Vector2 size)
@@ -251,7 +272,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
         public override void Initialize()
         {
             base.Initialize();
-            EnsureTwoStageSetup();
+            UnbindEvents();
+            EnsureTwoPhaseSetup();
 
             if (_transitionRoutine != null)
             {
@@ -259,8 +281,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
                 _transitionRoutine = null;
             }
 
-            _currentStage = 1;
+            _currentPhase = 1;
             _currentInstalledLayer = 0;
+
+            // Убрать клоны предыдущего этапа
+            for (int i = _spawnedExtras.Count - 1; i >= 0; i--)
+            {
+                if (_spawnedExtras[i] != null) Destroy(_spawnedExtras[i]);
+            }
+            _spawnedExtras.Clear();
 
             if (_stage1Tray != null) _stage1Tray.SetActive(true);
             if (_stage2Tray != null) _stage2Tray.SetActive(false);
@@ -285,12 +314,55 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
                 }
             }
 
+            SpawnStageExtras(CurrentStage);
+            BindEvents();
+
             if (_instructionText != null)
             {
-                _instructionText.text = "<b>Этап 1/2:</b> Смонтируйте базу робота (1. Ядро -> 2. Броня). Не используйте дефектный блок (X)!";
+                _instructionText.text = $"<b>Этап {CurrentStage}/{StageCount}, Шаг 1:</b> установите Ядро → Броню. Не используйте дефектный блок (X)!";
             }
 
             SetProgress(0f);
+        }
+
+        private void SpawnStageExtras(int stage)
+        {
+            if (stage < 2) return;
+
+            AttachmentPart junkTemplate1 = null;
+            AttachmentPart junkTemplate2 = null;
+            if (_parts != null)
+            {
+                foreach (var p in _parts)
+                {
+                    if (p == null) continue;
+                    if (p.IsJunk && p.Stage == 1 && junkTemplate1 == null) junkTemplate1 = p;
+                    else if (p.IsJunk && p.Stage == 2 && junkTemplate2 == null) junkTemplate2 = p;
+                }
+            }
+
+            int extraJunk = stage == 2 ? 1 : 2;
+            for (int i = 0; i < extraJunk; i++)
+            {
+                if (junkTemplate1 != null)
+                {
+                    var clone = Instantiate(junkTemplate1, junkTemplate1.transform.parent);
+                    clone.name = $"Part_Junk1_Extra_S{stage}_{i + 1}";
+                    var rt = clone.GetComponent<RectTransform>();
+                    rt.anchoredPosition = FindFreeAnchoredPosition(rt, junkTemplate1.GetComponent<RectTransform>().anchoredPosition + new Vector2(60f + i * 50f, 40f));
+                    clone.InitializePart(1, 99, "Дефектный блок", true, rt.anchoredPosition);
+                    _spawnedExtras.Add(clone.gameObject);
+                }
+                if (junkTemplate2 != null)
+                {
+                    var clone = Instantiate(junkTemplate2, junkTemplate2.transform.parent);
+                    clone.name = $"Part_Junk2_Extra_S{stage}_{i + 1}";
+                    var rt = clone.GetComponent<RectTransform>();
+                    rt.anchoredPosition = FindFreeAnchoredPosition(rt, junkTemplate2.GetComponent<RectTransform>().anchoredPosition + new Vector2(60f + i * 50f, 40f));
+                    clone.InitializePart(2, 99, "Сломанный чип", true, rt.anchoredPosition);
+                    _spawnedExtras.Add(clone.gameObject);
+                }
+            }
         }
 
         public override void ResetMechanic()
@@ -336,7 +408,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
 
             ClearSlotHighlights();
 
-            if (_currentStage == 1)
+            if (_currentPhase == 1)
             {
                 if (_currentInstalledLayer == 1)
                 {
@@ -348,10 +420,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
                 else if (_currentInstalledLayer == 2)
                 {
                     if (_transitionRoutine != null) StopCoroutine(_transitionRoutine);
-                    _transitionRoutine = StartCoroutine(TransitionToStage2Routine());
+                    _transitionRoutine = StartCoroutine(TransitionToPhase2Routine());
                 }
             }
-            else if (_currentStage == 2)
+            else if (_currentPhase == 2)
             {
                 if (_currentInstalledLayer == 3)
                 {
@@ -363,37 +435,53 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M04_MultiLayerAttachment
                 else if (_currentInstalledLayer >= 4)
                 {
                     CompleteMechanic();
-                    if (_instructionText != null)
+                    if (_instructionText != null && !IsInTransition)
                     {
-                        _instructionText.text = "<color=#00FF99>Робот успешно и технологично собран! Все 2 этапа пройдены!</color>";
+                        _instructionText.text = $"<color=#00FF99>Этап {CurrentStage} пройден!</color>";
                     }
                 }
             }
         }
 
-        private IEnumerator TransitionToStage2Routine()
+        private IEnumerator TransitionToPhase2Routine()
         {
             if (_instructionText != null)
             {
-                _instructionText.text = "<color=#00FFFF>★ Этап 1 завершен! Загрузка деталей Этапа 2...</color>";
+                _instructionText.text = "<color=#00FFFF>★ Шаг 1 завершен! Загрузка деталей Шага 2...</color>";
             }
 
             yield return new WaitForSecondsRealtime(1.2f);
 
-            _currentStage = 2;
+            _currentPhase = 2;
             if (_stage1Tray != null) _stage1Tray.SetActive(false);
             if (_stage2Tray != null) _stage2Tray.SetActive(true);
 
             if (_instructionText != null)
             {
-                _instructionText.text = "<b>Этап 2/2:</b> Смонтируйте внешние системы (3. Сенсорный шлем -> 4. Энергоблок)!";
+                _instructionText.text = $"<b>Этап {CurrentStage}/{StageCount}, Шаг 2:</b> установите Шлем → Энергоблок.";
             }
             _transitionRoutine = null;
         }
 
         private void HandlePartFailed(AttachmentPart part, string errorReason)
         {
+            if (IsInTransition) return;
             ClearSlotHighlights();
+
+            // Провал на 2-3 этапах при попытке установить бракованную деталь или нарушении порядка.
+            if (CurrentStage >= 2 && part != null)
+            {
+                if (part.IsJunk || errorReason.Contains("порядок"))
+                {
+                    if (_instructionText != null)
+                    {
+                        _instructionText.text = $"<color=#FF5555>{errorReason} — этап начнётся заново.</color>";
+                    }
+                    FailStage(errorReason);
+                    return;
+                }
+            }
+
             if (_instructionText != null)
             {
                 _instructionText.text = $"<color=#FF6666>{errorReason}</color>";

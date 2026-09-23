@@ -1,0 +1,438 @@
+[
+  {
+    "name": "glider",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "avatar with collectibles scrolling horizontally",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "lane_runner",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "lane runner (swipe / tap halves / drag)",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "slingshot",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "pull-and-release projectile with fitted ballistics",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "timing_intercept",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "press when a mover crosses a line",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "stack_drop",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "drop a swinging block over a tower",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "reaction_strike",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "react to a cue within a window",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "car_drive",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "throttle/brake physics car",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "pipe_puzzle",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "rotate tiles to connect flow",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "grid_path",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "move an avatar across a grid",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": [
+      {
+        "runId": "gate_baseline_M22_GridPathfinding",
+        "project": "URDT_gen",
+        "module": "M22_GridPathfinding",
+        "ok": false,
+        "ms": 6745,
+        "at": 1790189407119
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M22_GridPathfinding",
+        "project": "URDT_gen",
+        "module": "M22_GridPathfinding",
+        "ok": false,
+        "ms": 6818,
+        "at": 1790190337997
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M22_GridPathfinding",
+        "project": "URDT_gen",
+        "module": "M22_GridPathfinding",
+        "ok": false,
+        "ms": 6737,
+        "at": 1790191349425
+      },
+      {
+        "runId": "gate_cand_program_sequencer_recheck_M22_GridPathfinding",
+        "project": "URDT_gen",
+        "module": "M22_GridPathfinding",
+        "ok": false,
+        "ms": 6845,
+        "at": 1790191595912
+      },
+      {
+        "runId": "try_M22_GridPathfinding",
+        "project": "URDT_gen",
+        "module": "M22_GridPathfinding",
+        "ok": true,
+        "ms": 6078,
+        "at": 1790192308367
+      }
+    ]
+  },
+  {
+    "name": "balance_scale",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "balance weights",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "lens_dwell",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "hover a lens over hidden targets",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "fill_wells",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "fill wells in order with a dispenser",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "wobble_extract",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "wobble then extract",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "spray_targets",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "spray targets while avoiding hazards",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "pop_targets",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "pop spawned targets",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "paint_learned_palette",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "learn a palette and paint by reference",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "rotate_wheel",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "rotate a wheel by degrees",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": [
+      {
+        "runId": "gate_baseline_M12_AngularDeltaTracker",
+        "project": "URDT_gen",
+        "module": "M12_AngularDeltaTracker",
+        "ok": false,
+        "ms": 11961,
+        "at": 1790189300026
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M12_AngularDeltaTracker",
+        "project": "URDT_gen",
+        "module": "M12_AngularDeltaTracker",
+        "ok": false,
+        "ms": 11678,
+        "at": 1790190004294
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M12_AngularDeltaTracker",
+        "project": "URDT_gen",
+        "module": "M12_AngularDeltaTracker",
+        "ok": false,
+        "ms": 22433,
+        "at": 1790190969836
+      }
+    ]
+  },
+  {
+    "name": "gauge_band",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "hold and release a gauge inside a band",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "paddle_ball",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "breakout paddle with aiming",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "grid_snake",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "grid snake path-finding",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": [
+      {
+        "runId": "try_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 23027,
+        "at": 1790188134534
+      },
+      {
+        "runId": "try_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 24544,
+        "at": 1790188438126
+      },
+      {
+        "runId": "try_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 26922,
+        "at": 1790188532952
+      },
+      {
+        "runId": "try_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 26150,
+        "at": 1790188588019
+      },
+      {
+        "runId": "try_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 24181,
+        "at": 1790188722195
+      },
+      {
+        "runId": "try_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 21880,
+        "at": 1790188792599
+      },
+      {
+        "runId": "gate_baseline_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 27028,
+        "at": 1790189718132
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 27735,
+        "at": 1790190644338
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M34_Snake",
+        "project": "URDT_gen",
+        "module": "M34_Snake",
+        "ok": true,
+        "ms": 22365,
+        "at": 1790191898795
+      }
+    ]
+  },
+  {
+    "name": "merge_board",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "merge equal-level items",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "match3",
+    "version": 1,
+    "tier": "core",
+    "source": "builtin",
+    "description": "swap adjacent gems to match 3+",
+    "requires": {},
+    "createdAt": 1790187887263,
+    "evidence": []
+  },
+  {
+    "name": "program_sequencer",
+    "version": 1,
+    "tier": "core",
+    "source": "synthesized",
+    "description": "fill timeline slots in the required command order, never junk, then run",
+    "requires": {
+      "beacons": [
+        "^Slot_\\d+$",
+        "^Chip_"
+      ],
+      "buttons": [
+        "execute|run"
+      ]
+    },
+    "entry": "skills\\program_sequencer@v1\\controller.ts",
+    "project": "URDT_gen",
+    "createdAt": 1790188881858,
+    "evidence": [
+      {
+        "runId": "try_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 24031,
+        "at": 1790189128586
+      },
+      {
+        "runId": "gate_baseline_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 19077,
+        "at": 1790189202604
+      },
+      {
+        "runId": "gate_program_sequencer_0_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 14586,
+        "at": 1790189751506
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 22928,
+        "at": 1790189882815
+      },
+      {
+        "runId": "gate_program_sequencer_0_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 18352,
+        "at": 1790190712956
+      },
+      {
+        "runId": "gate_program_sequencer_1_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 22976,
+        "at": 1790190754446
+      },
+      {
+        "runId": "gate_cand_program_sequencer_M05_TimelineSequencer",
+        "project": "URDT_gen",
+        "module": "M05_TimelineSequencer",
+        "ok": true,
+        "ms": 18672,
+        "at": 1790190833518
+      }
+    ]
+  }
+]

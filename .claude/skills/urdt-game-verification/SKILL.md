@@ -44,6 +44,11 @@ MCP server (register once):
 | `urdt_run_task {task}` | run a verification task (schema §4); blocks up to `budget.timeMs` |
 | `urdt_answer {taskId, questionId, optionId \| success \| scope \| entry \| note}` | answer a clarification; the task resumes |
 | `urdt_get_result {taskId}` | re-read a result |
+| `urdt_map {action: summary\|route\|unvisited\|regressions\|full, target?}` | application map of the game: screens, transitions, known route to a module, never-pressed controls (coverage), navigation regressions vs earlier builds |
+| `urdt_layers {scope?}` | UI layers of the current screen (window/module stack, modal, controls covered by something else) + layout/localization defects |
+| `urdt_knowledge {prefix?}` | facts L3 learned about this game (routes, match rules, fail causes, which skill solved which module), with build + confidence |
+| `urdt_skills` | skill library: shared core skills and this game's candidates, with verified outcome statistics |
+| `urdt_submit_skill {name, description, requires, source}` | give L3 a controller for a mechanic it could not complete (see §5c) |
 | `urdt_act {action, payload}` | one manual honest-input action / read-only query (click, drag, inspect, hit_test, capture, audio, coverage…) |
 
 CLI equivalent (CI, scripts): `npm --prefix CoreAgent run urdt -- run task.json [--answer answer.json]`
@@ -116,6 +121,52 @@ Models are switched in `CoreAgent/config/agent.config.json`:
 - `backend`: `cuda` (tools/llama.cpp-cuda) | `vulkan` (tools/llama.cpp); `enabled: false` disables a sense.
 Servers start on demand (`llama-server` on ports 8091 vision / 8092 hearing).
 
+## 5c. Knowledge, self-learning and skill synthesis
+
+**Where knowledge lives.** Everything L3 learns about a game is stored in the game project itself:
+`<project>/URDT_Knowledge/` (next to `Assets`; in a player build next to the executable). URDT reports the path in
+its handshake (`health.knowledge_dir`, plus `build_id`) and L3 opens it before anything else. Commit it with the
+game; delete it to make L3 re-learn. Other games never read it.
+
+| File | Content |
+|---|---|
+| `app_map.json` | screens, transitions (with build), UI layer reports; used for navigation (known route first) |
+| `facts.json` | `route:<module>`, `rules:<module>` (induced match rules), `fail:<module>` (actions that caused fails — never repeated), `solvedBy:<module>`; each with build, evidence, confidence (halved on a new build until re-confirmed) |
+| `skills/stats.json` | verified outcome per skill per module (only the task's success predicate counts, never the skill's own claim) |
+| `skills/candidates/<name>@vN/` | skills synthesized for this game (`manifest.json` + `controller.ts`) |
+| `skills/requests/<module>.json` | what L3 needs when it could not complete a module |
+
+Shared generic skills live in `CoreAgent/knowledge/core` and get there **only through the regression gate**.
+
+**When L3 fails a module** the result carries `skillRequest` → a JSON with the module's design text, state schema,
+state samples observed at normal speed for 3 s (what changes without input, what moves), beacons, the attempts and
+fail reasons, and the controller API. Write a controller and submit it:
+
+```ts
+export default async function (api) {          // no imports, no process/fs, no raw URDT calls
+  while (!api.expired()) {
+    const s = await api.state();                // public state of the mechanic (+ IsCompleted, IsInTransition)
+    if (s.IsCompleted) return 'COMPLETED';
+    if (s.IsInTransition) { await api.sleep(100); continue; }   // stage change / fail restart
+    const parts = await api.parts();            // beacons: testId, kind, center, rect, game, props, visible
+    await api.motor.tap({ testId: 'BtnLeft' }); // tap/drag/hold/press/release/slice — honest input only
+  }
+  return 'TIMEOUT';
+}
+```
+`urdt_submit_skill {name, description, requires: {scopeGame?, beacons?, buttons?}, source}` — `requires` is the
+applicability contract (keys in the module state / regexes of beacon or button ids); the skill never runs where it
+does not match. It becomes a **candidate of this game** and runs first on the next attempt when it matches.
+Screen space is Unity's: origin bottom-left, **y up**.
+
+**Promotion to the shared library** (`npx tsx scripts/regression_gate.ts --candidate <name> --modules <M..> --runs 2`,
+after a one-time `--baseline`): the candidate must complete every target run and the 8-mechanic smoke set must not
+regress. Candidates that keep losing (≥6 runs, <20%) or go unused for 30 days are archived automatically; at most 3
+active skills per applicability contract. Versions are immutable (a resubmission is v2, v1 is archived).
+
+**Never change the game's time scale** to make a real-time mechanic easier: games use unscaled/realtime timers,
+audio and network clocks; a slowed game is not the game the player gets. L3 observes dynamics at normal speed.
+
 ## 6. Clarifications
 
 ```json
@@ -134,6 +185,8 @@ to open it), `success` (what counts as done).
 - `status` — `success` only when all success predicates held (completion is latched even if the game
   tears the screen down right after) and no forbid predicate became true.
 - `findings[]` — `GOAL_NOT_REACHED`, `FORBIDDEN_STATE`, `CONSOLE_ERROR` (exceptions logged while playing),
+  `OCCLUDED` (a control/item covered by another object — a player would press/grab the wrong thing),
+  `LAYOUT` (truncated text, overflow, unreadable font size, missing glyphs),
   `UNGUARDED_SHORTCUT` (with `audit:true` L3 drops a junk item and an item of a *different type* — found by
   matching item/receptacle `game.*` string values such as `ItemTypeId=red` ↔ `AcceptedTypeId=blue` — into
   receptacles; acceptance is a MAJOR defect and makes `status: fail` even if the goal was reachable), `NAVIGATION`, `STALL`, `UNOBSERVABLE`, `ASSUMPTION`.

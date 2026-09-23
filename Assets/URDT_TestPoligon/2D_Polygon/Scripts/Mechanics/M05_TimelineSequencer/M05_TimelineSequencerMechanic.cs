@@ -9,11 +9,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
 {
     /// <summary>
     /// Механика #5: Сборка исполняемой очереди команд (Timeline Sequencer).
-    /// Задача: составить очередь команд для робота: Вперед -> Поворот -> Вперед.
-    /// Нажать «ПУСК» для пошагового выполнения программы и достижения финишного флажка.
-    /// Мешающие факторы:
-    /// 1. Сбойная фишка со знаком 'X' (Cmd_Glitch_Junk) - вызывает ошибку исполнения.
-    /// 2. Ограниченное число слотов таймлайна (строго 3 шага).
+    /// Три этапа: больше фишек-помех и повышенная цена ошибки исполнения.
+    /// Провал: запуск программы, содержащей сбойную фишку (X), либо бот не достиг цели.
     /// </summary>
     public class M05_TimelineSequencerMechanic : BaseMechanic2DModule
     {
@@ -32,6 +29,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
 
         private Coroutine _executionRoutine;
         private bool _isRunning = false;
+        private readonly List<GameObject> _spawnedExtras = new List<GameObject>();
+
+        public override int StageCount => 3;
+        public bool IsRunning => _isRunning;
 
         protected override void Awake()
         {
@@ -44,6 +45,16 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
             if (_btnExecute != null) _btnExecute.onClick.RemoveListener(OnExecuteClicked);
         }
 
+        protected override string GetStageInstruction(int stage)
+        {
+            switch (stage)
+            {
+                case 1: return "Этап 1/3. Соберите маршрут «Вперёд → Поворот → Вперёд» и нажмите ПУСК. Не используйте сбойные фишки (X).";
+                case 2: return "Этап 2/3. Добавились лишние сбойные фишки. Запуск программы со сбойной командой — провал.";
+                default: return "Этап 3/3. Максимум помех. Малейшая ошибка порядка отправит бота мимо цели — этап начнётся заново.";
+            }
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -54,6 +65,13 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
             }
 
             _isRunning = false;
+
+            // Убрать клонированные лишние фишки прошлого этапа
+            for (int i = _spawnedExtras.Count - 1; i >= 0; i--)
+            {
+                if (_spawnedExtras[i] != null) Destroy(_spawnedExtras[i]);
+            }
+            _spawnedExtras.Clear();
 
             if (_timelineSlots != null)
             {
@@ -81,12 +99,36 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
                 _avatarTransform.localRotation = Quaternion.identity;
             }
 
-            if (_instructionText != null)
-            {
-                _instructionText.text = "Соберите маршрут: 1. Вперед -> 2. Поворот -> 3. Вперед, затем нажмите «ПУСК».";
-            }
+            SpawnStageExtras(CurrentStage);
 
             SetProgress(0f);
+        }
+
+        private void SpawnStageExtras(int stage)
+        {
+            if (stage < 2 || _chips == null) return;
+
+            CommandChip junkTemplate = null;
+            foreach (var c in _chips)
+            {
+                if (c != null && c.IsJunk) { junkTemplate = c; break; }
+            }
+            if (junkTemplate == null) return;
+
+            int extra = stage == 2 ? 1 : 2;
+            for (int i = 0; i < extra; i++)
+            {
+                var clone = Instantiate(junkTemplate, junkTemplate.transform.parent);
+                clone.name = $"Cmd_Glitch_Extra_S{stage}_{i + 1}";
+                clone.SetJunk(true);
+                var rt = clone.GetComponent<RectTransform>();
+                if (rt != null)
+                {
+                    rt.anchoredPosition = FindFreeAnchoredPosition(rt, junkTemplate.GetComponent<RectTransform>().anchoredPosition + new Vector2(70f + i * 60f, -20f));
+                    clone.SetHomePosition(rt.anchoredPosition);
+                }
+                _spawnedExtras.Add(clone.gameObject);
+            }
         }
 
         public override void ResetMechanic()
@@ -96,9 +138,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
 
         private void OnExecuteClicked()
         {
-            if (_isRunning || _isCompleted) return;
-
-            // Проверяем заполненность всех 3 слотов
+            if (_isRunning || _isCompleted || IsInTransition) return;
             if (_timelineSlots == null || _timelineSlots.Length < 3) return;
 
             for (int i = 0; i < 3; i++)
@@ -123,6 +163,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
 
             Vector2 curPos = _avatarStartPosition;
             Vector2 forwardDir = Vector2.right;
+            bool glitchTriggered = false;
 
             for (int i = 0; i < 3; i++)
             {
@@ -136,9 +177,11 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
                 {
                     if (_instructionText != null)
                     {
-                        _instructionText.text = "<color=#FF5555>Сбой программы! Обнаружена поврежденная команда (X).</color>";
+                        _instructionText.text = "<color=#FF5555>Сбой программы! Использована сбойная команда (X). Этап провален.</color>";
                     }
                     _isRunning = false;
+                    glitchTriggered = true;
+                    FailStage("Сбойная фишка (X) в программе");
                     yield break;
                 }
 
@@ -151,7 +194,6 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
                 }
                 else if (chip.CommandType == CommandType.Turn)
                 {
-                    // Поворот вниз (на 90 градусов по часовой стрелке из направления вправо)
                     forwardDir = Vector2.down;
                     yield return RotateAvatarRoutine(-90f, 0.35f);
                 }
@@ -159,7 +201,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
                 yield return new WaitForSecondsRealtime(0.15f);
             }
 
-            // Проверка достижения цели
+            if (glitchTriggered) yield break;
+
             if (_goalTransform != null && _avatarTransform != null)
             {
                 float dist = Vector2.Distance(_avatarTransform.anchoredPosition, _goalTransform.anchoredPosition);
@@ -169,15 +212,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
                     CompleteMechanic();
                     if (_instructionText != null)
                     {
-                        _instructionText.text = "<color=#00FF99>Цель достигнута! Программа выполнена безупречно.</color>";
+                        _instructionText.text = "<color=#00FF99>Цель достигнута! Программа выполнена.</color>";
                     }
                 }
                 else
                 {
                     if (_instructionText != null)
                     {
-                        _instructionText.text = "<color=#FF9900>Бот не достиг цели! Проверьте порядок команд и нажмите «Сброс».</color>";
+                        _instructionText.text = "<color=#FF9900>Бот прошёл мимо цели! Этап провален.</color>";
                     }
+                    _isRunning = false;
+                    FailStage("Программа не привела бота к цели");
+                    yield break;
                 }
             }
 

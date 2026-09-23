@@ -83,11 +83,15 @@ export async function paintByKey(ctx: PlaybookContext): Promise<PlaybookResult> 
 /** M22: BFS over the observed tile grid, then walk the path cell by cell. */
 export async function gridPath(ctx: PlaybookContext): Promise<PlaybookResult> {
   const p = ctx.params as { tilePrefix: string; avatar: string; blocked: string[]; avoid?: string[]; goalType: string };
-  for (let replan = 0; replan < 4 && !ctx.expired(); replan++) {
+  let stepsDone = 0;
+  for (let replan = 0; replan < 40 && !ctx.expired(); replan++) {
+    const modB = await ctx.world.inspect(ctx.moduleId);
+    if (modB?.props.IsCompleted === true) return { status: 'COMPLETED', summary: `goal reached (${stepsDone} steps over all stages)` };
+    if (modB?.game?.IsInTransition === true) { await sleep(200); continue; }   // stage change / fail restart
     const parts = await ctx.parts();
     const tiles = parts.filter(b => b.testId.startsWith(p.tilePrefix) && 'CellType' in (b.game ?? {}));
     const avatar = parts.find(b => b.testId === p.avatar || b.props.AreaType === p.avatar);
-    if (!avatar || tiles.length === 0) return { status: 'DISCOVERY_REQUIRED', summary: 'grid/avatar not observable' };
+    if (!avatar || tiles.length === 0) { await sleep(200); continue; }
     const key = (x: number, y: number) => `${x},${y}`;
     const cell = new Map(tiles.map(t => [key(Number(t.game.CellX), Number(t.game.CellY)), t]));
     const here = tiles.reduce((a, b) => (Math.hypot(a.center.x - avatar.center.x, a.center.y - avatar.center.y) < Math.hypot(b.center.x - avatar.center.x, b.center.y - avatar.center.y) ? a : b));
@@ -114,22 +118,37 @@ export async function gridPath(ctx: PlaybookContext): Promise<PlaybookResult> {
       }
       return null;
     };
-    const path = bfs(true) ?? bfs(false);
+    // Avoid traps when the step budget allows the detour; otherwise take the shortest path through them.
+    const remaining = Number(modB?.game?.StepsRemaining ?? Infinity);
+    const safe = bfs(true), any = bfs(false);
+    const path = safe && safe.length <= remaining ? safe : any ?? safe;
     if (!path) return { status: 'FAILED', summary: 'no path to goal exists in the observed grid', stagnationType: 'DEADLOCK_TOPOLOGY' };
-    ctx.hypothesize(`BFS path of ${path.length} steps: ${path.map(t => `(${t.game.CellX},${t.game.CellY})`).join('→')}`);
+    ctx.hypothesize(`BFS path of ${path.length} steps (budget ${remaining}): ${path.map(t => `(${t.game.CellX},${t.game.CellY})`).join('→')}`);
+    const stageAtStart = Number(modB?.game?.CurrentStage ?? 1), failsAtStart = Number(modB?.game?.FailCount ?? 0);
     for (const step of path) {
-      for (let attempt = 0; attempt < 4; attempt++) {
-        await ctx.motor.tap({ testId: step.testId });
-        await sleep(180);
+      const before = Number((await ctx.world.inspect(ctx.moduleId))?.game?.StepsTaken ?? 0);
+      await ctx.motor.tap({ testId: step.testId });
+      // Wait for the move to register (animation, 1 s trap freeze) — re-tapping would spend another step.
+      let moved = false;
+      for (let w = 0; w < 14 && !moved; w++) {
+        await sleep(120);
+        const m = await ctx.world.inspect(ctx.moduleId);
+        if (Number(m?.game?.StepsTaken ?? 0) > before || m?.props.IsCompleted === true || m?.game?.IsInTransition === true) moved = true;
+      }
+      if (!moved) break;                          // the move was refused: replan from the observed position
+      stepsDone++;
+      const m = await ctx.world.inspect(ctx.moduleId);
+      if (m?.props.IsCompleted === true) return { status: 'COMPLETED', summary: `goal reached (${stepsDone} steps over all stages)` };
+      if (m?.game?.IsInTransition === true || Number(m?.game?.CurrentStage ?? 1) !== stageAtStart || Number(m?.game?.FailCount ?? 0) !== failsAtStart) break;
+      // Wait out a trap freeze before the next tap.
+      for (let w = 0; w < 12; w++) {
         const av = await ctx.world.inspect(avatar.testId);
         if (av && Math.hypot(av.center.x - step.center.x, av.center.y - step.center.y) < 20) break;
-        await sleep(400 * (attempt + 1)); // trap freeze or movement animation
+        await sleep(120);
       }
-      if ((await ctx.module()).completed) return { status: 'COMPLETED', summary: `goal reached in ${path.length} steps` };
     }
-    const st = await ctx.awaitCompleted(800);
-    if (st.completed) return { status: 'COMPLETED', summary: `goal reached in ${path.length} steps` };
-    ctx.progressed(false);
+    await sleep(250);
   }
-  return { status: 'STUCK', summary: 'goal not reached', stagnationType: 'MICRO_STUCK' };
+  const done = (await ctx.world.inspect(ctx.moduleId))?.props.IsCompleted === true;
+  return done ? { status: 'COMPLETED', summary: `goal reached (${stepsDone} steps)` } : { status: 'STUCK', summary: 'goal not reached', stagnationType: 'MICRO_STUCK' };
 }

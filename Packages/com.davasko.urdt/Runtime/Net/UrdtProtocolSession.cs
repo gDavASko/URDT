@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using KBP.URDT.Transport;
 using Newtonsoft.Json.Linq;
 
@@ -172,6 +172,10 @@ namespace KBP.URDT.Net
                 ["main_thread_tick_utc_ms"] = info.MainThreadTickUtcMs,
                 ["pending_commands"] = info.PendingCommands,
                 ["pending_responses"] = info.PendingResponses,
+                ["knowledge_dir"] = UrdtKnowledge.RootPath,
+                ["product_name"] = UrdtKnowledge.ProductName,
+                ["app_version"] = UrdtKnowledge.AppVersion,
+                ["build_id"] = UrdtKnowledge.BuildId,
                 ["server_time_ms"] = UnixNowMs()
             };
         }

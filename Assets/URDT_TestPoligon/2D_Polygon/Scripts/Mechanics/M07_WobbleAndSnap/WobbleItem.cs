@@ -36,6 +36,11 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M07_WobbleAndSnap
 
         public event Action<float> OnFatigueChanged;
         public event Action OnSnapped;
+        public event Action OnPrematurePull;
+
+        public void SetFatigueRate(float rate) { _fatigueRate = Mathf.Max(0.1f, rate); }
+        public void SetSnapReleaseThreshold(float t) { _snapReleaseThreshold = Mathf.Max(20f, t); }
+        public float SnapReleaseThreshold => _snapReleaseThreshold;
 
         private void Awake()
         {
@@ -134,6 +139,11 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M07_WobbleAndSnap
                 if (_fatigue >= 1f && offset.y > _snapReleaseThreshold)
                 {
                     SnapOff();
+                }
+                else if (_fatigue < 0.5f && offset.y > _snapReleaseThreshold)
+                {
+                    // Преждевременный рывок вверх — сорваны щипцы, провал этапа.
+                    OnPrematurePull?.Invoke();
                 }
             }
         }

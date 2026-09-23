@@ -35,11 +35,16 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M02_ContainerSorting
 
         public string ItemTypeId => _itemTypeId;
         public bool IsJunk => _isJunk;
+        /// <summary>Где предмет лежит (или куда едет) в лотке.</summary>
+        public Vector2 HomePosition => _homeAnchoredPosition;
         public bool IsDeposited => _isDeposited;
         public RectTransform RectTransform => _rectTransform != null ? _rectTransform : (_rectTransform = GetComponent<RectTransform>());
 
         public event Action<SortDraggableItem, SortContainer> OnItemDeposited;
-        public event Action<SortDraggableItem> OnItemRejected;
+        public event Action<SortDraggableItem, SortContainer> OnItemRejected;
+
+        public void SetItemTypeId(string id) { _itemTypeId = id; }
+        public void SetJunk(bool junk) { _isJunk = junk; }
 
         private void Awake()
         {
@@ -177,7 +182,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M02_ContainerSorting
                 _currentHoveredContainer = null;
             }
 
-            OnItemRejected?.Invoke(this);
+            OnItemRejected?.Invoke(this, targetContainer);
             _activeMoveRoutine = StartCoroutine(ReturnToHomeRoutine());
         }
 

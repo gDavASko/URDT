@@ -8,6 +8,20 @@
 import { Beacon, WorldSnapshot, sleep } from '../perception/world_model.js';
 import { PlaybookContext, PlaybookResult } from '../l2_tactics/playbook_context.js';
 import { PLAYBOOKS } from '../l2_tactics/playbooks/index.js';
+import { paddleBall, gridSnake, mergeBoard, match3 } from '../l2_tactics/playbooks/arcade.js';
+
+/** Built-in skills registered as core in the knowledge store (their applicability lives in recognizeSkills). */
+export const BUILTIN_SKILLS: Array<{ name: string; description: string; requires: { scopeGame?: string[]; beacons?: string[]; buttons?: string[] } }> = [
+  ['glider', 'avatar with collectibles scrolling horizontally'], ['lane_runner', 'lane runner (swipe / tap halves / drag)'],
+  ['slingshot', 'pull-and-release projectile with fitted ballistics'], ['timing_intercept', 'press when a mover crosses a line'],
+  ['stack_drop', 'drop a swinging block over a tower'], ['reaction_strike', 'react to a cue within a window'],
+  ['car_drive', 'throttle/brake physics car'], ['pipe_puzzle', 'rotate tiles to connect flow'], ['grid_path', 'move an avatar across a grid'],
+  ['balance_scale', 'balance weights'], ['lens_dwell', 'hover a lens over hidden targets'], ['fill_wells', 'fill wells in order with a dispenser'],
+  ['wobble_extract', 'wobble then extract'], ['spray_targets', 'spray targets while avoiding hazards'], ['pop_targets', 'pop spawned targets'],
+  ['paint_learned_palette', 'learn a palette and paint by reference'], ['rotate_wheel', 'rotate a wheel by degrees'],
+  ['gauge_band', 'hold and release a gauge inside a band'], ['paddle_ball', 'breakout paddle with aiming'],
+  ['grid_snake', 'grid snake path-finding'], ['merge_board', 'merge equal-level items'], ['match3', 'swap adjacent gems to match 3+'],
+].map(([name, description]) => ({ name, description, requires: {} }));
 
 export interface SkillMatch { skill: string; params: Record<string, any>; why: string; custom?: (ctx: PlaybookContext) => Promise<PlaybookResult> }
 
@@ -93,11 +107,86 @@ export function recognizeSkills(scope: Beacon, parts: Beacon[], motion: Map<stri
   if (fires.length) out.push({ skill: 'spray_targets', params: { targetRole: role(fires[0]) }, why: 'targets with hit points that can be extinguished' });
   const bubbles = parts.filter(b => has(b, 'IsPopped'));
   if (bubbles.length) out.push({ skill: 'pop_targets', params: { role: role(bubbles[0]) }, why: 'poppable targets (bombs flagged)' });
+  // Arcade genres, recognised from the state the game exposes.
+  const sg = scope.game ?? {};
+  const field = parts.find(b => /^field$/i.test(b.testId));
+  const paddle = any(parts, /paddle/i), ballB = any(parts, /^ball$|ball$/i);
+  if (paddle && ballB && field && has(scope, 'BallVX') && has(scope, 'PaddleX')) {
+    out.push({ skill: 'paddle_ball', params: { field: field.testId, paddle: paddle.testId, ball: ballB.testId }, why: 'paddle + ball with exposed flight state', custom: paddleBall });
+  }
+  const dirBtn = (re: RegExp) => buttons.find(b => re.test(b.testId))?.testId;
+  if (has(scope, 'HeadCol') && has(scope, 'FoodCol') && has(scope, 'BodyCells')) {
+    const up = dirBtn(/up$/i), down = dirBtn(/down$/i), left = dirBtn(/left$/i), right = dirBtn(/right$/i);
+    if (up && down && left && right) out.push({ skill: 'grid_snake', params: { up, down, left, right }, why: 'grid snake with head/food/body state and direction buttons', custom: gridSnake });
+  }
+  const leveled = parts.filter(b => typeof b.game?.Level === 'number' && b.kind === 'draggable');
+  const spawn = buttons.find(b => /spawn|create|new|add/i.test(b.testId));
+  // The board may start empty (items appear only after "create"): cells + a create button + a level goal suffice.
+  const cells = parts.filter(b => /^cell_\d+_\d+$/i.test(b.testId));
+  if (spawn && (leveled.length || (cells.length >= 4 && (has(scope, 'TargetLevel') || has(scope, 'MaxLevel'))))) {
+    const prefix = leveled.length ? leveled[0].testId.replace(/\d+$/, '') : 'MergeItem_';
+    out.push({ skill: 'merge_board', params: { spawn: spawn.testId, itemPrefix: prefix }, why: 'levelled items + spawn button (merge)', custom: mergeBoard });
+  }
+  const gems = parts.filter(b => typeof b.game?.ColorId === 'number' && typeof b.game?.Row === 'number' && typeof b.game?.Col === 'number');
+  if (gems.length >= 9) {
+    const prefix = gems[0].testId.replace(/\d+_\d+$/, '');
+    out.push({ skill: 'match3', params: { gemPrefix: prefix }, why: `${gems.length} coloured cells on a grid (swap to match)`, custom: match3 });
+  }
+  void sg;
+
+  // Gauge: the game exposes a live value and a target band (pump, charge, pressure) — hold and release inside it.
+  const gaugeHost = [scope, ...parts].find(b => has(b, 'CurrentValue') && (has(b, 'TargetMin') || has(b, 'BandMin')) && (has(b, 'TargetMax') || has(b, 'BandMax')));
+  if (gaugeHost && buttons.length) {
+    const btn = buttons.find(b => /pump|hold|charge|press|gas|fill/i.test(b.testId)) ?? buttons[0];
+    out.push({ skill: 'gauge_band', params: { host: gaugeHost.testId, button: btn.testId }, why: `live gauge ${gaugeHost.testId}.CurrentValue with a target band`, custom: gaugeBand });
+  }
   if (parts.some(b => has(b, 'ExpectedColorId'))) out.push({ skill: 'paint_learned_palette', params: {}, why: 'segments with a reference colour id', custom: paintWithLearnedPalette });
   const wheel = parts.find(b => has(b, 'AccumulatedAngle') && b.game.IsJammed === false);
   if (wheel) out.push({ skill: 'rotate_wheel', params: { turnsPerGesture: 1.25 }, why: 'free wheel accumulating angle' });
   void motion;
   return out;
+}
+
+/**
+ * Hold a control while a live gauge rises and release inside the target band. The release lead (reaction +
+ * transport latency, in gauge units) is learned from each attempt: overshoot → release earlier, undershoot →
+ * later. Works across stages (band and speed may change) and after fail restarts.
+ */
+async function gaugeBand(ctx: PlaybookContext): Promise<PlaybookResult> {
+  const p = ctx.params as { host: string; button: string };
+  let lead = 0.02;
+  for (let attempt = 1; attempt <= 30 && !ctx.expired(); attempt++) {
+    const mod = await ctx.world.inspect(ctx.moduleId);
+    if (mod?.props.IsCompleted === true) return { status: 'COMPLETED', summary: `gauge released in band (${attempt - 1} attempts)` };
+    if (mod?.game?.IsInTransition === true) { await sleep(300); attempt--; continue; }
+    const host = await ctx.world.inspect(p.host);
+    const btn = await ctx.world.inspect(p.button);
+    if (!host || !btn) return { status: 'DISCOVERY_REQUIRED', summary: 'gauge or control not observable' };
+    const g = host.game ?? {};
+    const lo = Number(g.TargetMin ?? g.BandMin), hi = Number(g.TargetMax ?? g.BandMax);
+    const scale = hi > 1.5 ? 100 : 1;                                   // percent or 0..1
+    // Wait for the gauge to drain so each attempt starts low.
+    await ctx.world.waitFor(p.host, b => Number(b.game?.CurrentValue ?? 0) < lo * 0.5, 6000, 100);
+    const aim = (lo + (hi - lo) * 0.5) - lead * scale;
+    const stageBefore = Number(mod?.game?.CurrentStage ?? 1), failsBefore = Number(mod?.game?.FailCount ?? 0);
+    let peak = 0;
+    await ctx.motor.hold(btn.center, { maxMs: 12000, pollMs: 15, until: async () => {
+      const v = Number((await ctx.world.inspect(p.host))?.game?.CurrentValue ?? 0);
+      peak = Math.max(peak, v);
+      return v >= aim;
+    } });
+    await sleep(400);
+    const after = await ctx.world.inspect(ctx.moduleId);
+    const settled = Number((await ctx.world.inspect(p.host))?.game?.CurrentValue ?? peak);
+    const fails = Number(after?.game?.FailCount ?? 0) > failsBefore;
+    const advanced = after?.props.IsCompleted === true || Number(after?.game?.CurrentStage ?? 1) > stageBefore;
+    const landed = Math.max(settled, peak);
+    ctx.say(`band [${lo}, ${hi}] aim ${aim.toFixed(3)} → landed ≈${landed.toFixed(3)}${fails ? ' (FAIL)' : ''}${advanced ? ' (stage/level cleared)' : ''}`);
+    if (after?.props.IsCompleted === true) return { status: 'COMPLETED', summary: `gauge released in band on attempt ${attempt}` };
+    // Overshoot → positive error → release earlier; undershoot → negative error → release later.
+    if (!advanced && (landed > hi || landed < lo)) lead += ((landed - (lo + hi) / 2) / scale) * 0.8;
+  }
+  return { status: 'STUCK', summary: 'could not release inside the band', stagnationType: 'MICRO_STUCK' };
 }
 
 /** Palette mapping is not given: learn it by trying each swatch on a segment and reading CurrentColorId. */

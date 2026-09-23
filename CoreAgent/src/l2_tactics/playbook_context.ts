@@ -177,13 +177,14 @@ export class PlaybookContext {
       const b = await this.world.inspect(testId);
       if (!b) return null;
       const screen = { x: 0, y: 0, w: 1920, h: 1080 };
-      const margin = 40;
-      if (rectContains({ x: screen.x + margin, y: screen.y + margin, w: screen.w - 2 * margin, h: screen.h - 2 * margin }, b.center)) {
-        // On screen is not enough: a scroll viewport mask or header may still cover it. Confirm the target is
-        // its own top hit (read-only hit test) before calling it reachable.
+      // Headers and footers sit at the screen edges: a scrolled control counts as reachable only in the middle
+      // band, and only when it is its own top hit (read-only hit test) — an empty hit test is not a confirmation.
+      const mx = 40, my = 170;
+      if (rectContains({ x: screen.x + mx, y: screen.y + my, w: screen.w - 2 * mx, h: screen.h - 2 * my }, b.center)) {
         const hits = await this.world.hitTest(b.center);
         const top = String(hits[0]?.path ?? '');
-        if (!top || top.endsWith(`/${b.name}`) || top.includes(`/${b.name}/`)) return b;
+        if (top.endsWith(`/${b.name}`) || top.includes(`/${b.name}/`)) return b;
+        if (!top && i > 0) return b;     // hit test unavailable: accept after at least one adjustment
       }
       const anchor = scrollAnchor ?? { x: b.center.x, y: 540 };
       // Wheel delta sign: content below the screen centre needs a negative wheel delta (scroll down).

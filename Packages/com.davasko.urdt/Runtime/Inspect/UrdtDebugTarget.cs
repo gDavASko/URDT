@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -54,7 +54,16 @@ namespace KBP.URDT.Inspect
         public string TargetId
         {
             get { return string.IsNullOrEmpty(_targetId) ? name : _targetId; }
-            set { _targetId = value; }
+            set
+            {
+                if (_targetId == value) return;
+                _targetId = value;
+                // The registry fixes an object's id when it first registers; keep it in sync with a changed id.
+                if (Application.isPlaying && UrdtServerHost.Instance != null && UrdtServerHost.Instance.Registry != null)
+                {
+                    UrdtServerHost.Instance.Registry.Rekey(gameObject);
+                }
+            }
         }
 
         [TestInspectable]

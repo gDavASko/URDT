@@ -40,6 +40,13 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M22_GridPathfinding
         private float _trapTimer = 0f;
         private bool _visualsRefreshed = false;
 
+        private static readonly int[] StageStepBudget = new int[] { 20, 14, 12 };
+
+        public override int StageCount => 3;
+        public int StepsTaken => _stepsTaken;
+        public int StepsBudget => StageStepBudget[Mathf.Clamp(CurrentStage - 1, 0, StageStepBudget.Length - 1)];
+        public int StepsRemaining => Mathf.Max(0, StepsBudget - _stepsTaken);
+
         protected override void Awake()
         {
             base.Awake();
@@ -91,6 +98,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M22_GridPathfinding
             UpdateRobotVisual();
             UpdateUI();
             SetProgress(0f);
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int budget = StageStepBudget[Mathf.Clamp(stage - 1, 0, StageStepBudget.Length - 1)];
+            switch (stage)
+            {
+                case 1: return $"Этап 1/3. Проведите робота к зелёному флагу. Ловушка [!] задержит на 1 сек. Бюджет шагов: {budget}.";
+                case 2: return $"Этап 2/3. Планируйте оптимальный путь: шагов не более {budget}.";
+                case 3: return $"Этап 3/3. Ловушка [!] мгновенно сбрасывает этап; шагов не более {budget}.";
+                default: return _instruction;
+            }
         }
 
         public override void ResetMechanic()
@@ -152,7 +171,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M22_GridPathfinding
 
         public void TryMoveTo(Vector2Int targetPos)
         {
-            if (_isCompleted || _isTrapped) return;
+            if (_isCompleted || _isTrapped || IsInTransition) return;
             if (targetPos.x < 0 || targetPos.x >= _gridSize || targetPos.y < 0 || targetPos.y >= _gridSize) return;
 
             // Проверка, является ли ячейка соседней по горизонтали или вертикали
@@ -178,12 +197,28 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M22_GridPathfinding
                 // Проверка ловушки
                 if (_robotPos == _trapPos)
                 {
+                    if (CurrentStage >= 3)
+                    {
+                        if (_instructionText != null)
+                        {
+                            _instructionText.text = "<color=#FF3333>Робот попал в глитч-ловушку [!]! Этап сброшен.</color>";
+                        }
+                        FailStage("робот наступил на глитч-ловушку");
+                        return;
+                    }
                     _isTrapped = true;
                     _trapTimer = 1.0f;
                     if (_instructionText != null)
                     {
-                        _instructionText.text = "<color=#FF4444>Внимание! Вы наступили в глитч-ловушку [X]! Робот перезагружается...</color>";
+                        _instructionText.text = "<color=#FF4444>Внимание! Вы наступили в глитч-ловушку [!]! Робот перезагружается...</color>";
                     }
+                }
+
+                // Проверка бюджета шагов
+                if (_stepsTaken > StepsBudget)
+                {
+                    FailStage($"превышен бюджет шагов ({StepsBudget})");
+                    return;
                 }
 
                 // Проверка финиша
@@ -260,7 +295,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M22_GridPathfinding
         {
             if (_stepText != null)
             {
-                _stepText.text = $"Шаги: {_stepsTaken} | Позиция: ({_robotPos.x},{_robotPos.y})";
+                _stepText.text = $"Шаги: {_stepsTaken}/{StepsBudget} | Позиция: ({_robotPos.x},{_robotPos.y})";
             }
         }
     }

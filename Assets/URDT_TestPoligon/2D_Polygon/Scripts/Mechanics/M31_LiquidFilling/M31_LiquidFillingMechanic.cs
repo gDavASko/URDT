@@ -38,6 +38,24 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
         [SerializeField] private float _fillSpeed = 0.48f; // ~2.1 сек на лунку
         [SerializeField] private float _wellRadius = 55f;
 
+        // Параметры по этапам: медленнее налив, уже горловина, ошибочная лунка на 2-3 этапе — провал
+        private static readonly float[] STAGE_FILL_SPEED  = { 0.48f, 0.34f, 0.26f };
+        private static readonly float[] STAGE_WELL_RADIUS = { 55f, 42f, 32f };
+        private static readonly float[] STAGE_WRONG_MAX   = { 999f, 1.2f, 0.6f }; // сек над «чужой» лункой при подаче
+        private static readonly float[] STAGE_TIME_LIMIT  = { 0f, 0f, 20f };
+
+        public override int StageCount => 3;
+
+        private float _wrongWellHoldTime = 0f;
+        private float _timeLeft = 0f;
+
+        /// <summary>Индекс активной лунки (0-based).</summary>
+        public int CurrentWellIndex => _currentWellIndex;
+        /// <summary>Заполненность каждой из 3 лунок (0..1).</summary>
+        public float GetWellFill(int i) => (i >= 0 && i < 3) ? _wellFillAmounts[i] : 0f;
+        /// <summary>Оставшееся время (сек) или 0, если лимит не действует.</summary>
+        public float TimeLeft => _timeLeft;
+
         private int _currentWellIndex = 0;
         private readonly float[] _wellFillAmounts = new float[3];
         private bool _isPouring = false;
@@ -119,6 +137,12 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
             _isPouring = false;
             _isDragging = false;
             _pulseTimer = 0f;
+            _wrongWellHoldTime = 0f;
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_FILL_SPEED.Length - 1);
+            _fillSpeed = STAGE_FILL_SPEED[idx];
+            _wellRadius = STAGE_WELL_RADIUS[idx];
+            _timeLeft = STAGE_TIME_LIMIT[idx];
 
             for (int i = 0; i < 3; i++)
             {
@@ -159,11 +183,21 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
 
             if (_instructionText != null)
             {
-                _instructionText.text = "Перемещайте раствороподатчик над лунками по очереди (1 → 2 → 3), чтобы заполнить их!";
+                _instructionText.text = GetStageInstruction(CurrentStage);
             }
 
             UpdateUI();
             SetProgress(0f);
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, STAGE_FILL_SPEED.Length - 1);
+            float wrong = STAGE_WRONG_MAX[idx];
+            float lim = STAGE_TIME_LIMIT[idx];
+            string wrongTxt = wrong < 5f ? $" Больше {wrong:F1} сек над чужой лункой при подаче — провал." : "";
+            string limTxt = lim > 0f ? $" Лимит: {lim:F0} сек." : "";
+            return $"Этап {stage}/3. Перемещайте раствороподатчик над лунками по очереди (1 → 2 → 3), удерживайте над активной.{wrongTxt}{limTxt}";
         }
 
         public override void ResetMechanic()
@@ -173,7 +207,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
 
         private void Update()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
+
+            if (_timeLeft > 0f)
+            {
+                _timeLeft -= Time.deltaTime;
+                if (_timeLeft <= 0f)
+                {
+                    _timeLeft = 0f;
+                    FailStage("Время на заполнение истекло");
+                    return;
+                }
+            }
 
             _pulseTimer += Time.deltaTime * 5f;
 
@@ -278,14 +323,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
             _isDragging = true;
             ProcessDispenserPosition(eventData.position);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (!_isDragging || _isCompleted) return;
+            if (!_isDragging || _isCompleted || IsInTransition) return;
             ProcessDispenserPosition(eventData.position);
         }
 
@@ -293,6 +338,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
         {
             _isDragging = false;
             _isPouring = false;
+            _wrongWellHoldTime = 0f;
             if (_streamVisual != null) _streamVisual.gameObject.SetActive(false);
         }
 
@@ -334,6 +380,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
             {
                 // Находимся точно над активной лункой -> подача раствора активна
                 _isPouring = true;
+                _wrongWellHoldTime = 0f;
                 if (_streamVisual != null) _streamVisual.gameObject.SetActive(true);
 
                 if (_instructionText != null)
@@ -369,6 +416,23 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M31_LiquidFilling
 
                 _isPouring = false;
                 if (_streamVisual != null) _streamVisual.gameObject.SetActive(false);
+
+                // На жёстких этапах — накопление времени над чужой лункой при активной подаче
+                int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_WRONG_MAX.Length - 1);
+                float wrongLimit = STAGE_WRONG_MAX[idx];
+                if (overWrongWell && _isDragging && wrongLimit < 5f)
+                {
+                    _wrongWellHoldTime += Time.deltaTime;
+                    if (_wrongWellHoldTime >= wrongLimit)
+                    {
+                        FailStage("Раствор подан не в ту лунку");
+                        return;
+                    }
+                }
+                else if (!overWrongWell)
+                {
+                    _wrongWellHoldTime = Mathf.Max(0f, _wrongWellHoldTime - Time.deltaTime * 0.5f);
+                }
 
                 if (!overWrongWell && _instructionText != null)
                 {

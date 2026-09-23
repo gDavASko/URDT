@@ -38,6 +38,9 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M05_TimelineSequencer
         public CommandType CommandType => _commandType;
         public string CommandName => _commandName;
         public bool IsJunk => _isJunk;
+
+        public void SetJunk(bool j) { _isJunk = j; if (j) _commandType = CommandType.Glitch; }
+        public void SetCommand(CommandType t, string label) { _commandType = t; _commandName = label; }
         public CommandSlot CurrentSlot => _currentSlot;
         public RectTransform RectTransform => _rectTransform != null ? _rectTransform : (_rectTransform = GetComponent<RectTransform>());
 

@@ -40,6 +40,21 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
         private BridgePlank _slottedPlankB;
         private bool _isWalking = false;
 
+        // Параметры по этапам: добавляем сломанные мостики-декои и вводим лимит времени на 3-м
+        private static readonly int[]   STAGE_EXTRA_BROKEN = { 0, 1, 2 };
+        private static readonly float[] STAGE_TIME_LIMIT   = { 0f, 0f, 25f };
+        private static readonly bool[]  STAGE_BROKEN_FATAL = { false, true, true };
+
+        private readonly List<BridgePlank> _spawnedPlanks = new List<BridgePlank>();
+        private float _timeLeft = 0f;
+
+        public override int StageCount => 3;
+
+        /// <summary>Мостиков установлено (0..2).</summary>
+        public int BridgesPlaced => (_slottedPlankA != null ? 1 : 0) + (_slottedPlankB != null ? 1 : 0);
+        /// <summary>Оставшееся время (сек) или 0, если лимит не действует.</summary>
+        public float TimeLeft => _timeLeft;
+
         protected override void Awake()
         {
             base.Awake();
@@ -63,7 +78,19 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
 
         private void Update()
         {
-            if (_isCompleted || _isWalking) return;
+            if (_isCompleted || _isWalking || IsInTransition) return;
+
+            // Обратный отсчёт времени на этапе с лимитом
+            if (_timeLeft > 0f)
+            {
+                _timeLeft -= Time.deltaTime;
+                if (_timeLeft <= 0f)
+                {
+                    _timeLeft = 0f;
+                    FailStage("Время на установку мостов истекло");
+                    return;
+                }
+            }
 
             bool ready = _slottedPlankA != null && _slottedPlankB != null;
             if (ready && (UnityEngine.Input.GetKeyDown(KeyCode.Space) || UnityEngine.Input.GetKeyDown(KeyCode.Return)))
@@ -76,6 +103,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
         {
             if (_planks == null || _planks.Length == 0)
             {
+                // Первый вызов — берём авторские мостики; клоны привязываем отдельно
                 _planks = GetComponentsInChildren<BridgePlank>(true);
             }
 
@@ -88,6 +116,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
                         plank.OnPlankEndDrag -= HandlePlankEndDrag;
                         plank.OnPlankEndDrag += HandlePlankEndDrag;
                     }
+                }
+            }
+
+            foreach (var plank in _spawnedPlanks)
+            {
+                if (plank != null)
+                {
+                    plank.OnPlankEndDrag -= HandlePlankEndDrag;
+                    plank.OnPlankEndDrag += HandlePlankEndDrag;
                 }
             }
         }
@@ -103,7 +140,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
                     if (plank != null)
                     {
                         plank.OnPlankEndDrag -= HandlePlankEndDrag;
+                        // A plank still parented outside this level (mid-drag on the canvas root) dies with it.
+                        if (!plank.transform.IsChildOf(transform)) Destroy(plank.gameObject);
                     }
+                }
+            }
+
+            foreach (var plank in _spawnedPlanks)
+            {
+                if (plank != null)
+                {
+                    plank.OnPlankEndDrag -= HandlePlankEndDrag;
+                    if (!plank.transform.IsChildOf(transform)) Destroy(plank.gameObject);
                 }
             }
         }
@@ -116,10 +164,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
             _slottedPlankA = null;
             _slottedPlankB = null;
 
+            // Уничтожаем клоны с прошлого запуска
+            for (int i = 0; i < _spawnedPlanks.Count; i++)
+            {
+                if (_spawnedPlanks[i] != null) Destroy(_spawnedPlanks[i].gameObject);
+            }
+            _spawnedPlanks.Clear();
+
             if (_entityA != null) _entityA.anchoredPosition = _startPosA;
             if (_entityB != null) _entityB.anchoredPosition = _startPosB;
-
-            BindPlankEvents();
 
             if (_planks != null)
             {
@@ -129,8 +182,61 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
                 }
             }
 
+            SpawnExtraBrokenPlanks();
+            BindPlankEvents();
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_TIME_LIMIT.Length - 1);
+            _timeLeft = STAGE_TIME_LIMIT[idx];
+
             UpdateStateUI();
             SetProgress(0f);
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, STAGE_EXTRA_BROKEN.Length - 1);
+            bool fatal = STAGE_BROKEN_FATAL[idx];
+            float limit = STAGE_TIME_LIMIT[idx];
+            string t = limit > 0f ? $" Лимит времени: {limit:F0} сек." : "";
+            string b = fatal
+                ? " Попытка поставить сломанный мост [X] в разрыв — провал!"
+                : " Сломанный мост [X] не подходит — используйте целый.";
+            return $"Этап {stage}/3. Установите оба целых мостика в разрывы путей и нажмите ПУСК.{b}{t}";
+        }
+
+        private void SpawnExtraBrokenPlanks()
+        {
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_EXTRA_BROKEN.Length - 1);
+            int extra = STAGE_EXTRA_BROKEN[idx];
+            if (extra <= 0 || _planks == null || _planks.Length == 0) return;
+
+            BridgePlank template = null;
+            foreach (var p in _planks)
+            {
+                if (p != null && p.IsBroken) { template = p; break; }
+            }
+            if (template == null)
+            {
+                // Возьмем первый доступный целый — сделаем клон сломанным
+                foreach (var p in _planks)
+                {
+                    if (p != null) { template = p; break; }
+                }
+            }
+            if (template == null) return;
+
+            int nextId = 90; // Явно вне диапазона авторских мостиков
+            Vector2 basePos = template.InitialPosition;
+            Transform parent = template.transform.parent;
+            for (int i = 0; i < extra; i++)
+            {
+                BridgePlank clone = Instantiate(template, parent);
+                clone.name = $"BridgePlank_Broken_Extra_{i + 1}";
+                clone.SetBroken(true);
+                clone.SetBridgeId(nextId + i);
+                clone.SetInitialOrigin(parent, basePos + new Vector2(0f, -46f * (i + 1)));
+                _spawnedPlanks.Add(clone);
+            }
         }
 
         public override void ResetMechanic()
@@ -140,7 +246,19 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
 
         private void HandlePlankEndDrag(BridgePlank plank, UnityEngine.EventSystems.PointerEventData eventData)
         {
-            if (_isWalking || _isCompleted || plank == null) return;
+            if (plank == null) return;
+            // While the bots walk (or after completion) a drop is ignored, but the plank must still leave the canvas
+            // root it was lifted to in OnBeginDrag — otherwise it outlives this level instance as a ghost.
+            if (_isWalking || _isCompleted)
+            {
+                if (_slottedPlankA != plank && _slottedPlankB != plank) plank.ReturnToOrigin();
+                else
+                {
+                    plank.transform.SetParent(transform, true);
+                    plank.RectTransform.anchoredPosition = plank == _slottedPlankA ? _slotA.anchoredPosition : _slotB.anchoredPosition;
+                }
+                return;
+            }
 
             RectTransform rootRt = transform as RectTransform;
             Vector2 plankPosInRoot = rootRt.InverseTransformPoint(plank.transform.position);
@@ -150,6 +268,9 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
             float distA = Vector2.Distance(plankPosInRoot, slotAPosInRoot);
             float distB = Vector2.Distance(plankPosInRoot, slotBPosInRoot);
 
+            int stageIdx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_BROKEN_FATAL.Length - 1);
+            bool brokenFatal = STAGE_BROKEN_FATAL[stageIdx];
+
             // Проверяем попадание в слот A
             if (distA <= _snapRadius && distA <= distB)
             {
@@ -157,6 +278,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
                 {
                     ShowWarning("Сломанный мостик [X] рухнет под весом бота! Используйте целый мост.");
                     plank.ReturnToOrigin();
+                    if (brokenFatal) FailStage("Сломанный мостик установлен в разрыв");
                     return;
                 }
 
@@ -175,6 +297,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
                 {
                     ShowWarning("Сломанный мостик [X] рухнет под весом бота! Используйте целый мост.");
                     plank.ReturnToOrigin();
+                    if (brokenFatal) FailStage("Сломанный мостик установлен в разрыв");
                     return;
                 }
 
@@ -217,13 +340,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M28_DualBridgeRoute
 
             if (_instructionText != null && !_isWalking && !_isCompleted)
             {
+                string timeTail = _timeLeft > 0f ? $" Осталось {_timeLeft:F0} сек." : "";
                 if (!ready)
                 {
-                    _instructionText.text = $"Установите оба мостика в разрывы путей (установлено {bridgesPlaced}/2). Остерегайтесь сломанного [X]!";
+                    _instructionText.text = $"Этап {CurrentStage}/3. Установите оба мостика в разрывы путей ({bridgesPlaced}/2). Остерегайтесь сломанного [X]!{timeTail}";
                 }
                 else
                 {
-                    _instructionText.text = "<color=#00FF99>Мостики установлены! Нажмите 'ПУСК >>' (или пробел).</color>";
+                    _instructionText.text = $"<color=#00FF99>Мостики установлены! Нажмите 'ПУСК >>' (или пробел).</color>{timeTail}";
                 }
             }
         }

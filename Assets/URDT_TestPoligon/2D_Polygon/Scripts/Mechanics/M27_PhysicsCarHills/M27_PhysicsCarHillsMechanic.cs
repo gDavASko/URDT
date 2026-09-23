@@ -42,6 +42,23 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M27_PhysicsCarHills
         [SerializeField] private float _finishX = 2200f;
         [SerializeField] private float _cameraScreenOffsetX = -100f;
 
+        // Параметры по этапам: длиннее трасса. Рельеф остаётся аналитическим (общая функция).
+        private static readonly float[] STAGE_FINISH_X = { 2400f, 3200f, 4000f };
+
+        public override int StageCount => 3;
+
+        /// <summary>Пройденная доля трассы 0..1 на текущем этапе.</summary>
+        public float StageProgress
+        {
+            get
+            {
+                float total = Mathf.Max(1f, _finishX - _startX);
+                return Mathf.Clamp01((_pos.x - _startX) / total);
+            }
+        }
+        /// <summary>Машина сейчас в состоянии крушения.</summary>
+        public bool IsCrashed => _isCrashed;
+
         [Header("Параметры физики")]
         [SerializeField] private float _wheelBase = 58f;
         [SerializeField] private float _wheelRadius = 16f;
@@ -109,6 +126,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M27_PhysicsCarHills
         public override void Initialize()
         {
             base.Initialize();
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_FINISH_X.Length - 1);
+            _finishX = STAGE_FINISH_X[idx];
+
             _pos = new Vector2(_startX, GetTerrainHeight(_startX) + _wheelRadius + 14f);
             _vel = Vector2.zero;
             _angle = 0f;
@@ -142,8 +163,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M27_PhysicsCarHills
 
             if (_instructionText != null)
             {
-                _instructionText.text = "Зажимайте ГАЗ (D) / ТОРМОЗ (A). В воздухе управляйте наклоном машины!";
+                _instructionText.text = GetStageInstruction(CurrentStage);
             }
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, STAGE_FINISH_X.Length - 1);
+            float len = STAGE_FINISH_X[idx] - _startX;
+            return $"Этап {stage}/3. Трасса {len:F0} м. Зажимайте ГАЗ (D) / ТОРМОЗ (A), в воздухе управляйте наклоном. Переворот или падение — провал этапа!";
         }
 
         public override void ResetMechanic()
@@ -153,6 +181,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M27_PhysicsCarHills
 
         private void Update()
         {
+            if (IsInTransition) return;
+
             if (_flagTouched)
             {
                 // Плавное торможение накатом после победы и анимация флага
@@ -192,7 +222,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M27_PhysicsCarHills
 
                 if (_crashResetTimer <= 0f)
                 {
-                    RespawnCar();
+                    // На всех этапах крушение — провал этапа (сброс прогресса, поле пересобирается)
+                    FailStage(string.IsNullOrEmpty(_lastCrashReason) ? "Крушение автомобиля" : _lastCrashReason);
                 }
                 return;
             }
@@ -420,11 +451,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M27_PhysicsCarHills
             }
         }
 
+        private string _lastCrashReason = string.Empty;
+
         private void TriggerCrash(string reason)
         {
             if (_isCrashed) return;
             _isCrashed = true;
             _crashResetTimer = 1.35f;
+            _lastCrashReason = reason;
 
             // Динамичный отскок от удара
             _vel = new Vector2(-35f, 65f);

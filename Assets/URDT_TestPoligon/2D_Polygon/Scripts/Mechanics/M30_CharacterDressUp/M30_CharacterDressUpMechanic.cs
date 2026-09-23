@@ -33,6 +33,23 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M30_CharacterDressUp
         private int _equippedCount = 0;
         private const int TOTAL_SLOTS = 4;
 
+        // Параметры по этапам: количество дополнительных [X]-предметов и лимит времени
+        private static readonly int[]   STAGE_EXTRA_JUNK = { 0, 1, 2 };
+        private static readonly float[] STAGE_TIME_LIMIT = { 0f, 0f, 22f };
+        private static readonly bool[]  STAGE_JUNK_FATAL = { false, true, true };
+
+        private readonly List<DressUpItem> _spawnedItems = new List<DressUpItem>();
+        private float _timeLeft = 0f;
+
+        public override int StageCount => 3;
+
+        /// <summary>Сколько слотов на манекене уже экипировано (0..4).</summary>
+        public int EquippedCount => _equippedCount;
+        /// <summary>Всего слотов на манекене.</summary>
+        public int TotalSlots => TOTAL_SLOTS;
+        /// <summary>Оставшееся время (сек) или 0, если лимит не действует.</summary>
+        public float TimeLeft => _timeLeft;
+
         protected override void Awake()
         {
             base.Awake();
@@ -63,6 +80,13 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M30_CharacterDressUp
                     {
                         item.OnItemEndDrag -= HandleItemEndDrag;
                     }
+                }
+            }
+            foreach (var item in _spawnedItems)
+            {
+                if (item != null)
+                {
+                    item.OnItemEndDrag -= HandleItemEndDrag;
                 }
             }
         }
@@ -109,10 +133,80 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M30_CharacterDressUp
                 _characterSilhouette.localScale = Vector3.one;
             }
 
+            // Уничтожаем клоны с прошлого запуска
+            for (int i = 0; i < _spawnedItems.Count; i++)
+            {
+                if (_spawnedItems[i] != null) Destroy(_spawnedItems[i].gameObject);
+            }
+            _spawnedItems.Clear();
+
             EnsureWardrobePositions();
+            SpawnExtraJunkItems();
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_TIME_LIMIT.Length - 1);
+            _timeLeft = STAGE_TIME_LIMIT[idx];
 
             UpdateUI();
             SetProgress(0f);
+
+            if (_instructionText != null)
+            {
+                _instructionText.text = GetStageInstruction(CurrentStage);
+            }
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, STAGE_EXTRA_JUNK.Length - 1);
+            int extra = STAGE_EXTRA_JUNK[idx];
+            bool fatal = STAGE_JUNK_FATAL[idx];
+            float lim = STAGE_TIME_LIMIT[idx];
+            string junkTxt = extra == 0 ? "1 бракованный [X]" : (extra == 1 ? "2 бракованных [X]" : $"{1 + extra} бракованных [X]");
+            string fatalTxt = fatal ? "Промах браком в слот — провал этапа." : "Промах браком отбрасывает предмет.";
+            string limTxt = lim > 0f ? $" Лимит: {lim:F0} сек." : "";
+            return $"Этап {stage}/3. Экипируйте {TOTAL_SLOTS} слотов. В гардеробе {junkTxt}. {fatalTxt}{limTxt}";
+        }
+
+        private void SpawnExtraJunkItems()
+        {
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_EXTRA_JUNK.Length - 1);
+            int extra = STAGE_EXTRA_JUNK[idx];
+            if (extra <= 0 || _items == null || _items.Length == 0) return;
+
+            DressUpItem template = null;
+            foreach (var it in _items)
+            {
+                if (it != null && it.IsJunk) { template = it; break; }
+            }
+            if (template == null) return;
+
+            Transform parent = template.transform.parent;
+            Vector2 basePos = template.RectTransform.anchoredPosition;
+            for (int i = 0; i < extra; i++)
+            {
+                DressUpItem clone = Instantiate(template, parent);
+                clone.name = $"DressItem_Junk_Extra_{i + 1}";
+                Vector2 pos = basePos + new Vector2((i + 1) * 55f, 0f);
+                clone.SetInitialWardrobePosition(pos, parent);
+                clone.ResetItem();
+                clone.OnItemEndDrag -= HandleItemEndDrag;
+                clone.OnItemEndDrag += HandleItemEndDrag;
+                _spawnedItems.Add(clone);
+            }
+        }
+
+        private void Update()
+        {
+            if (_isCompleted || IsInTransition) return;
+            if (_timeLeft > 0f)
+            {
+                _timeLeft -= Time.deltaTime;
+                if (_timeLeft <= 0f)
+                {
+                    _timeLeft = 0f;
+                    FailStage("Время на экипировку истекло");
+                }
+            }
         }
 
         public override void ResetMechanic()
@@ -122,12 +216,33 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M30_CharacterDressUp
 
         private void HandleItemEndDrag(DressUpItem item, UnityEngine.EventSystems.PointerEventData eventData)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_JUNK_FATAL.Length - 1);
+            bool junkFatal = STAGE_JUNK_FATAL[idx];
 
             if (item.IsJunk)
             {
-                ShowWarning("Бракованный предмет [X] не подходит для экипировки!");
+                // Если [X] брошен рядом с любым слотом — на этапах 2-3 это провал.
+                RectTransform[] allSlots = { _slotHead, _slotBody, _slotFeet, _slotAccessory };
+                bool droppedOnSlot = false;
+                foreach (var s in allSlots)
+                {
+                    if (s != null && Vector2.Distance(item.RectTransform.position, s.position) <= _snapRadius * 2.5f)
+                    {
+                        droppedOnSlot = true; break;
+                    }
+                }
                 item.ReturnToWardrobe();
+                if (droppedOnSlot && junkFatal)
+                {
+                    ShowWarning("Бракованный предмет [X] надет на манекен — провал этапа!");
+                    FailStage("Использован бракованный предмет");
+                }
+                else
+                {
+                    ShowWarning("Бракованный предмет [X] не подходит для экипировки!");
+                }
                 return;
             }
 

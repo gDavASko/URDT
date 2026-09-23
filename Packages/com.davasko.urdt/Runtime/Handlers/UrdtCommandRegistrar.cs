@@ -25,6 +25,7 @@ namespace KBP.URDT.Handlers
             router.Register(ProtocolConstants.ACTION_INPUT_STATUS, new InputStatusHandler(runtime));
             router.Register(ProtocolConstants.ACTION_AUDIO, new AudioHandler(runtime));
             router.Register(ProtocolConstants.ACTION_COVERAGE, new CoverageHandler(runtime));
+            router.Register(ProtocolConstants.ACTION_LAYOUT, new LayoutHandler(runtime));
             router.Register(ProtocolConstants.ACTION_PRESS_MOVE, new PressMoveHandler(runtime));
             router.Register(ProtocolConstants.ACTION_SWIPE, new SwipeHandler(runtime));
             router.Register(ProtocolConstants.ACTION_SCROLL, new ScrollHandler(runtime));

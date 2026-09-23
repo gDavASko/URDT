@@ -35,6 +35,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M19_FloodFillColoring
 
         private int _selectedColorId = 1; // 1: Red, 2: Green, 3: Blue, 4: Yellow, 99: Mud
         private Color _selectedColor = new Color(1f, 0.3f, 0.3f, 1f);
+        private int _mistakesUsed = 0;
+
+        // Бюджет ошибок цвета по этапам (грязь на 2-3 этапах — мгновенный провал).
+        private static readonly int[] StageMistakeBudget = new int[] { 6, 3, 2 };
+
+        public override int StageCount => 3;
+        public int MistakesUsed => _mistakesUsed;
+        public int MistakesBudget => StageMistakeBudget[Mathf.Clamp(CurrentStage - 1, 0, StageMistakeBudget.Length - 1)];
 
         private readonly Color COLOR_RED = new Color(1f, 0.3f, 0.3f, 1f);
         private readonly Color COLOR_GREEN = new Color(0.25f, 0.85f, 0.45f, 1f);
@@ -85,6 +93,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M19_FloodFillColoring
             EnsureEtalonDisplay();
             ShuffleTargetColors();
             SelectColor(1, COLOR_RED);
+            _mistakesUsed = 0;
 
             if (_segments != null)
             {
@@ -92,6 +101,17 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M19_FloodFillColoring
             }
 
             SetProgress(0f);
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            switch (stage)
+            {
+                case 1: return "Этап 1/3. Выберите цвет в палитре и раскрасьте 4 сегмента по эталону. Грязь [X] — только предупреждение.";
+                case 2: return "Этап 2/3. Правила строже: касание грязью [X] — мгновенный сброс этапа. Смените цвет перед покраской.";
+                case 3: return "Этап 3/3. Максимальная точность: грязь [X] — сброс, и лимит ошибок цвета всего 2.";
+                default: return _instruction;
+            }
         }
 
         public override void ResetMechanic()
@@ -243,15 +263,41 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M19_FloodFillColoring
 
         private void HandleSegmentClicked(ColoringSegment segment)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
+
+            bool isMud = (_selectedColorId == 99);
+            bool wrongColor = !isMud && _selectedColorId != segment.ExpectedColorId;
 
             segment.ApplyColor(_selectedColorId, _selectedColor);
 
-            if (_selectedColorId == 99)
+            // Провал на этапах 2-3 при использовании грязи
+            if (isMud && CurrentStage >= 2)
             {
                 if (_instructionText != null)
                 {
-                    _instructionText.text = "<color=#FF4444>Сегмент испорчен грязью [X]! Выберите чистый цвет в палитре и перекрасьте.</color>";
+                    _instructionText.text = "<color=#FF3333>Грязь [X] попала на схему! Этап сброшен.</color>";
+                }
+                FailStage("грязная жижа [X] применена к сегменту");
+                return;
+            }
+
+            if (isMud && _instructionText != null)
+            {
+                _instructionText.text = "<color=#FF4444>Сегмент испорчен грязью [X]! Выберите чистый цвет и перекрасьте.</color>";
+            }
+
+            // Учёт ошибок цвета
+            if (wrongColor)
+            {
+                _mistakesUsed++;
+                if (_instructionText != null)
+                {
+                    _instructionText.text = $"<color=#FFB040>Не тот цвет! Ошибок: {_mistakesUsed}/{MistakesBudget}</color>";
+                }
+                if (_mistakesUsed >= MistakesBudget)
+                {
+                    FailStage($"исчерпан лимит ошибок цвета ({MistakesBudget})");
+                    return;
                 }
             }
 

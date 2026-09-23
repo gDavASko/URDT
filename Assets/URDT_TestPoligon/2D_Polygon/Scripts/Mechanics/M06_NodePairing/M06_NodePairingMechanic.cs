@@ -7,13 +7,26 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M06_NodePairing
 {
     /// <summary>
     /// Механика #6: Соединение графовых узлов эластичной связью (Node Pairing).
-    /// Задача: соединить проводкой соответствующие контакты (Красный -> Красный, Синий -> Синий, Зеленый -> Зеленый).
-    /// Мешающие факторы:
-    /// 1. Бракованный контакт со знаком 'X' (Pin_Junk) - вызывает короткое замыкание.
-    /// 2. Ограниченный радиус захвата целевого контакта (необходимо точное наведение).
+    /// Три этапа: больше клемм и повышенная точность соединения.
+    /// Провал: попытка подключить провод к бракованной клемме (X) или соединить неверную пару.
     /// </summary>
     public class M06_NodePairingMechanic : BaseMechanic2DModule
     {
+        public override int StageCount => 3;
+        private readonly List<GameObject> _spawnedExtras = new List<GameObject>();
+        public int ConnectedCount => _connectedCount;
+        public int RequiredConnections => _requiredConnections;
+
+        protected override string GetStageInstruction(int stage)
+        {
+            switch (stage)
+            {
+                case 1: return "Этап 1/3. Соедините проводами парные клеммы одного цвета. Не касайтесь клемм (X).";
+                case 2: return "Этап 2/3. Появились дополнительные ложные клеммы. Неверное соединение — этап начнётся заново.";
+                default: return "Этап 3/3. Больше клемм-обманок. Работайте точно: короткое замыкание сбрасывает прогресс.";
+            }
+        }
+
         [Header("Контакты")]
         [SerializeField] private NodePin[] _sourcePins = null;
         [SerializeField] private NodePin[] _targetPins = null;
@@ -110,6 +123,13 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M06_NodePairing
             }
             _completedLines.Clear();
 
+            // Удалить клоны прошлого этапа
+            for (int i = _spawnedExtras.Count - 1; i >= 0; i--)
+            {
+                if (_spawnedExtras[i] != null) Destroy(_spawnedExtras[i]);
+            }
+            _spawnedExtras.Clear();
+
             if (_sourcePins != null)
             {
                 foreach (var p in _sourcePins) if (p != null) p.ResetPin();
@@ -120,12 +140,44 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M06_NodePairing
                 foreach (var p in _targetPins) if (p != null) p.ResetPin();
             }
 
-            if (_instructionText != null)
-            {
-                _instructionText.text = "Протяните провода от левых клемм к парным правым. Не замыкайте клемму (X)!";
-            }
+            SpawnStageExtras(CurrentStage);
 
             SetProgress(0f);
+        }
+
+        private void SpawnStageExtras(int stage)
+        {
+            if (stage < 2) return;
+
+            NodePin srcTemplate = null;
+            NodePin tgtTemplate = null;
+            if (_sourcePins != null && _sourcePins.Length > 0) srcTemplate = _sourcePins[0];
+            if (_targetPins != null && _targetPins.Length > 0) tgtTemplate = _targetPins[0];
+
+            int extra = stage == 2 ? 1 : 2;
+            for (int i = 0; i < extra; i++)
+            {
+                if (srcTemplate != null) SpawnJunkPin(srcTemplate, true, i, stage);
+                if (tgtTemplate != null) SpawnJunkPin(tgtTemplate, false, i, stage);
+            }
+        }
+
+        private void SpawnJunkPin(NodePin template, bool source, int index, int stage)
+        {
+            var clone = Instantiate(template, template.transform.parent);
+            clone.name = $"Pin_Junk_{(source ? "Src" : "Tgt")}_S{stage}_{index + 1}";
+            clone.SetSource(source);
+            clone.SetJunk(true);
+            clone.SetPairId("X");
+            var rt = clone.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                Vector2 basePos = template.GetComponent<RectTransform>().anchoredPosition;
+                rt.anchoredPosition = FindFreeAnchoredPosition(rt, basePos + new Vector2(0f, -80f - index * 60f), 70f);
+            }
+            clone.OnDragUpdated += HandleDragUpdated;
+            clone.OnDragEnded += HandleDragEnded;
+            _spawnedExtras.Add(clone.gameObject);
         }
 
         public override void ResetMechanic()
@@ -179,15 +231,16 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M06_NodePairing
 
             if (targetPin != null && !targetPin.IsConnected)
             {
-                // Дефектный контакт (X)
+                // Дефектный контакт (X) — короткое замыкание, провал этапа
                 if (targetPin.IsJunk || fromPin.IsJunk)
                 {
                     if (_instructionText != null)
                     {
-                        _instructionText.text = "<color=#FF5555>Короткое замыкание! Не подключайте к дефектной клемме (X).</color>";
+                        _instructionText.text = "<color=#FF5555>Короткое замыкание на клемме (X)! Этап провален.</color>";
                     }
                     Destroy(_activeDragLine.gameObject);
                     _activeDragLine = null;
+                    FailStage("Короткое замыкание на дефектной клемме (X)");
                     return;
                 }
 
@@ -240,13 +293,23 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M06_NodePairing
                 {
                     if (_instructionText != null)
                     {
-                        _instructionText.text = $"<color=#FF9900>Несовпадение фазы! Клемма {fromPin.PairId} не подходит к {targetPin.PairId}.</color>";
+                        _instructionText.text = $"<color=#FF5555>Несовпадение фазы: {fromPin.PairId} ≠ {targetPin.PairId}. Этап провален.</color>";
                     }
+                    Destroy(_activeDragLine.gameObject);
+                    _activeDragLine = null;
+                    if (CurrentStage >= 2)
+                    {
+                        FailStage($"Соединение неверной пары ({fromPin.PairId} → {targetPin.PairId})");
+                    }
+                    return;
                 }
             }
 
-            Destroy(_activeDragLine.gameObject);
-            _activeDragLine = null;
+            if (_activeDragLine != null)
+            {
+                Destroy(_activeDragLine.gameObject);
+                _activeDragLine = null;
+            }
         }
 
         private NodePin FindClosestMatchingPin(NodePin fromPin, UnityEngine.EventSystems.PointerEventData eventData)

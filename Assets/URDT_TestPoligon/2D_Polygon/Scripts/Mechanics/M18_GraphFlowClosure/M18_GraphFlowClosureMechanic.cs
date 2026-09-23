@@ -34,6 +34,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M18_GraphFlowClosure
         private PipeTile _sourceTile;
         private PipeTile _sinkTile;
         private int _currentLayoutIndex = -1;
+        private int _rotationsUsed = 0;
+
+        // Бюджет поворотов по этапам. На 1-м этапе — свободно, на 2-3 — жёстче.
+        private static readonly int[] StageRotationBudget = new int[] { 24, 16, 12 };
+
+        public override int StageCount => 3;
+        public int RotationsUsed => _rotationsUsed;
+        public int RotationsBudget => StageRotationBudget[Mathf.Clamp(CurrentStage - 1, 0, StageRotationBudget.Length - 1)];
 
         // 5 гарантированно проходимых планировок (3x3 сетка)
         private static readonly PipeType[][] Layouts = new PipeType[][]
@@ -125,12 +133,27 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M18_GraphFlowClosure
             base.Initialize();
             CacheSpritesFromChildren();
 
+            _rotationsUsed = 0;
+
             // Выбираем один из 5 случайных вариантов
             int selectedLayout = Random.Range(0, Layouts.Length);
             ApplyLayout(selectedLayout);
 
             EvaluateFlow();
             SetProgress(0f);
+            UpdateStatusText(0);
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int budget = StageRotationBudget[Mathf.Clamp(stage - 1, 0, StageRotationBudget.Length - 1)];
+            switch (stage)
+            {
+                case 1: return $"Этап 1/3. Поворачивайте фрагменты труб кликом, чтобы соединить Источник и Приёмник. Бюджет поворотов: {budget}.";
+                case 2: return $"Этап 2/3. То же, но бюджет поворотов урезан до {budget}. Планируйте маршрут, не крутите вслепую.";
+                case 3: return $"Этап 3/3. Мастерский уровень: всего {budget} поворотов на всю задачу.";
+                default: return _instruction;
+            }
         }
 
         public override void ResetMechanic()
@@ -213,8 +236,23 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M18_GraphFlowClosure
 
         private void HandleTileRotated(PipeTile tile)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
+            _rotationsUsed++;
             EvaluateFlow();
+
+            // Если поток замкнулся тем же поворотом — победа обрабатывается в EvaluateFlow, провал не считаем.
+            if (!_isCompleted && _rotationsUsed >= RotationsBudget)
+            {
+                // Даем шанс: провал только если труба еще не замкнута
+                FailStage($"исчерпан бюджет поворотов ({RotationsBudget})");
+            }
+        }
+
+        private void UpdateStatusText(int visitedCount)
+        {
+            if (_statusText == null) return;
+            string variantLabel = _currentLayoutIndex >= 0 ? $" (Вариант #{_currentLayoutIndex + 1})" : "";
+            _statusText.text = $"Узлов: {visitedCount}/{_gridTiles.Length} | Поворотов: {_rotationsUsed}/{RotationsBudget}{variantLabel}";
         }
 
         /// <summary>
@@ -353,8 +391,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M18_GraphFlowClosure
             }
             else
             {
-                string variantLabel = _currentLayoutIndex >= 0 ? $" (Вариант #{_currentLayoutIndex + 1})" : "";
-                if (_statusText != null) _statusText.text = $"Заполнено узлов: {visited.Count} / {_gridTiles.Length}{variantLabel}";
+                UpdateStatusText(visited.Count);
             }
         }
 

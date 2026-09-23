@@ -1,0 +1,80 @@
+{
+  "grid_snake": {
+    "runs": 9,
+    "ok": 9,
+    "ms": 223832,
+    "lastRun": 1790191898794,
+    "lastOk": 1790191898794,
+    "byContext": {
+      "M34_Snake": {
+        "runs": 9,
+        "ok": 9
+      }
+    }
+  },
+  "program_sequencer": {
+    "runs": 7,
+    "ok": 7,
+    "ms": 140622,
+    "lastRun": 1790190833517,
+    "lastOk": 1790190833517,
+    "byContext": {
+      "M05_TimelineSequencer": {
+        "runs": 7,
+        "ok": 7
+      }
+    }
+  },
+  "rotate_wheel": {
+    "runs": 3,
+    "ok": 0,
+    "ms": 46072,
+    "lastRun": 1790190969835,
+    "lastOk": 0,
+    "byContext": {
+      "M12_AngularDeltaTracker": {
+        "runs": 3,
+        "ok": 0
+      }
+    }
+  },
+  "grid_path": {
+    "runs": 5,
+    "ok": 1,
+    "ms": 33223,
+    "lastRun": 1790192308366,
+    "lastOk": 1790192308366,
+    "byContext": {
+      "M22_GridPathfinding": {
+        "runs": 5,
+        "ok": 1
+      }
+    }
+  },
+  "alternating_rhythm": {
+    "runs": 1,
+    "ok": 1,
+    "ms": 19128,
+    "lastRun": 1790192429970,
+    "lastOk": 1790192429970,
+    "byContext": {
+      "M37_AlternateRunner": {
+        "runs": 1,
+        "ok": 1
+      }
+    }
+  },
+  "falling_notes_lanes": {
+    "runs": 1,
+    "ok": 1,
+    "ms": 42587,
+    "lastRun": 1790192536767,
+    "lastOk": 1790192536767,
+    "byContext": {
+      "M16_RhythmPhaseDetector": {
+        "runs": 1,
+        "ok": 1
+      }
+    }
+  }
+}

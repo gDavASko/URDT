@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using KBP.URDT.TestPoligon.Mechanics2D.Core;
@@ -5,11 +6,9 @@ using KBP.URDT.TestPoligon.Mechanics2D.Core;
 namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
 {
     /// <summary>
-    /// Механика #1: Drag & Drop - Позиционирование с примагничиванием в таргет (Snap-to-Slot).
-    /// Задача игрока: перетащить три цветные детали в соответствующие пазы.
-    /// Мешающие факторы:
-    /// 1. Мусорная деталь со знаком 'X', которую не принимает ни один слот.
-    /// 2. Статичный барьер-препятствие по центру, требующий огибания.
+    /// Механика #1: Drag & Drop — примагничивание деталей в подходящие пазы.
+    /// Три этапа возрастающей сложности: больше бракованных деталей, точнее посадка.
+    /// Провал: попытка вставить бракованную деталь (X) в паз.
     /// </summary>
     public class M01_SnapToSlotMechanic : BaseMechanic2DModule
     {
@@ -24,12 +23,28 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
         private int _snappedCount;
         private Vector2[] _initialSlotPositions;
         private Vector2[] _initialItemPositions;
+        private float[] _initialSnapThresholds;
+        private readonly List<GameObject> _spawnedExtras = new List<GameObject>();
+
+        public override int StageCount => 3;
+        public int RequiredSnaps => _slots != null ? _slots.Length : 0;
+        public int SnappedCount => _snappedCount;
 
         protected override void Awake()
         {
             base.Awake();
             CaptureInitialPositions();
             BindEvents();
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            switch (stage)
+            {
+                case 1: return "Этап 1/3. Перетащите цветные детали в соответствующие пазы. Бракованную деталь (X) не используйте.";
+                case 2: return "Этап 2/3. Деталей и брака стало больше. Посадка требует более точного наведения.";
+                default: return "Этап 3/3. Максимум помех: несколько бракованных деталей, узкий допуск. Не ошибитесь!";
+            }
         }
 
         private void CaptureInitialPositions()
@@ -49,11 +64,13 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
             if (_items != null && _initialItemPositions == null)
             {
                 _initialItemPositions = new Vector2[_items.Length];
+                _initialSnapThresholds = new float[_items.Length];
                 for (int i = 0; i < _items.Length; i++)
                 {
                     if (_items[i] != null)
                     {
                         _initialItemPositions[i] = _items[i].RectTransform.anchoredPosition;
+                        _initialSnapThresholds[i] = _items[i].SnapThreshold;
                     }
                 }
             }
@@ -61,7 +78,6 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
 
         private void ShufflePositions()
         {
-            // Рандомизация позиций слотов-пазов
             if (_slots != null && _initialSlotPositions != null && _slots.Length == _initialSlotPositions.Length)
             {
                 Vector2[] shuffledSlotPositions = (Vector2[])_initialSlotPositions.Clone();
@@ -75,7 +91,6 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
                 }
             }
 
-            // Рандомизация позиций предметов в лотке
             if (_items != null && _initialItemPositions != null && _items.Length == _initialItemPositions.Length)
             {
                 Vector2[] shuffledItemPositions = (Vector2[])_initialItemPositions.Clone();
@@ -137,6 +152,13 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
             base.Initialize();
             _snappedCount = 0;
 
+            // Очистка ранее склонированных мусорных деталей
+            for (int i = _spawnedExtras.Count - 1; i >= 0; i--)
+            {
+                if (_spawnedExtras[i] != null) Destroy(_spawnedExtras[i]);
+            }
+            _spawnedExtras.Clear();
+
             CaptureInitialPositions();
             ShufflePositions();
 
@@ -150,17 +172,67 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
 
             if (_items != null)
             {
-                foreach (var item in _items)
+                for (int i = 0; i < _items.Length; i++)
                 {
+                    var item = _items[i];
                     if (item != null)
                     {
                         item.transform.localScale = Vector3.one;
+                        // Восстановить исходный радиус
+                        if (_initialSnapThresholds != null && i < _initialSnapThresholds.Length)
+                        {
+                            item.SetSnapThreshold(_initialSnapThresholds[i]);
+                        }
                         item.ResetItem();
                     }
                 }
             }
 
+            ApplyStageDifficulty(CurrentStage);
             UpdateLocalStatus();
+        }
+
+        private void ApplyStageDifficulty(int stage)
+        {
+            // На 2-3 этапах: клонируем дополнительные бракованные детали и снижаем радиус магнита
+            int extraJunks = stage == 2 ? 1 : (stage >= 3 ? 2 : 0);
+            float thresholdFactor = stage == 2 ? 0.85f : (stage >= 3 ? 0.7f : 1f);
+
+            if (_items != null)
+            {
+                foreach (var item in _items)
+                {
+                    if (item != null) item.SetSnapThreshold(item.SnapThreshold * thresholdFactor);
+                }
+            }
+
+            // Найти образцовую бракованную деталь и клонировать
+            SnapDraggableItem junkTemplate = null;
+            if (_items != null)
+            {
+                foreach (var it in _items) { if (it != null && it.IsJunk) { junkTemplate = it; break; } }
+            }
+
+            if (junkTemplate == null || extraJunks <= 0) return;
+
+            Transform parent = junkTemplate.transform.parent;
+            // Предметы после перемешивания ещё едут домой: занятыми считаются их ДОМАШНИЕ позиции.
+            var reserved = new List<Vector2>();
+            foreach (var it in _items) if (it != null) reserved.Add(it.HomePosition);
+            for (int i = 0; i < extraJunks; i++)
+            {
+                var clone = Instantiate(junkTemplate, parent);
+                clone.name = $"Item_Junk_Extra_{stage}_{i + 1}";
+                clone.SetJunk(true);
+                clone.SetItemId("__junk_extra_" + i);
+                Vector2 offset = new Vector2(80f + i * 60f, -30f + (i % 2) * 20f);
+                clone.RectTransform.anchoredPosition = FindFreeAnchoredPosition(clone.RectTransform, junkTemplate.HomePosition + offset, 140f, reserved);
+                clone.SetHomePosition(clone.RectTransform.anchoredPosition);
+                reserved.Add(clone.HomePosition);
+                clone.OnItemSnapped += HandleItemSnapped;
+                clone.OnItemRejected += HandleItemRejected;
+                _spawnedExtras.Add(clone.gameObject);
+            }
         }
 
         public override void ResetMechanic()
@@ -188,9 +260,22 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
 
         private void HandleItemRejected(SnapDraggableItem item, SnapSlot slot)
         {
+            if (IsInTransition) return;
+
+            if (item != null && item.IsJunk && slot != null)
+            {
+                // Игрок явно пытался вставить бракованную деталь в паз — провал этапа.
+                if (_localInstructionText != null)
+                {
+                    _localInstructionText.text = "<color=#FF5555>Бракованная деталь в пазу! Этап провален.</color>";
+                }
+                FailStage("Попытка установить бракованную деталь (X) в паз");
+                return;
+            }
+
             if (_localInstructionText != null)
             {
-                if (item.IsJunk)
+                if (item != null && item.IsJunk)
                 {
                     _localInstructionText.text = "<color=#FF5555>Эта деталь бракованная и не подходит ни в один паз!</color>";
                 }
@@ -210,7 +295,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
             if (_localInstructionText != null && !_isCompleted)
             {
                 int total = _slots != null ? _slots.Length : 3;
-                _localInstructionText.text = $"Перетащите подходящие детали в пазы. Заполнено: {_snappedCount} / {total}";
+                _localInstructionText.text = $"Этап {CurrentStage}/{StageCount}. Заполнено пазов: {_snappedCount} / {total}";
             }
         }
     }

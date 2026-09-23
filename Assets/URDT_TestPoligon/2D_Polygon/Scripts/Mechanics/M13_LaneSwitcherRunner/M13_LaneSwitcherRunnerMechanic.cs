@@ -63,11 +63,27 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
         [SerializeField] private float _scrollSpeed = 160f;
         [SerializeField] private float _spawnInterval = 1.6f;
 
+        // Параметры по этапам: 1 — базовый, 2 — быстрее и больше монет, 3 — самый жёсткий
+        private static readonly int[]   STAGE_TARGET_COINS   = { 5, 7, 10 };
+        private static readonly float[] STAGE_SCROLL_SPEED   = { 160f, 215f, 265f };
+        private static readonly float[] STAGE_SPAWN_INTERVAL = { 1.6f, 1.35f, 1.1f };
+        private static readonly float[] STAGE_BARRIER_CHANCE = { 0.65f, 0.85f, 1.0f };
+        private static readonly bool[]  STAGE_BARRIER_FATAL  = { false, true, true };
+
+        public override int StageCount => 3;
+
         private int _currentLane = 1; // 0, 1, 2
         private int _collectedCoins = 0;
         private float _spawnTimer = 0f;
         private List<RunnerItem> _activeItems = new List<RunnerItem>();
         private List<GameObject> _spawnedObjects = new List<GameObject>();
+
+        /// <summary>Сколько монет уже собрано на текущем этапе.</summary>
+        public int CollectedCoins => _collectedCoins;
+        /// <summary>Сколько монет нужно собрать на текущем этапе.</summary>
+        public int StageTargetCoins => _targetCoins;
+        /// <summary>Столкновение с барьером на этом этапе провальное (true) или мягкий штраф (false).</summary>
+        public bool BarrierIsFatal => STAGE_BARRIER_FATAL[Mathf.Clamp(CurrentStage - 1, 0, STAGE_BARRIER_FATAL.Length - 1)];
 
         // Жестовый ввод
         private Vector2 _pointerDownPos;
@@ -114,6 +130,12 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
         public override void Initialize()
         {
             base.Initialize();
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_TARGET_COINS.Length - 1);
+            _targetCoins = STAGE_TARGET_COINS[idx];
+            _scrollSpeed = STAGE_SCROLL_SPEED[idx];
+            _spawnInterval = STAGE_SPAWN_INTERVAL[idx];
+
             _currentLane = 1;
             _collectedCoins = 0;
             _spawnTimer = 0.5f;
@@ -128,6 +150,24 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
             SetProgress(0f);
         }
 
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, STAGE_TARGET_COINS.Length - 1);
+            int coins = STAGE_TARGET_COINS[idx];
+            bool fatal = STAGE_BARRIER_FATAL[idx];
+            string ctrl;
+            switch (_controlMode)
+            {
+                case RunnerControlMode.Swipe:         ctrl = "Свайпайте влево / вправо по экрану для смены полосы."; break;
+                case RunnerControlMode.HalfScreenTap: ctrl = "Нажимайте на левую или правую половину экрана для смены полосы."; break;
+                default:                              ctrl = "Зажмите приёмник и ведите его влево-вправо мышкой."; break;
+            }
+            string tail = fatal
+                ? $"Соберите {coins} монет. Столкновение с барьером [X] — провал этапа!"
+                : $"Соберите {coins} монет. Барьер [X] снимает 1 монету — обходите его.";
+            return $"Этап {stage}/3. {ctrl} {tail}";
+        }
+
         public override void ResetMechanic()
         {
             Initialize();
@@ -139,19 +179,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
             if (_btnLeft != null) _btnLeft.gameObject.SetActive(false);
             if (_btnRight != null) _btnRight.gameObject.SetActive(false);
 
-            // Адаптируем инструкцию под конкретный режим управления
-            switch (_controlMode)
-            {
-                case RunnerControlMode.Swipe:
-                    _instruction = $"Свайпайте влево или вправо по экрану для смены полосы. Соберите {_targetCoins} монет и избегайте барьеров [X]!";
-                    break;
-                case RunnerControlMode.HalfScreenTap:
-                    _instruction = $"Нажимайте на левую или правую половину экрана для смены полосы. Соберите {_targetCoins} монет и избегайте барьеров [X]!";
-                    break;
-                case RunnerControlMode.DirectDrag:
-                    _instruction = $"Зажмите приёмник и ведите его влево-вправо мышкой. Соберите {_targetCoins} монет и избегайте барьеров [X]!";
-                    break;
-            }
+            _instruction = GetStageInstruction(CurrentStage);
 
             if (_instructionText != null)
             {
@@ -161,7 +189,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
 
         public void MoveLeft()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
             if (_currentLane > 0)
             {
                 _currentLane--;
@@ -171,7 +199,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
 
         public void MoveRight()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
             if (_currentLane < _laneXPositions.Length - 1)
             {
                 _currentLane++;
@@ -182,7 +210,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
         #region EventSystem Pointer Handlers
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
             _isPointerDown = true;
             _pointerDownPos = eventData.position;
             _swipeTriggered = false;
@@ -200,7 +228,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (_isCompleted || !_isPointerDown) return;
+            if (_isCompleted || IsInTransition || !_isPointerDown) return;
 
             if (_controlMode == RunnerControlMode.Swipe)
             {
@@ -323,7 +351,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
 
         private void Update()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
 
             // Клавиатурный ввод A / D или Left / Right (дополнительно к жестам)
             if (UnityEngine.Input.GetKeyDown(KeyCode.A) || UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow)) MoveLeft();
@@ -403,13 +431,24 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
                     }
                     else if (item.Type == RunnerItemType.BarrierHazard)
                     {
-                        // Столкновение с барьером
                         item.Transform.gameObject.SetActive(false);
-                        if (_collectedCoins > 0) _collectedCoins--;
-                        UpdateUI();
-                        if (_instructionText != null)
+                        if (BarrierIsFatal)
                         {
-                            _instructionText.text = "<color=#FF4444>Удар о шипастый барьер [X]! Штраф -1 монета!</color>";
+                            if (_instructionText != null)
+                            {
+                                _instructionText.text = "<color=#FF4444>Столкновение с барьером [X]! Этап провален.</color>";
+                            }
+                            FailStage("Столкновение с барьером");
+                            return;
+                        }
+                        else
+                        {
+                            if (_collectedCoins > 0) _collectedCoins--;
+                            UpdateUI();
+                            if (_instructionText != null)
+                            {
+                                _instructionText.text = "<color=#FF4444>Удар о шипастый барьер [X]! Штраф -1 монета!</color>";
+                            }
                         }
                     }
                 }
@@ -431,8 +470,9 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M13_LaneSwitcherRunner
             int coinLane = UnityEngine.Random.Range(0, 3);
             SpawnItem(RunnerItemType.Coin, coinLane, 160f);
 
-            // Иногда на другой полосе спавним барьер
-            if (UnityEngine.Random.value < 0.65f)
+            // Иногда на другой полосе спавним барьер (частота растёт с этапом)
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_BARRIER_CHANCE.Length - 1);
+            if (UnityEngine.Random.value < STAGE_BARRIER_CHANCE[idx])
             {
                 int barrierLane = (coinLane + UnityEngine.Random.Range(1, 3)) % 3;
                 SpawnItem(RunnerItemType.BarrierHazard, barrierLane, 160f);

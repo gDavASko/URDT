@@ -37,7 +37,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot
 
         public string ItemId => _itemId;
         public bool IsJunk => _isJunk;
+        /// <summary>Где предмет лежит (или куда едет) в лотке.</summary>
+        public Vector2 HomePosition => _homeAnchoredPosition;
         public bool IsLocked => _isLocked;
+        public float SnapThreshold => _snapThreshold;
+
+        public void SetItemId(string id) { _itemId = id; }
+        public void SetJunk(bool junk) { _isJunk = junk; }
+        public void SetSnapThreshold(float t) { _snapThreshold = Mathf.Max(20f, t); }
         public RectTransform RectTransform => _rectTransform != null ? _rectTransform : (_rectTransform = GetComponent<RectTransform>());
 
         public event Action<SnapDraggableItem, SnapSlot> OnItemSnapped;

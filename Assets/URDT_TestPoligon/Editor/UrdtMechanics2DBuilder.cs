@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using KBP.URDT.TestPoligon.Mechanics2D.Core;
 using KBP.URDT.TestPoligon.Mechanics2D.M01_SnapToSlot;
@@ -4674,7 +4674,7 @@ namespace KBP.URDT.TestPoligon.Editor
             if (prefabs == null || prefabs.Length == 0)
             {
                 List<GameObject> loadedPrefabs = new List<GameObject>();
-                for (int i = 1; i <= 32; i++)
+                for (int i = 1; i <= 37; i++)
                 {
                     string[] found = Directory.GetFiles(PREFABS_DIR, $"M{i:D2}_*.prefab");
                     if (found.Length > 0)

@@ -87,21 +87,33 @@ export function clusterLanes(xs: number[]): number[] {
  * x(t), y(t) = y0 + vy·t − g·t²/2 and derives the launch gain k = |v0| / |pull| and gravity g. Every next
  * shot is solved by forward simulation for a pull vector that hits a remaining can and clears obstacles.
  */
+/** Fitted launch physics per module: the same slingshot keeps its physics across stages and restarts, so the
+ *  calibration shot is spent once — not on every stage (ammo is limited). */
+const SLING_MODEL = new Map<string, { k: number; g: number }>();
+
 export async function slingshot(ctx: PlaybookContext): Promise<PlaybookResult> {
   const p = ctx.params as { ball: string; anchor: string; targetPrefix: string; obstacleRole: string; maxPullPx: number };
-  let model: { k: number; g: number } | null = null;
+  let model: { k: number; g: number } | null = SLING_MODEL.get(ctx.moduleId) ?? null;
   // The game's hit point of a target (its pivot) may differ from the visual centre the beacon reports;
   // after a miss the agent shifts its aim point and after repeated misses it switches targets.
   const AIM_OFFSETS = [0, -30, -45, 20, -15, 35];
   const misses = new Map<string, number>();
-  for (let shot = 1; shot <= 14 && !ctx.expired(); shot++) {
+  let unseen = 0;
+  for (let shot = 1; shot <= 40 && !ctx.expired(); shot++) {
+    const modB = await ctx.world.inspect(ctx.moduleId);
+    // Stage change / fail restart: the board is being rebuilt — wait for it instead of giving up.
+    if (modB?.game?.IsInTransition === true) { await sleep(300); shot--; continue; }
     const parts = await ctx.parts();
     if ((await ctx.module()).completed) return { status: 'COMPLETED', summary: `all targets down in ${shot - 1} shots` };
     const anchor = parts.find(b => b.testId === p.anchor);
     const ball = parts.find(b => b.testId === p.ball);
     const targets = parts.filter(b => b.testId.startsWith(p.targetPrefix) && b.game?.IsHit === false && b.game?.IsObstacle !== true);
     const obstacles = parts.filter(b => role(b) === p.obstacleRole && b.rect).map(b => b.rect!);
-    if (!anchor || !ball || targets.length === 0) return { status: 'STUCK', summary: 'slingshot elements not observable', stagnationType: 'MICRO_STUCK' };
+    if (!anchor || !ball || targets.length === 0) {
+      if (++unseen > 20) return { status: 'STUCK', summary: 'slingshot elements not observable', stagnationType: 'MICRO_STUCK' };
+      await sleep(250); shot--; continue;
+    }
+    unseen = 0;
     const a = anchor.center;
     let pull: Point;
     let aimed: Beacon | null = null;
@@ -137,6 +149,7 @@ export async function slingshot(ctx: PlaybookContext): Promise<PlaybookResult> {
     if (fit) {
       const k = Math.hypot(fit.vx, fit.vy) / Math.hypot(pull.x, pull.y);
       model = model ? { k: (model.k + k) / 2, g: (model.g + fit.g) / 2 } : { k, g: fit.g };
+      SLING_MODEL.set(ctx.moduleId, model);
       ctx.say(`fitted flight: v0=(${fit.vx.toFixed(0)},${fit.vy.toFixed(0)}) g=${fit.g.toFixed(0)} → k=${k.toFixed(2)}`);
     }
     const st = await ctx.awaitProgress(before.progress, 400);
@@ -227,7 +240,7 @@ export async function carDrive(ctx: PlaybookContext): Promise<PlaybookResult> {
   let gasDown = false, brakeDown = false;
   const setGas = async (on: boolean) => { if (on !== gasDown) { on ? await ctx.motor.press(gas.center, 1) : await ctx.motor.release(gas.center, 1); gasDown = on; } };
   const setBrake = async (on: boolean) => { if (on !== brakeDown) { on ? await ctx.motor.press(brake.center, 2) : await ctx.motor.release(brake.center, 2); brakeDown = on; } };
-  let lastDist = -1, lastProgressT = Date.now(), crashes = 0;
+  let lastDist = -1, lastProgressT = Date.now(), crashes = 0, stalls = 0;
   ctx.hypothesize('hold throttle on the ground; in the air counter pitch with brake (nose-up) / throttle (nose-down) pulses');
   try {
     while (!ctx.expired()) {
@@ -255,11 +268,15 @@ export async function carDrive(ctx: PlaybookContext): Promise<PlaybookResult> {
       } else {
         await setBrake(false); await setGas(false);
       }
-      if (Date.now() - lastProgressT > 6000) {
-        ctx.say(`no distance progress for 6s at ${d}m (pitch ${pitch.toFixed(0)}°) — rocking to free the car`);
-        await setGas(false); await setBrake(true); await sleep(500); await setBrake(false);
+      if (Date.now() - lastProgressT > 5000) {
+        // Stalled on a slope: roll back (brake = reverse) further each time to gain a longer run-up, then full throttle.
+        stalls++;
+        if (stalls > 5) break;
+        const backMs = 800 + stalls * 700;
+        ctx.say(`no distance progress for 5s at ${d}m (pitch ${pitch.toFixed(0)}°) — reversing ${backMs}ms for a run-up (#${stalls})`);
+        await setGas(false); await setBrake(true); await sleep(backMs); await setBrake(false);
+        await sleep(300);
         lastProgressT = Date.now();
-        if (ctx.progressed(false)) break;
       }
       await sleep(40);
     }

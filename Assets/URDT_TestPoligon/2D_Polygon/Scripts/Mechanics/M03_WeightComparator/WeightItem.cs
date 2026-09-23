@@ -31,6 +31,9 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M03_WeightComparator
 
         public float Mass => _mass;
         public bool IsJunk => _isJunk;
+
+        public void SetMass(float m) { _mass = m; UpdateVisuals(); }
+        public void SetJunk(bool j) { _isJunk = j; UpdateVisuals(); }
         public ScalePan CurrentPan => _currentPan;
         public RectTransform RectTransform => _rectTransform != null ? _rectTransform : (_rectTransform = GetComponent<RectTransform>());
 

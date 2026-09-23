@@ -23,7 +23,7 @@ export interface VisionConfig {
   imageMaxTokens?: number; ubatch?: number; maxOutputTokens?: number;
 }
 
-export interface VisionPlanStep { action: 'tap' | 'drag' | 'hold' | 'trace' | 'rotate' | 'wait'; item?: string; target?: string; button?: string; durationMs?: number; repeat?: number; why: string }
+export interface VisionPlanStep { action: 'tap' | 'drag' | 'hold' | 'trace' | 'rotate' | 'wait' | 'pull' | 'move_over'; item?: string; target?: string; button?: string; durationMs?: number; repeat?: number; why: string }
 export interface VisionAnalysis {
   goal: string;
   instructionsSeen: string[];
@@ -102,18 +102,44 @@ export class VisionAnalyst {
       const y1 = Math.round((1 - (r.y + r.h) / screen.h) * 1000), y2 = Math.round((1 - r.y / screen.h) * 1000);
       return `[${x1},${y1},${x2},${y2}]`;
     };
-    const objectList = beacons.map(b => `- ${b.testId} (${b.kind}${b.props.AreaType ? `, role ${b.props.AreaType}` : ''}) box ${box(b)}${b.props.Text ? ` text "${String(b.props.Text).replace(/<[^>]+>/g, '').slice(0, 60)}"` : ''}`).join('\n');
+    // Compact state tells the model what is already occupied/placed (e.g. inventory slots holding the items).
+    const state = (b: Beacon) => {
+      const kv = Object.entries(b.game ?? {}).filter(([k, v]) => typeof v === 'boolean' && v && /occupied|full|snapped|placed|installed|locked|junk|broken|hazard|obstacle/i.test(k)).map(([k]) => k);
+      if (b.props.IsSnapped === true) kv.push('IsSnapped');
+      return kv.length ? ` state ${kv.join(',')}` : '';
+    };
+    // Large families (grid cells, particles) are listed once with their id range to keep the prompt and answer short.
+    const famOf = (id: string) => id.match(/^(.*?)((?:[_#]?\d+)+)$/)?.[1]?.replace(/[_#]$/, '') ?? null;
+    const famCount = new Map<string, number>();
+    for (const b of beacons) { const f = famOf(b.testId); if (f) famCount.set(f, (famCount.get(f) ?? 0) + 1); }
+    const shown = new Set<string>();
+    const lines: string[] = [];
+    for (const b of beacons) {
+      const f = famOf(b.testId);
+      if (f && (famCount.get(f) ?? 0) >= 6) {
+        if (shown.has(f)) continue;
+        shown.add(f);
+        const members = beacons.filter(x => famOf(x.testId) === f);
+        lines.push(`- ${members[0].testId} … ${members[members.length - 1].testId} (${members.length} ${b.kind}s of family ${f}; use any member id)`);
+        continue;
+      }
+      lines.push(`- ${b.testId} (${b.kind}${b.props.AreaType ? `, role ${b.props.AreaType}` : ''}) box ${box(b)}${state(b)}${b.props.Text ? ` text "${String(b.props.Text).replace(/<[^>]+>/g, '').slice(0, 60)}"` : ''}`);
+    }
+    const objectList = lines.join('\n');
     const idEnum = ids.length ? ids : ['none'];
     const schema = {
       type: 'object',
       properties: {
-        goal: { type: 'string' },
-        instructionsSeen: { type: 'array', items: { type: 'string' }, maxItems: 6 },
-        plan: { type: 'array', maxItems: 10, items: { type: 'object', properties: {
-          action: { enum: ['tap', 'drag', 'hold', 'trace', 'rotate', 'wait'] },
-          item: { enum: idEnum }, target: { enum: idEnum }, button: { enum: idEnum },
-          durationMs: { type: 'integer' }, repeat: { type: 'integer' }, why: { type: 'string' } }, required: ['action', 'why'] } },
-        cues: { type: 'array', maxItems: 8, items: { type: 'object', properties: { id: { enum: idEnum }, cue: { type: 'string' } }, required: ['id', 'cue'] } },
+        goal: { type: 'string', maxLength: 160 },
+        instructionsSeen: { type: 'array', items: { type: 'string', maxLength: 120 }, maxItems: 4 },
+        // Reason first, then a mandatory object: without `object` the grammar-constrained model tends to emit
+        // steps with no ids at all, which the robot cannot execute.
+        plan: { type: 'array', maxItems: 6, items: { type: 'object', properties: {
+          why: { type: 'string', maxLength: 90 },
+          action: { enum: ['tap', 'drag', 'move_over', 'pull', 'hold', 'trace', 'rotate', 'wait'] },
+          object: { enum: idEnum }, target: { enum: [...idEnum, 'none'] },
+          durationMs: { type: 'integer' }, repeat: { type: 'integer' } }, required: ['why', 'action', 'object', 'target', 'durationMs', 'repeat'] } },
+        cues: { type: 'array', maxItems: 4, items: { type: 'object', properties: { id: { enum: idEnum }, cue: { type: 'string', maxLength: 80 } }, required: ['id', 'cue'] } },
         avoid: { type: 'array', maxItems: 6, items: { enum: idEnum } },
         confidence: { type: 'number' },
       },
@@ -127,8 +153,16 @@ ${objectList}
 Texts already read by the robot: ${texts.map(t => `"${t}"`).join('; ') || 'none'}.${failedAttempts.length ? `
 The robot is STUCK. These attempts had NO effect — do not repeat them, find what is missing (a button to press, an order, a precondition, a different object):
 ${failedAttempts.slice(-15).map(a => `  * ${a}`).join(' | ')}` : ''}
-Return JSON: goal (what winning means here), instructionsSeen (captions you read), plan (ordered concrete steps using object ids:
-drag item→target, tap button (repeat = how many taps if it must be tapped many times/fast), hold item for durationMs (long holds for pedals/pumps, up to 60000), trace/rotate item), cues (visual-only hints per object, e.g. colour meaning),
+Return JSON: goal (what winning means here), instructionsSeen (captions you read), plan (ordered concrete steps; every step names
+the object it acts on and a target id or "none"):
+  tap object (repeat = how many taps if it must be tapped many times/fast; durationMs 0)
+  drag object -> target (drop it there)
+  move_over object -> target (carry a tool over the target and keep it there durationMs, e.g. lens, dispenser)
+  pull object (pull it back AWAY from target and release, slingshot-style)
+  hold object for durationMs (long holds for pedals/pumps, up to 60000)
+  trace object -> target (move the object continuously across the target area / along a path, e.g. wipe, steer, cut)
+  rotate object (circular motion), wait durationMs
+cues (visual-only hints per object, e.g. colour meaning),
 avoid (objects that look like traps/junk/decoys), confidence 0..1. Be concise.`;
     const started = Date.now();
     try {
@@ -136,7 +170,7 @@ avoid (objects that look like traps/junk/decoys), confidence 0..1. Be concise.`;
         method: 'POST', headers: { 'content-type': 'application/json' },
         signal: AbortSignal.timeout(this.cfg.timeoutMs),
         body: JSON.stringify({
-          temperature: 0.1, max_tokens: this.cfg.maxOutputTokens ?? 600,
+          temperature: 0.1, max_tokens: Math.max(900, this.cfg.maxOutputTokens ?? 0),
           messages: [{ role: 'user', content: [{ type: 'image_url', image_url: { url: imageDataUri } }, { type: 'text', text: prompt }] }],
           response_format: { type: 'json_schema', json_schema: { name: 'vision_plan', schema } },
         }),
@@ -148,7 +182,11 @@ avoid (objects that look like traps/junk/decoys), confidence 0..1. Be concise.`;
       return {
         goal: String(parsed.goal ?? ''),
         instructionsSeen: parsed.instructionsSeen ?? [],
-        plan: (parsed.plan ?? []).filter((s: VisionPlanStep) => valid(s.item) && valid(s.target) && valid(s.button)),
+        plan: (parsed.plan ?? []).map((st: any): VisionPlanStep => ({
+          action: st.action, why: String(st.why ?? ''), durationMs: st.durationMs || undefined, repeat: st.repeat || undefined,
+          item: st.object ?? st.item, button: st.action === 'tap' ? (st.object ?? st.button) : st.button,
+          target: st.target && st.target !== 'none' ? st.target : undefined,
+        })).filter((st: VisionPlanStep) => valid(st.item) && valid(st.target) && valid(st.button) && (!!st.item || !!st.button || st.action === 'wait')),
         cues: (parsed.cues ?? []).filter((c: any) => valid(c.id)),
         avoid: (parsed.avoid ?? []).filter((a: string) => valid(a)),
         confidence: Number(parsed.confidence ?? 0),

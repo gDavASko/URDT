@@ -8,6 +8,7 @@
  *   report    → TaskResult JSON + evidence packet + HTML
  */
 
+import { ROOT } from './runtime_paths.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { UrdtWireClient } from '../protocol/urdt_wire_client.js';
@@ -25,6 +26,11 @@ import { buildBriefing, Briefing } from './briefing.js';
 import { VisionAnalyst, loadVisionConfig } from './vision.js';
 import { GameHearing, loadHearingConfig } from './hearing.js';
 import { Answer, Clarification, Finding, Predicate, Task, TaskResult, TaskSchema } from './contract.js';
+import { KnowledgeStore, SkillRequirement, CORE_DIR } from '../knowledge/store.js';
+import { AppMap } from '../knowledge/app_map.js';
+import { runController } from '../knowledge/controller_host.js';
+import { buildSkillRequest } from '../knowledge/skill_request.js';
+import { BUILTIN_SKILLS, SkillMatch } from './skill_library.js';
 
 const NAV_BACK = /(back|main_menu|catalog)/i;
 
@@ -57,6 +63,49 @@ export class TaskRunner {
 
   dispose(): void { this.vision?.dispose(); this.hearing?.dispose(); }
 
+  private kbCache: { store: KnowledgeStore; map: AppMap } | null = null;
+
+  /** Game knowledge (from the game's own URDT_Knowledge folder reported by URDT): opened before anything else. */
+  async knowledge(): Promise<{ store: KnowledgeStore; map: AppMap }> {
+    const h: any = (await this.d.client.call('health', {}, 5000).catch(() => null))?.data ?? {};
+    if (this.kbCache && this.kbCache.store.gameDir === (h.knowledge_dir || this.kbCache.store.gameDir) && this.kbCache.store.build === (h.build_id ?? this.kbCache.store.build)) return this.kbCache;
+    const store = new KnowledgeStore(h);
+    store.ensureBuiltin(BUILTIN_SKILLS);
+    const retired = store.maintain();
+    if (retired.length) this.d.log(`[knowledge] retired: ${retired.join(', ')}`);
+    const map = new AppMap(store.file('app_map.json'), store.build);
+    this.kbCache = { store, map };
+    this.d.log(`[knowledge] ${store.gameDir} (build ${store.build}) — ${Object.keys(map.nodes).length} screens, ${store.facts().length} facts, ${store.candidateManifests().length} candidate skills`);
+    return this.kbCache;
+  }
+
+  /** Taps a navigation control and records the screen transition in the application map. */
+  private async navTap(testId: string, settleMs = 700): Promise<void> {
+    const { map } = await this.knowledge();
+    const from = map.see(await this.d.world.snapshot());
+    const t = Date.now();
+    await this.d.motor.tap({ testId });
+    await sleep(settleMs);
+    const to = map.see(await this.d.world.snapshot());
+    map.record(from, testId, to, Date.now() - t);
+  }
+
+  /** Candidate (synthesized) skills of this game whose requirements match the scope. */
+  private matchCandidates(store: KnowledgeStore, scope: Beacon, parts: Beacon[]): SkillMatch[] {
+    const out: SkillMatch[] = [];
+    for (const m of store.candidateManifests()) {
+      if (!requirementsMet(m.requires, scope, parts)) continue;
+      const file = path.join(m.dir, m.entry ?? 'controller.ts');
+      out.push({ skill: m.name, params: {}, why: `candidate v${m.version}: ${m.description}`, custom: (ctx) => runController(file, ctx, {}) });
+    }
+    for (const m of store.coreManifests().filter(x => x.source === 'synthesized' && x.entry)) {
+      if (!requirementsMet(m.requires, scope, parts)) continue;
+      const file = path.join(CORE_DIR, m.entry!);
+      out.push({ skill: m.name, params: {}, why: `core v${m.version}: ${m.description}`, custom: (ctx) => runController(file, ctx, {}) });
+    }
+    return out;
+  }
+
   constructor(private readonly d: RunnerDeps) {
     d.client.on('event:log_error', (e: any) => { this.consoleErrors.push(String(e?.message ?? e?.msg ?? JSON.stringify(e))); });
   }
@@ -80,6 +129,7 @@ export class TaskRunner {
 
   async run(input: unknown): Promise<TaskResult> {
     const task = TaskSchema.parse(input);
+    if (task.target.mode === 'campaign') return this.runCampaign(task);
     const started = Date.now();
     const findings: Finding[] = [];
     const strategy: TaskResult['strategy'] = [];
@@ -113,13 +163,31 @@ export class TaskRunner {
       return this.finish(task, started, 'blocked', `scope ${task.target.scope} not reachable`, findings, strategy, [], 0);
     }
 
+    const kb = await this.knowledge();
+    if (task.target.entry?.length) kb.store.putFact(`route:${task.target.scope}`, task.target.entry, task.taskId, task.target.scope);
+    // UI layers of this screen: which visible controls are covered by something else (and a modal, if any).
+    const layers = await kb.map.layers(await this.d.world.snapshot(), this.d.client).catch(() => null);
+    if (layers) {
+      step('ui layers', `${layers.stack.length} windows/modules, ${layers.controls} controls, ${layers.covered.length} covered${layers.modal ? `, modal ${layers.modal}` : ''}`);
+      for (const c of layers.covered) findings.push({ severity: 'MINOR', kind: 'OCCLUDED', message: `control ${c.control} is covered by "${c.coveredBy}" — a player cannot press it`, evidence: c });
+    }
+    // Layout / localization defects inside the scope (truncated text, overflow, unreadable font, missing glyphs).
+    const lay: any = await this.d.client.call('layout', { path_contains: task.target.scope, audit: true }, 5000).catch(() => null);
+    for (const d of (lay?.data?.defects ?? []).slice(0, 15)) {
+      if (!findings.some(f => f.kind === 'LAYOUT' && f.message.includes(d.object) && f.message.includes(d.type))) {
+        findings.push({ severity: 'MINOR', kind: 'LAYOUT', message: `${d.type}: ${d.object} — ${d.details}`, evidence: d });
+      }
+    }
+    if (lay?.data) step('layout', `${lay.data.count} layout defects in scope`);
+
     // ── 2b. Briefing: read captions and instructions, inventory the scene, one screenshot, candidate plans ──
     // Hearing: voice hints usually play on entering a level — listen to the last seconds plus a short wait.
     const heard: string[] = [];
     const ears = this.ears();
     if (ears) {
-      await sleep(2500);
-      const h = await ears.listen({ seconds: 12 });
+      // The tap keeps a 30 s ring buffer: look at what already played. Wait for more only if the game is not silent.
+      const peek = await ears.listen({ seconds: 4 });
+      const h = peek.peak < 0.005 && !peek.cues.length ? peek : (await sleep(2500), await ears.listen({ seconds: 12 }));
       heard.push(...h.speech.map(s => s.text));
       step('hearing', `${h.audioSeconds.toFixed(1)}s audio, peak ${h.peak.toFixed(2)}, speech: ${h.speech.map(s => `"${s.text}"`).join(' ') || 'none'}, sounds: ${h.cues.map(c => `${c.source}:${c.clip}`).join(', ') || 'none'}`);
     }
@@ -137,7 +205,9 @@ export class TaskRunner {
         evidence: m,
       });
     }
-    const briefing: Briefing = await buildBriefing(this.d.world, this.d.client, task.target.scope!, path.join(this.d.outDir, task.taskId), true, this.visionAnalyst(), task.goal, heard);
+    const design = task.context.gddText ?? (task.context.gddPath ? gddSection(task.context.gddPath, task.target.scope!) : '');
+    if (design) step('design notes', `GDD section for ${task.target.scope}: ${design.length} chars`);
+    const briefing: Briefing = await buildBriefing(this.d.world, this.d.client, task.target.scope!, path.join(this.d.outDir, task.taskId), true, this.visionAnalyst(), task.goal, heard, design);
     step('briefing', briefing.summary);
     this.lastBriefing = briefing;
 
@@ -162,6 +232,7 @@ export class TaskRunner {
     const success = task.success.all!.map(p => ({ ...p, beacon: p.beacon === '@scope' || p.beacon === '@module' ? task.target.scope! : p.beacon }));
     const forbid = task.forbid.map(p => ({ ...p, beacon: p.beacon === '@scope' || p.beacon === '@module' ? task.target.scope! : p.beacon }));
     const learned: string[] = [];
+    const skillsTried: Array<{ skill: string; tier: string; ok: boolean }> = [];
     let actions = 0;
     const solvedNow = async () => ctx.latched.completed && success.every(s => s.path === 'IsCompleted' || s.path === 'ProgressNormalized')
       || (await this.evalPreds(success, ctx)).every(r => r.pass);
@@ -180,6 +251,7 @@ export class TaskRunner {
       const explore = async (share: number, label: string) => {
         const ex = new UniversalExplorer(this.d.world, this.d.motor, {
           scopeId: task.target.scope!, success, forbid, doNotTouch: task.doNotTouch, briefing,
+          knownFailCauses: (kb.store.fact(`fail:${task.target.scope}`)?.value as string[] | undefined) ?? [],
           consult: this.visionAnalyst() ? async (failedAttempts: string[]) => {
             const uri = await VisionAnalyst.grabHdFrame(this.d.client);
             if (!uri) return null;
@@ -199,35 +271,54 @@ export class TaskRunner {
         });
         const out = await ex.run();
         actions += out.actions;
+        if (ex.failCauseKeys.length) kb.store.putFact(`fail:${task.target.scope}`, ex.failCauseKeys, task.taskId, task.target.scope);
+        const rules = out.learned.filter(l => l.startsWith('match rule'));
+        if (rules.length) kb.store.putFact(`rules:${task.target.scope}`, rules, task.taskId, task.target.scope);
         learned.push(...out.learned);
         for (const s of out.steps) strategy.push({ t: s.t, step: `explorer:${s.step}`, outcome: s.outcome });
         this.junkFindings(out.steps, findings);
+        for (const [item, by] of ex.occlusions) {
+          if (!findings.some(f => f.kind === 'OCCLUDED' && f.message.includes(item))) {
+            findings.push({ severity: 'MAJOR', kind: 'OCCLUDED', message: `${item} cannot be grabbed: "${by}" lies on top of it (a player would pick up the wrong object)` });
+          }
+        }
         step(`${label} (${out.actions} actions)`, out.solved || await solvedNow() ? 'goal reached' : 'goal not reached');
       };
-      await explore(0.45, 'universal explorer');
-      if (!(await solvedNow()) && Date.now() < deadline) {
-        const s1 = await this.d.world.snapshot();
-        await sleep(200);
-        const s2 = await this.d.world.snapshot();
-        const scope = s2.get(task.target.scope!);
-        const skills = scope ? recognizeSkills(scope, s2.within(scope), motionBetween(s1, s2)) : [];
-        step('skill recognition', skills.length ? skills.map(s => `${s.skill} (${s.why})`).join('; ') : 'no known structure');
-        for (const sk of skills) {
-          if (await solvedNow() || Date.now() > deadline) break;
-          // Exploration may have left the level in a bad state (crashed car, half-filled slots): restart it
-          // through the known route, as a human player would, before applying a structured skill.
-          const cur = await this.d.world.inspect(task.target.scope!);
-          if (task.target.entry?.length && Number(cur?.props.ProgressNormalized ?? 0) > 0) {
-            const again = await this.reach(task, step, findings);
-            step('restart level before skill', again ? 'fresh start' : 'restart failed');
-          }
-          (ctx.scenario as any).params = sk.params;
-          (ctx as any).deadline = deadline;
-          const r = sk.custom ? await sk.custom(ctx) : await PLAYBOOKS[sk.skill](ctx);
-          step(`skill:${sk.skill}`, `${r.status}: ${r.summary}`);
-          if (r.status === 'COMPLETED') learned.push(`recognized skill ${sk.skill}: ${sk.why}`);
+      // Skills first: recognition only reads beacons (and 200 ms of motion) — it is free. A recognized structure
+      // (runner, slingshot, timing, glider…) is played by its skill before any blind exploration.
+      const s1 = await this.d.world.snapshot();
+      await sleep(200);
+      const s2 = await this.d.world.snapshot();
+      const scopeNow = s2.get(task.target.scope!);
+      const matched = scopeNow ? [...this.matchCandidates(kb.store, scopeNow, s2.within(scopeNow)), ...recognizeSkills(scopeNow, s2.within(scopeNow), motionBetween(s1, s2))] : [];
+      // Knowledge decides the order (verified success in this module/game) and caps how many are tried.
+      const skills = kb.store.rank(matched, task.target.scope!).slice(0, 3);
+      step('skill recognition', skills.length ? skills.map(s => `${s.skill} (${s.why})`).join('; ') : 'no known structure');
+      const restartIfDirty = async (why: string) => {
+        const cur = await this.d.world.inspect(task.target.scope!);
+        if (task.target.entry?.length && Number(cur?.props.ProgressNormalized ?? 0) > 0) {
+          const again = await this.reach(task, step, findings);
+          step(why, again ? 'fresh start' : 'restart failed');
         }
+      };
+      for (const sk of skills) {
+        if (await solvedNow() || Date.now() > deadline) break;
+        // A previous attempt may have left the level in a bad state (crashed car, half-filled slots): restart it
+        // through the known route, as a human player would, before applying a structured skill.
+        await restartIfDirty('restart level before skill');
+        (ctx.scenario as any).params = sk.params;
+        (ctx as any).deadline = Math.min(deadline, Date.now() + (deadline - Date.now()) * 0.6);
+        const tSkill = Date.now();
+        const r = sk.custom ? await sk.custom(ctx) : await PLAYBOOKS[sk.skill](ctx);
+        step(`skill:${sk.skill}`, `${r.status}: ${r.summary}`);
+        // Learn only from the verified outcome (the task's success predicates), never from the skill's own claim.
+        const verified = await solvedNow();
+        kb.store.record(sk.skill, task.target.scope!, verified, Date.now() - tSkill, task.taskId, task.target.scope!);
+        skillsTried.push({ skill: sk.skill, tier: sk.why.startsWith('candidate') ? 'candidate' : 'core', ok: verified });
+        if (verified) { learned.push(`recognized skill ${sk.skill}: ${sk.why}`); kb.store.putFact(`solvedBy:${task.target.scope}`, sk.skill, task.taskId, task.target.scope); }
       }
+      if (skills.length && !(await solvedNow())) await restartIfDirty('restart level before exploration');
+      if (!(await solvedNow()) && Date.now() < deadline) await explore(0.6, 'universal explorer');
       if (!(await solvedNow()) && Date.now() < deadline) await explore(1, 'explorer (second pass, remaining budget)');
     }
     ctx.stopWatch();
@@ -249,6 +340,16 @@ export class TaskRunner {
       findings, strategy, learned, actions, undefined,
       sRes.map((r, i) => ({ predicate: success[i], pass: r.pass || latchedSuccess, observed: r.observed })),
       fRes.map((r, i) => ({ predicate: forbid[i], violated: r.pass, observed: r.observed })));
+    result.knowledge = { dir: kb.store.gameDir, skillsTried };
+    if (!successOk) {
+      const failReasons = strategy.filter(x => /^explorer:FAIL after/.test(x.step)).map(x => x.outcome);
+      result.skillRequest = await buildSkillRequest({ world: this.d.world, scopeId: task.target.scope!, goal: task.goal, knowledgeDir: kb.store.gameDir,
+        design, strategy, failReasons }).catch(() => undefined);
+      if (result.skillRequest) {
+        findings.push({ severity: 'INFO', kind: 'ASSUMPTION', message: `skill request prepared for the meta-AI: ${result.skillRequest}` });
+        fs.writeFileSync(result.reportFile!, JSON.stringify(result, null, 2));
+      }
+    }
     if (status !== 'success') {
       result.evidenceFile = writeEvidence(this.d.harnessDir, {
         $schema: 'urdt/failure_evidence_v1.json', incidentId: `INC_${task.taskId}`, timestamp: Date.now(), failingPhase: task.taskId,
@@ -281,7 +382,31 @@ export class TaskRunner {
     const visible = async () => (await this.d.world.inspect(scopeId))?.visible === true;
     // Always start the scope fresh: leave it first if it is already open.
     for (let i = 0; i < 4 && await visible() && task.target.entry?.length; i++) await this.pressBack();
+    // A module left on screen by a previous run (completed, or half played) is not a fresh start: leave it first.
+    const cur = await this.d.world.inspect(scopeId);
+    if (cur?.visible && (cur.props.IsCompleted === true || Number(cur.props.ProgressNormalized ?? 0) > 0)) {
+      for (let i = 0; i < 4 && (await this.d.world.inspect(scopeId))?.visible; i++) await this.pressBack();
+      step('leave stale level', `${scopeId} was ${cur.props.IsCompleted === true ? 'completed' : 'in progress'} — re-entering for a fresh start`);
+    }
     if (await visible()) { step('reach scope', 'already on screen'); return true; }
+    // Leave any other open module first: a previous level left on screen keeps catching pointer input.
+    const otherOpen = async () => (await this.d.world.snapshot()).ofKind('module').some(b => b.visible && b.testId !== scopeId);
+    for (let i = 0; i < 4 && await otherOpen(); i++) await this.pressBack();
+    // Known route from the application map first: every earlier run made this faster.
+    const { map } = await this.knowledge();
+    const here = map.see(await this.d.world.snapshot());
+    const known = map.route(here, n => n.modules.includes(scopeId));
+    // Use a remembered route only if its first control is actually on screen now.
+    if (known && known.length && (await this.d.world.inspect(known[0]))?.visible) {
+      for (const id of known) {
+        const ctxNav = new PlaybookContext(this.d.client, this.d.world, this.d.motor, this.d.arbiter, { id: 'nav', title: '', suite: '2d', playbook: '', dod: [], invariants: [], timeoutMs: 20000 } as any, false);
+        await ctxNav.ensureOnScreen(id);
+        await this.navTap(id);
+      }
+      for (let w = 0; w < 12 && !(await visible()); w++) await sleep(250);   // screens animate in
+      if (await visible()) { step('reach scope', `${scopeId} visible via known route ${known.join(' → ')}`); task.target.entry ??= known; return true; }
+      step('known route', `failed (${known.join(' → ')}) — searching`);
+    }
     const entry = task.target.entry ?? [];
     const plan = entry.length ? entry : await this.guessEntry(scopeId);
     if (plan.length) task.target.entry = plan;          // remember the route: used to restart the level
@@ -291,7 +416,10 @@ export class TaskRunner {
       if (!found) { step(`find control ${id}`, 'not found on any explored screen'); return false; }
       const ctx = new PlaybookContext(this.d.client, this.d.world, this.d.motor, this.d.arbiter, { id: 'nav', title: '', suite: '2d', playbook: '', dod: [], invariants: [], timeoutMs: 20000 } as any, false);
       await ctx.ensureOnScreen(id);
+      const fromScreen = map.see(await this.d.world.snapshot());
+      const tNav = Date.now();
       const ok = await ctx.tapUntil(id, async () => (await visible()) || !(await this.d.world.inspect(id))?.visible, 8, 600);
+      map.record(fromScreen, id, map.see(await this.d.world.snapshot()), Date.now() - tNav);
       step(`press ${id}`, ok ? 'screen changed' : 'no effect');
     }
     const ok = await visible();
@@ -300,11 +428,102 @@ export class TaskRunner {
     return ok;
   }
 
+  /**
+   * Campaign: start the game's "play everything" flow and play each module the game presents, in its order,
+   * like a player going through levels. Each module is a sub-task (success = the module completes all its
+   * stages); a module that cannot be completed within its share of the budget is reported and skipped with the
+   * game's own "next" control. The GDD section of each module is read at its briefing.
+   */
+  private async runCampaign(task: Task): Promise<TaskResult> {
+    const started = Date.now();
+    const findings: Finding[] = [];
+    const strategy: TaskResult['strategy'] = [];
+    const step = (s: string, o: string) => { strategy.push({ t: Date.now(), step: s, outcome: o }); this.d.log(`[${task.taskId}] ${s} → ${o}`); };
+    await this.d.client.waitReady(120000);
+    const deadline = started + task.budget.timeMs;
+    const visibleModule = async () => (await this.d.world.snapshot()).ofKind('module').find(m => m.visible) ?? null;
+
+    // Start the run: explicit entry, or the control whose id/caption says "run all".
+    let entry = task.target.entry ?? [];
+    if (!entry.length) {
+      const snap = await this.d.world.snapshot();
+      const run = snap.ofKind('button').find(b => /run_sequential|run_all|autoplay|campaign/i.test(b.testId));
+      if (run) { entry = [run.testId]; findings.push({ severity: 'INFO', kind: 'ASSUMPTION', message: `campaign entry guessed from names: ${run.testId}` }); }
+    }
+    for (const id of entry) {
+      if (!(await this.findControl(id))) { step(`find control ${id}`, 'not found'); return this.finish(task, started, 'blocked', `campaign entry ${id} not found`, findings, strategy, [], 0); }
+      await this.d.motor.tap({ testId: id });
+      await sleep(900);
+      step(`press ${id}`, 'campaign started');
+    }
+
+    const played: Array<{ module: string; status: string; seconds: number; actions: number; stages: string; fails: number; summary: string }> = [];
+    const done = new Set<string>();
+    let actions = 0, idleSince = Date.now(), lastModule = '';
+    const learned: string[] = [];
+    while (Date.now() < deadline) {
+      const m = await visibleModule();
+      if (!m || done.has(m.testId) || m.props.IsCompleted === true) {
+        if (Date.now() - idleSince > 12000) { step('campaign', m ? `no new module after ${m.testId}` : 'no module on screen — run finished'); break; }
+        await sleep(400);
+        continue;
+      }
+      idleSince = Date.now();
+      lastModule = m.testId;
+      const remainingModules = Math.max(1, Number(task.context.designNotes?.match(/modules=(\d+)/)?.[1] ?? 32) - played.length);
+      const share = Math.max(90000, Math.min(240000, (deadline - Date.now()) / remainingModules * 1.6));
+      let sub: TaskResult;
+      try {
+        sub = await this.run({
+        taskId: `${task.taskId}__${m.testId}`,
+        goal: `Complete every stage of ${m.testId}`,
+        context: { module: m.testId, gddPath: task.context.gddPath, designNotes: task.context.designNotes },
+        target: { scope: m.testId, mode: 'single' },
+        success: { all: [{ beacon: '@scope', path: 'IsCompleted', op: '==', value: true }] },
+        forbid: task.forbid, doNotTouch: task.doNotTouch, autonomy: 'full',
+        budget: { timeMs: Math.min(share, deadline - Date.now()), actions: 600 }, audit: false,
+        });
+      } catch (err) {
+        // Lost the game (domain reload, editor restart): wait for the runtime and continue with whatever is on screen.
+        step(`module ${m.testId}`, `aborted: ${(err as Error).message} — waiting for the game`);
+        await this.d.client.waitReady(180000).catch(() => undefined);
+        idleSince = Date.now();
+        continue;
+      }
+      actions += sub.actions;
+      learned.push(...sub.learnedSkills.map(l => `${m.testId}: ${l}`));
+      const after = await this.d.world.inspect(m.testId);
+      const g = (after ?? m).game ?? {};
+      const rec = { module: m.testId, status: sub.status, seconds: Math.round(sub.durationMs / 100) / 10, actions: sub.actions,
+        stages: `${g.CurrentStage ?? '?'}/${g.StageCount ?? '?'}`, fails: Number(g.FailCount ?? 0), summary: sub.summary };
+      played.push(rec);
+      done.add(m.testId);
+      step(`module ${m.testId}`, `${sub.status} in ${rec.seconds}s, ${sub.actions} actions, stage ${rec.stages}, fails ${rec.fails}`);
+      for (const f of sub.findings.filter(f => f.severity === 'CRITICAL' || f.severity === 'MAJOR')) findings.push({ ...f, message: `${m.testId}: ${f.message}` });
+      if (sub.status !== 'success') {
+        // A stuck player skips the level with the game's own control.
+        const snap = await this.d.world.snapshot();
+        const next = snap.ofKind('button').find(b => b.visible && /(^|_)next$/i.test(b.testId));
+        if (next) { await this.d.motor.tap({ testId: next.testId }); step('skip level', `pressed ${next.testId}`); }
+      }
+      await sleep(600);
+      idleSince = Date.now();   // the next module appears after the game's victory pause
+    }
+    const ok = played.filter(p => p.status === 'success').length;
+    const summary = `campaign: ${ok}/${played.length} modules completed (last ${lastModule || 'none'})`;
+    const result = this.finish(task, started, ok === played.length && played.length > 0 ? 'success' : 'fail', summary, findings, strategy, learned, actions);
+    (result as any).campaign = played;
+    const dir = path.join(this.d.outDir, task.taskId);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'campaign.json'), JSON.stringify(played, null, 2));
+    return result;
+  }
+
   private async pressBack(): Promise<void> {
     const snap = await this.d.world.snapshot();
     const back = snap.ofKind('button').find(b => b.visible && NAV_BACK.test(b.testId) && /catalog/i.test(b.testId))
       ?? snap.ofKind('button').find(b => b.visible && NAV_BACK.test(b.testId));
-    if (back) { await this.d.motor.tap({ testId: back.testId }); await sleep(700); }
+    if (back) await this.navTap(back.testId);
   }
 
   /** Breadth-first search for a control over menus reachable through navigation buttons. */
@@ -410,7 +629,10 @@ export class TaskRunner {
 
   private junkFindings(steps: Array<{ step: string; outcome: string }>, findings: Finding[]): void {
     for (const s of steps) {
-      if (/^drag .*(junk|broken|defect|glitch|stone|mud)/i.test(s.step) && s.outcome.startsWith('reward')) {
+      // Accepted = the drop advanced the level. A reward from side flags (highlight, hint text) with flat progress is not acceptance.
+      const pr = s.outcome.match(/progress ([\d.]+)→([\d.]+)/);
+      const advanced = !!pr && Number(pr[2]) > Number(pr[1]) + 1e-3;
+      if (/^drag .*(junk|broken|defect|glitch|stone|mud)/i.test(s.step) && s.outcome.startsWith('reward') && advanced) {
         findings.push({ severity: 'MAJOR', kind: 'UNGUARDED_SHORTCUT', message: `a junk/defective item was accepted and rewarded: ${s.step}` });
       }
     }
@@ -437,3 +659,23 @@ function tokenOverlap(a: string, b: string): number {
 }
 
 export type { WorldSnapshot, Beacon };
+
+/** Returns the GDD section (markdown between headings) that names this module id (e.g. "M05" / "M05_TimelineSequencer"). */
+export function gddSection(gddPath: string, moduleId: string): string {
+  try {
+    const file = path.isAbsolute(gddPath) ? gddPath : path.join(ROOT, gddPath);
+    const md = fs.readFileSync(file, 'utf-8');
+    const code = moduleId.match(/^M\d{2}/)?.[0] ?? moduleId;
+    const parts = md.split(/^(?=##\s)/m);
+    const hit = parts.find(p => p.split('\n')[0].includes(moduleId)) ?? parts.find(p => new RegExp(`\\b${code}\\b`).test(p.split('\n')[0]));
+    return hit ? hit.trim() : '';
+  } catch { return ''; }
+}
+
+/** Evaluates a skill's applicability contract against the scope and its beacons. */
+export function requirementsMet(req: SkillRequirement, scope: Beacon, parts: Beacon[]): boolean {
+  for (const k of req.scopeGame ?? []) if (!(k in (scope.game ?? {}))) return false;
+  for (const re of req.beacons ?? []) { const r = new RegExp(re, 'i'); if (!parts.some(b => r.test(b.testId))) return false; }
+  for (const re of req.buttons ?? []) { const r = new RegExp(re, 'i'); if (!parts.some(b => b.kind === 'button' && r.test(b.testId))) return false; }
+  return (req.scopeGame?.length ?? 0) + (req.beacons?.length ?? 0) + (req.buttons?.length ?? 0) > 0;
+}

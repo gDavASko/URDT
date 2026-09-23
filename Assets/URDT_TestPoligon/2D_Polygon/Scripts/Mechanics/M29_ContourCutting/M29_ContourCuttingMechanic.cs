@@ -30,6 +30,25 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M29_ContourCutting
         [SerializeField] private float _toleranceRadius = 65f;
         [SerializeField] private float _stepAdvanceThreshold = 24f;
 
+        // Параметры по этапам: уменьшаем допуск и вводим лимит времени вне линии
+        private static readonly float[] STAGE_TOLERANCE     = { 65f, 48f, 34f };
+        private static readonly float[] STAGE_OFFTRACK_MAX  = { 0f, 1.2f, 0.75f };
+        private static readonly float[] STAGE_TIME_LIMIT    = { 0f, 0f, 22f };
+
+        public override int StageCount => 3;
+
+        private float _offTrackTime = 0f;
+        private float _timeLeft = 0f;
+
+        /// <summary>Индекс текущего сегмента (0..15).</summary>
+        public int CurrentSegment => _currentSegmentIndex;
+        /// <summary>Общее количество сегментов контура.</summary>
+        public int TotalSegments => _totalWaypoints;
+        /// <summary>Оставшееся время (сек) или 0, если лимит не действует.</summary>
+        public float TimeLeft => _timeLeft;
+        /// <summary>Резец сейчас вне полосы допуска.</summary>
+        public bool IsOffTrack => _isOffTrack;
+
         private readonly List<Vector2> _contourPoints = new List<Vector2>();
         private readonly List<Image> _cutSegmentVisuals = new List<Image>();
         private readonly List<Image> _vertexDotVisuals = new List<Image>();
@@ -110,6 +129,11 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M29_ContourCutting
             _isDragging = false;
             _isOffTrack = false;
             _pulseTimer = 0f;
+            _offTrackTime = 0f;
+
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_TOLERANCE.Length - 1);
+            _toleranceRadius = STAGE_TOLERANCE[idx];
+            _timeLeft = STAGE_TIME_LIMIT[idx];
 
             if (_contourPoints.Count == 0)
             {
@@ -149,8 +173,20 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M29_ContourCutting
 
             if (_instructionText != null)
             {
-                _instructionText.text = "Зажмите инструмент в точке СТАРТ и ведите вдоль пунктира!";
+                _instructionText.text = GetStageInstruction(CurrentStage);
             }
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, STAGE_TOLERANCE.Length - 1);
+            float tol = STAGE_TOLERANCE[idx];
+            float off = STAGE_OFFTRACK_MAX[idx];
+            float lim = STAGE_TIME_LIMIT[idx];
+            string tolTxt = idx == 0 ? "широкая" : idx == 1 ? "средняя" : "узкая";
+            string offTxt = off > 0f ? $" Дольше {off:F1} сек вне полосы — провал." : "";
+            string limTxt = lim > 0f ? $" Лимит: {lim:F0} сек." : "";
+            return $"Этап {stage}/3. Полоса допуска {tolTxt}. Зажмите инструмент в точке СТАРТ и ведите вдоль пунктира.{offTxt}{limTxt}";
         }
 
         public override void ResetMechanic()
@@ -201,7 +237,36 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M29_ContourCutting
 
         private void Update()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
+
+            // Лимит по времени этапа
+            if (_timeLeft > 0f)
+            {
+                _timeLeft -= Time.deltaTime;
+                if (_timeLeft <= 0f)
+                {
+                    _timeLeft = 0f;
+                    FailStage("Время на вырезание истекло");
+                    return;
+                }
+            }
+
+            // Накопление времени вне полосы допуска (если для этапа задан лимит)
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, STAGE_OFFTRACK_MAX.Length - 1);
+            float offMax = STAGE_OFFTRACK_MAX[idx];
+            if (offMax > 0f && _isStarted && _isOffTrack)
+            {
+                _offTrackTime += Time.deltaTime;
+                if (_offTrackTime >= offMax)
+                {
+                    FailStage("Долгий сход с линии — резак срезал контур");
+                    return;
+                }
+            }
+            else if (!_isOffTrack)
+            {
+                _offTrackTime = Mathf.Max(0f, _offTrackTime - Time.deltaTime * 0.5f);
+            }
 
             _pulseTimer += Time.deltaTime * 5f;
 
@@ -237,14 +302,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M29_ContourCutting
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
             _isDragging = true;
             ProcessScissorMove(eventData.position);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (!_isDragging || _isCompleted) return;
+            if (!_isDragging || _isCompleted || IsInTransition) return;
             ProcessScissorMove(eventData.position);
         }
 

@@ -1,0 +1,30 @@
+{
+  "name": "alternating_rhythm",
+  "version": 1,
+  "tier": "candidate",
+  "source": "synthesized",
+  "description": "alternate left/right presses inside the tempo window exposed by the game; never the junk lever",
+  "requires": {
+    "scopeGame": [
+      "MinInterval",
+      "MaxInterval"
+    ],
+    "buttons": [
+      "left",
+      "right"
+    ]
+  },
+  "entry": "controller.ts",
+  "project": "URDT_gen",
+  "createdAt": 1790192380107,
+  "evidence": [
+    {
+      "runId": "try_M37_AlternateRunner",
+      "project": "URDT_gen",
+      "module": "M37_AlternateRunner",
+      "ok": true,
+      "ms": 19128,
+      "at": 1790192429971
+    }
+  ]
+}

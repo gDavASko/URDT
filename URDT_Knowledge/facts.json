@@ -1,0 +1,363 @@
+[
+  {
+    "key": "route:M05_TimelineSequencer",
+    "value": [
+      "btn_launch_m05"
+    ],
+    "module": "M05_TimelineSequencer",
+    "build": "0.1+editor",
+    "updatedAt": 1790190803666,
+    "evidence": [
+      "gate_program_sequencer_0_M05_TimelineSequencer",
+      "gate_cand_program_sequencer_M05_TimelineSequencer",
+      "gate_program_sequencer_0_M05_TimelineSequencer",
+      "gate_program_sequencer_1_M05_TimelineSequencer",
+      "gate_cand_program_sequencer_M05_TimelineSequencer"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "route:M17_TugOfWarBalance",
+    "value": [
+      "btn_launch_m17"
+    ],
+    "module": "M17_TugOfWarBalance",
+    "build": "0.1+editor",
+    "updatedAt": 1790188726248,
+    "evidence": [
+      "try_M17_TugOfWarBalance",
+      "try_M17_TugOfWarBalance",
+      "try_M17_TugOfWarBalance",
+      "try_M17_TugOfWarBalance"
+    ],
+    "confidence": 0.9500000000000001
+  },
+  {
+    "key": "route:M34_Snake",
+    "value": [
+      "btn_launch_m34"
+    ],
+    "module": "M34_Snake",
+    "build": "0.1+editor",
+    "updatedAt": 1790191860520,
+    "evidence": [
+      "try_M34_Snake",
+      "try_M34_Snake",
+      "gate_baseline_M34_Snake",
+      "gate_cand_program_sequencer_M34_Snake",
+      "gate_cand_program_sequencer_M34_Snake"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "solvedBy:M34_Snake",
+    "value": "grid_snake",
+    "module": "M34_Snake",
+    "build": "0.1+editor",
+    "updatedAt": 1790191898797,
+    "evidence": [
+      "try_M34_Snake",
+      "try_M34_Snake",
+      "gate_baseline_M34_Snake",
+      "gate_cand_program_sequencer_M34_Snake",
+      "gate_cand_program_sequencer_M34_Snake"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "solvedBy:M05_TimelineSequencer",
+    "value": "program_sequencer",
+    "module": "M05_TimelineSequencer",
+    "build": "0.1+editor",
+    "updatedAt": 1790190833520,
+    "evidence": [
+      "gate_program_sequencer_0_M05_TimelineSequencer",
+      "gate_cand_program_sequencer_M05_TimelineSequencer",
+      "gate_program_sequencer_0_M05_TimelineSequencer",
+      "gate_program_sequencer_1_M05_TimelineSequencer",
+      "gate_cand_program_sequencer_M05_TimelineSequencer"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "route:M01_SnapToSlot",
+    "value": [
+      "btn_launch_m16",
+      "btn_2d_play_catalog",
+      "btn_launch_m01"
+    ],
+    "module": "M01_SnapToSlot",
+    "build": "0.1+editor",
+    "updatedAt": 1790192871616,
+    "evidence": [
+      "try_M01_SnapToSlot"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "fail:M01_SnapToSlot",
+    "value": [
+      "plan:vision:0:drag:Item_Circle>Slot_Circle",
+      "plan:vision:1:drag:Item_Square>Slot_Square",
+      "drag:Item_Junk_Defective>SlotsTargetArea",
+      "drag:Item_Junk_Defective>Slot_Circle",
+      "drag:Item_Circle>Slot_Circle",
+      "drag:Item_Circle>SlotsTargetArea",
+      "plan:vision:2:drag:Item_Circle>Slot_Circle"
+    ],
+    "module": "M01_SnapToSlot",
+    "build": "0.1+editor",
+    "updatedAt": 1790192698599,
+    "evidence": [
+      "campaign_2026-09-23T19-43-10__M01_SnapToSlot"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "rules:M01_SnapToSlot",
+    "value": [
+      "match rule: item.game.ItemId == receptacle.game.SlotId (from Item_Square → Slot_Square)",
+      "match rule: item.game.ItemId == receptacle.id:suffix (from Item_Square → Slot_Square)",
+      "match rule: item.game.ItemId == receptacle.id:tokens (from Item_Square → Slot_Square)",
+      "match rule: item.id:suffix == receptacle.game.SlotId (from Item_Square → Slot_Square)",
+      "match rule: item.id:suffix == receptacle.id:suffix (from Item_Square → Slot_Square)",
+      "match rule: item.id:suffix == receptacle.id:tokens (from Item_Square → Slot_Square)",
+      "match rule: item.id:tokens == receptacle.game.SlotId (from Item_Square → Slot_Square)",
+      "match rule: item.id:tokens == receptacle.id:suffix (from Item_Square → Slot_Square)",
+      "match rule: item.id:tokens == receptacle.id:tokens (from Item_Square → Slot_Square)"
+    ],
+    "module": "M01_SnapToSlot",
+    "build": "0.1+editor",
+    "updatedAt": 1790192698600,
+    "evidence": [
+      "gate_cand_program_sequencer_M01_SnapToSlot",
+      "gate_cand_program_sequencer_M01_SnapToSlot",
+      "campaign_2026-09-23T19-43-10__M01_SnapToSlot"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "key": "route:M09_CoverageAccumulator",
+    "value": [
+      "btn_launch_m09"
+    ],
+    "module": "M09_CoverageAccumulator",
+    "build": "0.1+editor",
+    "updatedAt": 1790190836460,
+    "evidence": [
+      "gate_baseline_M09_CoverageAccumulator",
+      "gate_cand_program_sequencer_M09_CoverageAccumulator",
+      "gate_cand_program_sequencer_M09_CoverageAccumulator"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "key": "route:M12_AngularDeltaTracker",
+    "value": [
+      "btn_launch_m12"
+    ],
+    "module": "M12_AngularDeltaTracker",
+    "build": "0.1+editor",
+    "updatedAt": 1790190942062,
+    "evidence": [
+      "gate_baseline_M12_AngularDeltaTracker",
+      "gate_cand_program_sequencer_M12_AngularDeltaTracker",
+      "gate_cand_program_sequencer_M12_AngularDeltaTracker"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "key": "fail:M12_AngularDeltaTracker",
+    "value": [
+      "tap:Valve_Jammed_Junk",
+      "hold:Valve_Jammed_Junk:800",
+      "rotate:Valve_Jammed_Junk",
+      "hold:Valve_Jammed_Junk:2200"
+    ],
+    "module": "M12_AngularDeltaTracker",
+    "build": "0.1+editor",
+    "updatedAt": 1790191030141,
+    "evidence": [
+      "gate_cand_program_sequencer_M12_AngularDeltaTracker",
+      "gate_cand_program_sequencer_M12_AngularDeltaTracker"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "key": "route:M16_RhythmPhaseDetector",
+    "value": [
+      "btn_launch_m16"
+    ],
+    "module": "M16_RhythmPhaseDetector",
+    "build": "0.1+editor",
+    "updatedAt": 1790192465350,
+    "evidence": [
+      "gate_cand_program_sequencer_M16_RhythmPhaseDetector",
+      "gate_cand_program_sequencer_M16_RhythmPhaseDetector",
+      "gate_cand_program_sequencer_recheck_M16_RhythmPhaseDetector",
+      "try_M16_RhythmPhaseDetector",
+      "try_M16_RhythmPhaseDetector"
+    ],
+    "confidence": 1
+  },
+  {
+    "key": "fail:M16_RhythmPhaseDetector",
+    "value": [
+      "tap:BtnLeftLever",
+      "alt:BtnRightLever|BtnLeftLever",
+      "plan:vision:0:tap:BtnLeftLever>",
+      "tap:BtnRightLever",
+      "tap:BtnJunkLever",
+      "holdlong:BtnRightLever",
+      "holdlong:BtnLeftLever",
+      "hold:BtnRightLever:800",
+      "hold:BtnLeftLever:800",
+      "hold:BtnRightLever:1600",
+      "plan:vision:1:tap:BtnLeftLever>",
+      "plan:vision:5:tap:BtnLeftLever>",
+      "hold:BtnLeftLever:1600",
+      "plan:vision:2:tap:BtnRightLever>",
+      "hold:BtnRightLever:2200",
+      "hold:BtnLeftLever:2200",
+      "hold:BtnRightLever:2500",
+      "hold:BtnLeftLever:2500",
+      "plan:vision:3:tap:BtnRightLever>",
+      "hold:BtnRightLever:3200",
+      "plan:vision:3:tap:BtnLeftLever>",
+      "plan:vision:4:tap:BtnLeftLever>",
+      "plan:vision:1:tap:BtnRightLever>",
+      "plan:vision:2:tap:BtnLeftLever>",
+      "plan:vision:1:tap:BtnLane_1>",
+      "tap:Note_0",
+      "tap:Note_2",
+      "tap:BtnLane_1",
+      "holdlong:BtnLane_0",
+      "plan:vision:2:tap:BtnLane_2>",
+      "holdlong:BtnLane_2",
+      "tap:Note_1",
+      "holdlong:BtnLane_1",
+      "tap:HitLine",
+      "hold:BtnLane_1:800",
+      "hold:BtnLane_2:800",
+      "hold:Note_1:800",
+      "tap:Note_3",
+      "hold:BtnLane_0:800",
+      "hold:Note_3:800",
+      "tap:Note_4",
+      "hold:HitLine:800",
+      "hold:Note_2:800",
+      "hold:Note_3:1600",
+      "hold:BtnLane_1:1600",
+      "hold:Note_0:800",
+      "hold:BtnLane_2:1600",
+      "hold:Note_4:800",
+      "hold:Note_4:1600",
+      "hold:BtnLane_0:1600",
+      "hold:Note_2:1600",
+      "hold:HitLine:1600",
+      "hold:BtnLane_2:2200",
+      "hold:Note_0:1600",
+      "hold:BtnLane_0:2200",
+      "hold:BtnLane_1:2200",
+      "hold:Note_0:2200",
+      "hold:HitLine:2200"
+    ],
+    "module": "M16_RhythmPhaseDetector",
+    "build": "0.1+editor",
+    "updatedAt": 1790192271127,
+    "evidence": [
+      "try_M16_RhythmPhaseDetector"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "route:M22_GridPathfinding",
+    "value": [
+      "btn_launch_m16",
+      "btn_2d_play_catalog",
+      "btn_launch_m22"
+    ],
+    "module": "M22_GridPathfinding",
+    "build": "0.1+editor",
+    "updatedAt": 1790192284165,
+    "evidence": [
+      "try_M22_GridPathfinding"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "route:M28_DualBridgeRoute",
+    "value": [
+      "btn_launch_m28"
+    ],
+    "module": "M28_DualBridgeRoute",
+    "build": "0.1+editor",
+    "updatedAt": 1790191821905,
+    "evidence": [
+      "gate_baseline_M28_DualBridgeRoute",
+      "gate_cand_program_sequencer_M28_DualBridgeRoute",
+      "gate_cand_program_sequencer_M28_DualBridgeRoute"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "key": "fail:M09_CoverageAccumulator",
+    "value": [
+      "trace:DirtCell:true"
+    ],
+    "module": "M09_CoverageAccumulator",
+    "build": "0.1+editor",
+    "updatedAt": 1790190938966,
+    "evidence": [
+      "gate_cand_program_sequencer_M09_CoverageAccumulator"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "route:M37_AlternateRunner",
+    "value": [
+      "btn_launch_m37"
+    ],
+    "module": "M37_AlternateRunner",
+    "build": "0.1+editor",
+    "updatedAt": 1790192387129,
+    "evidence": [
+      "try_M37_AlternateRunner",
+      "try_M37_AlternateRunner"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "key": "solvedBy:M22_GridPathfinding",
+    "value": "grid_path",
+    "module": "M22_GridPathfinding",
+    "build": "0.1+editor",
+    "updatedAt": 1790192308369,
+    "evidence": [
+      "try_M22_GridPathfinding"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "solvedBy:M37_AlternateRunner",
+    "value": "alternating_rhythm",
+    "module": "M37_AlternateRunner",
+    "build": "0.1+editor",
+    "updatedAt": 1790192429973,
+    "evidence": [
+      "try_M37_AlternateRunner"
+    ],
+    "confidence": 0.5
+  },
+  {
+    "key": "solvedBy:M16_RhythmPhaseDetector",
+    "value": "falling_notes_lanes",
+    "module": "M16_RhythmPhaseDetector",
+    "build": "0.1+editor",
+    "updatedAt": 1790192536769,
+    "evidence": [
+      "try_M16_RhythmPhaseDetector"
+    ],
+    "confidence": 0.5
+  }
+]

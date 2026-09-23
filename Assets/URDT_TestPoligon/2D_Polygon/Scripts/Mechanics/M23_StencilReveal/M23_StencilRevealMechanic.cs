@@ -39,6 +39,16 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M23_StencilReveal
         private bool _isDragging = false;
         private HiddenRevealTarget _focusedTarget = null;
         private float _holdTimer = 0f;
+        private float _stageTimeLeft = 999f;
+
+        private static readonly float[] StageHold = new float[] { 2.0f, 1.5f, 1.2f };
+        private static readonly float[] StageTimeLimit = new float[] { 999f, 60f, 45f };
+
+        public override int StageCount => 3;
+        public int Collected => _collectedCount;
+        public int TotalCrystals => _totalCrystals;
+        public float StageTimeLeft => _stageTimeLeft;
+        public float StageTimeLimit_S => StageTimeLimit[Mathf.Clamp(CurrentStage - 1, 0, StageTimeLimit.Length - 1)];
 
         protected override void Awake()
         {
@@ -84,6 +94,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M23_StencilReveal
             _focusedTarget = null;
             _holdTimer = 0f;
 
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, StageHold.Length - 1);
+            _requiredHoldDuration = StageHold[idx];
+            _stageTimeLeft = StageTimeLimit[idx];
+
             if (_lensTransform != null)
             {
                 _lensTransform.anchoredPosition = Vector2.zero;
@@ -109,6 +123,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M23_StencilReveal
         public override void ResetMechanic()
         {
             Initialize();
+        }
+
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, StageHold.Length - 1);
+            switch (stage)
+            {
+                case 1: return $"Этап 1/3. Перемещайте лупу и удерживайте её {StageHold[idx]:F1}с над кристаллами. Пыль [X] — только предупреждение.";
+                case 2: return $"Этап 2/3. Удержание {StageHold[idx]:F1}с. Изучение пыли [X] до конца — сброс. Лимит времени: {StageTimeLimit[idx]:F0}с.";
+                case 3: return $"Этап 3/3. Удержание {StageHold[idx]:F1}с, лимит времени {StageTimeLimit[idx]:F0}с, пыль [X] — мгновенный сброс.";
+                default: return _instruction;
+            }
         }
 
         private void SetupDragProxies()
@@ -197,7 +223,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M23_StencilReveal
 
         private void Update()
         {
-            if (_isCompleted || _lensTransform == null) return;
+            if (_isCompleted || _lensTransform == null || IsInTransition) return;
+
+            // Таймер этапа (для 2-3)
+            if (_stageTimeLeft < 900f)
+            {
+                _stageTimeLeft -= Time.unscaledDeltaTime;
+                if (_stageTimeLeft <= 0f)
+                {
+                    FailStage("истекло время этапа");
+                    return;
+                }
+            }
 
             // 1. Драг мышью
             if (_isDragging && UnityEngine.Input.GetMouseButton(0))
@@ -340,6 +377,15 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M23_StencilReveal
 
         private void HandleDustCollected(HiddenRevealTarget dust)
         {
+            if (CurrentStage >= 2)
+            {
+                if (_instructionText != null)
+                {
+                    _instructionText.text = "<color=#FF3333>Изучена пыль [X]! Этап сброшен.</color>";
+                }
+                FailStage("изучен ложный объект — пыль [X]");
+                return;
+            }
             if (_instructionText != null)
             {
                 _instructionText.text = "<color=#FF5555>Внимание! Это ложное скопление пыли [X], а не кристалл!</color>";

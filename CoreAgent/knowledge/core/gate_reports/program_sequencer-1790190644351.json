@@ -1,0 +1,68 @@
+{
+  "candidate": "program_sequencer",
+  "at": "2026-09-23T19:10:44.351Z",
+  "pass": false,
+  "targetOk": false,
+  "regressions": [
+    "M16_RhythmPhaseDetector"
+  ],
+  "baselinePresent": true,
+  "target": [
+    {
+      "module": "M05_TimelineSequencer",
+      "ok": true,
+      "seconds": 32,
+      "tried": [
+        {
+          "skill": "program_sequencer",
+          "tier": "candidate",
+          "ok": true
+        }
+      ],
+      "candidateUsed": true,
+      "candidateOk": true
+    },
+    {
+      "module": "M05_TimelineSequencer",
+      "ok": false,
+      "seconds": 5.2,
+      "tried": [],
+      "candidateUsed": false,
+      "candidateOk": false
+    }
+  ],
+  "smoke": {
+    "M01_SnapToSlot": {
+      "ok": true,
+      "seconds": 84.8
+    },
+    "M05_TimelineSequencer": {
+      "ok": true,
+      "seconds": 36.8
+    },
+    "M09_CoverageAccumulator": {
+      "ok": true,
+      "seconds": 102
+    },
+    "M12_AngularDeltaTracker": {
+      "ok": true,
+      "seconds": 86.8
+    },
+    "M16_RhythmPhaseDetector": {
+      "ok": false,
+      "seconds": 242.4
+    },
+    "M22_GridPathfinding": {
+      "ok": false,
+      "seconds": 241.7
+    },
+    "M28_DualBridgeRoute": {
+      "ok": true,
+      "seconds": 37.7
+    },
+    "M34_Snake": {
+      "ok": true,
+      "seconds": 43.7
+    }
+  }
+}

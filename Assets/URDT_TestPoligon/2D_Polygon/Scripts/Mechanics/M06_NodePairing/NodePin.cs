@@ -27,6 +27,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M06_NodePairing
         public string PairId => _pairId;
         public bool IsSource => _isSource;
         public bool IsJunk => _isJunk;
+
+        public void SetPairId(string id) { _pairId = id; }
+        public void SetSource(bool src) { _isSource = src; }
+        public void SetJunk(bool j) { _isJunk = j; }
         public bool IsConnected => _isConnected;
         public NodePin ConnectedTarget => _connectedTarget;
         public RectTransform RectTransform => _rectTransform != null ? _rectTransform : (_rectTransform = GetComponent<RectTransform>());

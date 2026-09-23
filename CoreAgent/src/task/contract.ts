@@ -32,12 +32,15 @@ export const TaskSchema = z.object({
     designNotes: z.string().optional(),
     gddPath: z.string().optional(),
     gddScenarioId: z.string().optional(),
+    /** Design text for the current module (GDD section); read by the briefing like on-screen captions. */
+    gddText: z.string().optional(),
   }).default({}),
   /** Where to play. Either a scope beacon to reach (L3 finds a route) or explicit entry clicks. */
   target: z.object({
     scope: z.string().optional().describe('beacon that must be visible, e.g. "M01_SnapToSlot"; its rect bounds exploration'),
     entry: z.array(z.string()).optional().describe('explicit clicks to reach the screen (catalog cards, menu buttons)'),
     home: z.string().optional().describe('window beacon of the home screen (default window_main_menu)'),
+    mode: z.enum(['single', 'campaign']).default('single').describe('campaign: press entry (e.g. "run all levels") and play every module that appears, in whatever order the game presents them, until the run ends'),
   }).default({}),
   /**
    * Success = ALL predicates true. If omitted or given only as text, L3 proposes candidate predicates from the
@@ -87,7 +90,7 @@ export type Answer = z.infer<typeof AnswerSchema>;
 
 export type Finding = {
   severity: 'CRITICAL' | 'MAJOR' | 'MINOR' | 'INFO';
-  kind: 'GOAL_NOT_REACHED' | 'FORBIDDEN_STATE' | 'CONSOLE_ERROR' | 'STALL' | 'UNOBSERVABLE' | 'UNGUARDED_SHORTCUT'
+  kind: 'GOAL_NOT_REACHED' | 'FORBIDDEN_STATE' | 'CONSOLE_ERROR' | 'STALL' | 'UNOBSERVABLE' | 'UNGUARDED_SHORTCUT' | 'OCCLUDED' | 'LAYOUT'
     | 'INPUT_REJECTED' | 'NAVIGATION' | 'ASSUMPTION' | 'LEARNED';
   message: string;
   evidence?: unknown;
@@ -110,4 +113,8 @@ export interface TaskResult {
   durationMs: number;
   evidenceFile?: string;
   reportFile?: string;
+  /** When L3 could not complete the goal: everything a meta-AI needs to write a controller (urdt_submit_skill). */
+  skillRequest?: string;
+  /** Knowledge used/produced: game knowledge folder, skills tried with their tier. */
+  knowledge?: { dir: string; skillsTried: Array<{ skill: string; tier: string; ok: boolean }> };
 }

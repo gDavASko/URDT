@@ -1,0 +1,149 @@
+{
+  "module": "M05_TimelineSequencer",
+  "goal": "Complete every stage of M05_TimelineSequencer",
+  "createdAt": "2026-09-23T18:56:01.205Z",
+  "realtime": false,
+  "design": "",
+  "state": {
+    "keys": [],
+    "changingWithoutInput": [],
+    "samples": [
+      {
+        "t": 284,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 567,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 849,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 1150,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 1441,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 1735,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 2016,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 2297,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 2580,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 2879,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 3171,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 3452,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 3736,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 4032,
+        "state": {},
+        "moving": {}
+      },
+      {
+        "t": 4328,
+        "state": {},
+        "moving": {}
+      }
+    ]
+  },
+  "beacons": [],
+  "attempts": [
+    {
+      "t": 1790189751517,
+      "step": "reach scope",
+      "outcome": "already on screen"
+    },
+    {
+      "t": 1790189751569,
+      "step": "ui layers",
+      "outcome": "2 windows/modules, 8 controls, 8 covered"
+    },
+    {
+      "t": 1790189751571,
+      "step": "layout",
+      "outcome": "0 layout defects in scope"
+    },
+    {
+      "t": 1790189751572,
+      "step": "hearing",
+      "outcome": "0.0s audio, peak 0.00, speech: none, sounds: none"
+    },
+    {
+      "t": 1790189751574,
+      "step": "coverage",
+      "outcome": "1 interactable components, 0 unobservable"
+    },
+    {
+      "t": 1790189755983,
+      "step": "briefing",
+      "outcome": "instruction: \"Этап 3/3. Максимум помех. Малейшая ошибка порядка отправит бота мимо цели — этап начнётся заново.\" | texts: \"#2\", \"#1\", \"ПУСК ▶\", \"#3\", \"Цель достигнута! Программа выполнена.\" | buttons: Button_Execute=\"ПУСК ▶\" | scene: 6 draggable, 3 receptacles, 1 buttons, families Slot, StepLabel, Chip_Glitch_Junk, Chip_Fwd | plans: press_run | vision: \"Win the test by successfully completing the sequence; the test is marked as 'passed' and the player is returned to the catalog.\" steps= avoid=Chip_Glitch_Junk_1,Chip_Glitch_Junk_2,Chip_Glitch_Junk"
+    },
+    {
+      "t": 1790189756436,
+      "step": "skill recognition",
+      "outcome": "no known structure"
+    },
+    {
+      "t": 1790189756599,
+      "step": "explorer:scope disappeared",
+      "outcome": "checking whether the goal was reached before teardown"
+    },
+    {
+      "t": 1790189756602,
+      "step": "universal explorer (0 actions)",
+      "outcome": "goal not reached"
+    },
+    {
+      "t": 1790189756692,
+      "step": "explorer:scope disappeared",
+      "outcome": "checking whether the goal was reached before teardown"
+    },
+    {
+      "t": 1790189756700,
+      "step": "explorer (second pass, remaining budget) (0 actions)",
+      "outcome": "goal not reached"
+    }
+  ],
+  "failReasons": [],
+  "controllerApi": "export default async function (api) {\n  // api.state()   -> Promise<object>: public state of the mechanic (the scope beacon's game.* + IsCompleted, ProgressNormalized)\n  // api.parts()   -> Promise<Array<{testId, kind, center:{x,y}, rect:{x,y,w,h}, game, props, visible}>> beacons in the scope\n  // api.inspect(testId), api.sleep(ms), api.expired(), api.say(msg), api.params\n  // api.motor.tap({testId}|{point:{x,y}}, holdMs?), drag(from, to, {durationMs, dwellEndMs}), hold(point, {maxMs}),\n  //          press(point, pointerId?), release(point, pointerId?), slice(points[], {speedPxPerS})\n  // Screen space: Unity's (origin bottom-left, y up). Only honest input — never call game code.\n  // Loop until api.state().IsCompleted; wait while IsInTransition (stage change / fail restart).\n  return 'COMPLETED' | 'TIMEOUT';\n}",
+  "submit": "MCP urdt_submit_skill { name, description, requires: { scopeGame?: string[], beacons?: string[], buttons?: string[] }, source } — then re-run the task; the candidate runs first when its requirements match."
+}

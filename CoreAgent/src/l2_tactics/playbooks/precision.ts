@@ -133,8 +133,28 @@ export async function sprayTargets(ctx: PlaybookContext): Promise<PlaybookResult
     if (st.completed) return { status: 'COMPLETED', summary: 'all targets extinguished' };
     if (targets.length === 0) return { status: 'STUCK', summary: 'no burning targets observable', stagnationType: 'MICRO_STUCK' };
     const t = targets.sort((a, b) => Number(a.game.CurrentHp) - Number(b.game.CurrentHp))[0];
+    // Keep the cone off hazards: aim at the target's side facing away from the nearest hazard, rotated as far as
+    // the cone half-angle allows while the target stays inside the cone.
+    const nozzle = parts.find(b => /nozzle|emitter|hose/i.test(b.testId));
+    const hazards = parts.filter(b => /hazard|electric|panel|shield/i.test(b.testId) || /hazard/i.test(String(b.props.AreaType ?? '')));
+    const modB = await ctx.world.inspect(ctx.moduleId);
+    const half = Number(modB?.game?.ConeHalfAngle ?? 15);
+    let aim = t.center;
+    if (nozzle && hazards.length) {
+      const n = nozzle.center;
+      const angT = Math.atan2(t.center.y - n.y, t.center.x - n.x);
+      const dT = Math.hypot(t.center.x - n.x, t.center.y - n.y);
+      const hz = hazards.map(hb => ({ hb, ang: Math.atan2(hb.center.y - n.y, hb.center.x - n.x) }))
+        .sort((a, b) => Math.abs(angDiff(a.ang, angT)) - Math.abs(angDiff(b.ang, angT)))[0];
+      const gap = angDiff(angT, hz.ang) * 180 / Math.PI;          // + : target is clockwise of the hazard
+      if (Math.abs(gap) < half * 2.2) {
+        const shift = Math.sign(gap || 1) * Math.min(half * 0.85, Math.max(0, half * 2.2 - Math.abs(gap))) * Math.PI / 180;
+        aim = { x: n.x + Math.cos(angT + shift) * dT, y: n.y + Math.sin(angT + shift) * dT };
+        ctx.say(`${t.testId} is ${gap.toFixed(0)}° from ${hz.hb.testId} (cone ±${half}°) — aiming ${(shift * 180 / Math.PI).toFixed(0)}° away from it`);
+      }
+    }
     const h = ctx.hypothesize(`aiming the nozzle at ${t.testId} (hp ${t.game.CurrentHp}) and holding extinguishes it`);
-    const r = await ctx.motor.hold(t.center, {
+    const r = await ctx.motor.hold(aim, {
       maxMs: 5000, pollMs: 80,
       until: async () => (await ctx.world.inspect(t.testId))?.game?.IsExtinguished === true,
     });
@@ -254,3 +274,10 @@ export async function fillWells(ctx: PlaybookContext): Promise<PlaybookResult> {
 }
 
 export const precisionFrame = FRAME_MS;
+
+function angDiff(a: number, b: number): number {
+  let d = a - b;
+  while (d > Math.PI) d -= 2 * Math.PI;
+  while (d < -Math.PI) d += 2 * Math.PI;
+  return d;
+}

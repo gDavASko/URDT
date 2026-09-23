@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using KBP.URDT.Driver;
@@ -139,6 +139,25 @@ namespace KBP.URDT.Registry
 
             RaiseRegistered(new RegistrationInfo(handle, testId, gameObject, source, null));
             return handle;
+        }
+
+        /// <summary>
+        /// Re-keys an already registered object after its explicit id changed (e.g. a target's TargetId was
+        /// assigned after the object had been registered under its old or template id). Inactive objects are
+        /// only unregistered; their label re-registers them with the new id on OnEnable.
+        /// </summary>
+        public void Rekey(GameObject gameObject)
+        {
+            if (gameObject == null || !_instanceToHandle.ContainsKey(gameObject.GetInstanceID()))
+            {
+                return;
+            }
+
+            Unregister(gameObject);
+            if (gameObject.activeInHierarchy)
+            {
+                Register(gameObject, RegistrationSource.Incremental);
+            }
         }
 
         public void Unregister(GameObject gameObject)

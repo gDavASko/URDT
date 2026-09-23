@@ -16,7 +16,7 @@ import { UrdtWireClient } from '../protocol/urdt_wire_client.js';
 import { Beacon, WorldModel, rectContains } from '../perception/world_model.js';
 import { VisionAnalyst, VisionAnalysis, VisionPlanStep } from './vision.js';
 
-export type ActionKind = 'tap' | 'drag' | 'dwell_drag' | 'hold' | 'trace' | 'scrub' | 'rotate' | 'alternate' | 'mash' | 'timing';
+export type ActionKind = 'tap' | 'drag' | 'dwell_drag' | 'hold' | 'trace' | 'scrub' | 'rotate' | 'alternate' | 'mash' | 'timing' | 'pull';
 
 const VERBS: Array<{ kind: ActionKind; re: RegExp }> = [
   { kind: 'drag', re: /перетащ|перенес|помест|положи|вставь|собери|разлож|составь|соедин|подключ|наден|оден|уложи|drag|place|put|insert|sort|connect|assemble|equip/i },
@@ -27,7 +27,8 @@ const VERBS: Array<{ kind: ActionKind; re: RegExp }> = [
   { kind: 'alternate', re: /чередуй|поочеред|ритм|alternate|rhythm/i },
   { kind: 'mash', re: /быстро (на)?жим|быстро тап|часто|мни|tap fast|mash|rapid/i },
   { kind: 'timing', re: /в момент|вовремя|когда .* (проход|окаж)|поклёв|поклев|timing|when the/i },
-  { kind: 'dwell_drag', re: /задерж(и|ите) над|наведи.* и держ|лупа|lens|hover over/i },
+  { kind: 'dwell_drag', re: /задерж(и|ите) над|наведи.* и держ|лупа|лупу|перемещ\w*[^.]{0,40}\sнад\s|води\w*[^.]{0,30}\sнад\s|hover over|move \w+ over|lens/i },
+  { kind: 'pull', re: /оттян|натян|рогатк|pull (it )?back|slingshot/i },
   { kind: 'tap', re: /нажми|нажмите|кликн|тапни|выбери|кликай|tap|click|press/i },
 ];
 const AVOID = /(избега\w*|не (трогай|нажимай|касай)\w*|остерега\w*|берегись|avoid|don'?t touch|beware of)\s+([^.!;]+)/gi;
@@ -39,6 +40,7 @@ export interface Briefing {
   texts: Array<{ id: string; text: string }>;
   captions: Record<string, string>;          // button testId → caption
   verbs: ActionKind[];
+  designOnlyVerbs?: ActionKind[];
   sequences: string[][];                      // ordered item names from "A → B → C"
   avoid: string[];
   numbers: number[];
@@ -66,7 +68,7 @@ function norm(t: string): string {
   return strip(t).toLowerCase().replace(/[^a-zа-яё0-9 ]/gi, ' ').replace(/\s+/g, ' ').trim();
 }
 
-export async function buildBriefing(world: WorldModel, client: UrdtWireClient, scopeId: string, outDir: string, screenshot = true, vision?: VisionAnalyst | null, goal = '', heard: string[] = []): Promise<Briefing> {
+export async function buildBriefing(world: WorldModel, client: UrdtWireClient, scopeId: string, outDir: string, screenshot = true, vision?: VisionAnalyst | null, goal = '', heard: string[] = [], design = ''): Promise<Briefing> {
   const snap = await world.snapshot();
   const scope = snap.get(scopeId);
   const parts = scope ? snap.within(scope).filter(b => b.testId !== scopeId) : [];
@@ -74,7 +76,9 @@ export async function buildBriefing(world: WorldModel, client: UrdtWireClient, s
   // Voice hints heard in the game audio are treated exactly like on-screen captions.
   for (const [i, h] of heard.entries()) texts.push({ id: `[voice]#${i + 1}`, text: h });
   const instruction = strip(scope?.props.Instruction ?? '');
-  const all = [instruction, ...texts.map(t => t.text)].join(' . ');
+  // Design document section (GDD): what the designer says about controls, rules, stages and fails.
+  const designText = strip(design).slice(0, 4000);
+  const all = [instruction, ...texts.map(t => t.text), designText].filter(Boolean).join(' . ');
 
   // Captions: a text beacon whose centre lies inside a button's rect labels that button.
   const buttons = parts.filter(b => b.kind === 'button' && b.visible);
@@ -85,6 +89,10 @@ export async function buildBriefing(world: WorldModel, client: UrdtWireClient, s
   }
 
   const verbs = VERBS.filter(v => v.re.test(all)).map(v => v.kind);
+  // Verbs that occur only in the long design text (not on screen) are weaker hints: they must not promote an
+  // action to the first hypotheses ("крутится" in a lore sentence is not an instruction to rotate).
+  const onScreen = [instruction, ...texts.map(t => t.text)].join(' . ');
+  const designOnlyVerbs = verbs.filter(k => !VERBS.find(v => v.kind === k)!.re.test(onScreen));
   const sequences = [...all.matchAll(/([^.:!]+?(?:\s*(?:->|→|=>|—>)\s*[^.:!→>-]+)+)/g)]
     .map(m => m[1].split(/\s*(?:->|→|=>|—>)\s*/).map(s => norm(s).split(' ').slice(-2).join(' ')).filter(Boolean))
     .filter(s => s.length >= 2);
@@ -140,7 +148,7 @@ export async function buildBriefing(world: WorldModel, client: UrdtWireClient, s
     }
     if (uri && vision) {
       const actionable = parts.filter(b => b.visible && b.kind !== 'window' && b.kind !== 'module' && b.center.y > 0 && b.center.y < 1080).slice(0, 60);
-      visionResult = await vision.analyze(uri, actionable, [instruction, ...texts.map(t => t.text)].filter(Boolean), goal || instruction, { w: 1920, h: 1080 }, screenshotFile);
+      visionResult = await vision.analyze(uri, actionable, [instruction, ...texts.map(t => t.text), designText && `Design notes: ${designText.slice(0, 1200)}`].filter(Boolean), goal || instruction, { w: 1920, h: 1080 }, screenshotFile);
       if (visionResult && visionResult.plan.length) {
         plans.unshift({ kind: 'vision_plan', why: `vision (${visionResult.model}, ${visionResult.latencyMs}ms, conf ${visionResult.confidence}): ${visionResult.goal}`, visionSteps: visionResult.plan });
       }
@@ -149,6 +157,7 @@ export async function buildBriefing(world: WorldModel, client: UrdtWireClient, s
 
   const summary = [
     instruction && `instruction: "${instruction}"`,
+    designText && `design notes: ${designText.length} chars`,
     texts.length && `texts: ${texts.map(t => `"${t.text}"`).slice(0, 8).join(', ')}`,
     Object.keys(captions).length && `buttons: ${Object.entries(captions).map(([k, v]) => `${k}="${v}"`).join(', ')}`,
     verbs.length && `verbs → ${verbs.join(', ')}`,
@@ -159,7 +168,7 @@ export async function buildBriefing(world: WorldModel, client: UrdtWireClient, s
     visionResult && `vision: "${visionResult.goal}" steps=${visionResult.plan.map(s => `${s.action}:${s.item ?? s.button ?? ''}${s.target ? '→' + s.target : ''}`).join(', ')} avoid=${visionResult.avoid.join(',')}`,
   ].filter(Boolean).join(' | ');
 
-  return { scope: scopeId, instruction, texts, captions, verbs, sequences, avoid, numbers,
+  return { scope: scopeId, instruction, texts, captions, verbs, designOnlyVerbs, sequences, avoid, numbers,
     inventory: { draggables: draggables.map(d => d.testId), receptacles: receptacles.map(r => r.testId), buttons: buttons.map(b => b.testId), families },
     plans, screenshotFile, vision: visionResult, summary };
 }

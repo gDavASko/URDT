@@ -34,6 +34,14 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M24_TargetElimination
         private float _spawnTimer = 0f;
         private List<PoppableTarget> _pool = new List<PoppableTarget>();
 
+        private static readonly int[] StageTarget = new int[] { 6, 8, 10 };
+        private static readonly float[] StageSpawn = new float[] { 0.85f, 0.7f, 0.55f };
+        private static readonly float[] StageHazardChance = new float[] { 0.25f, 0.35f, 0.42f };
+
+        public override int StageCount => 3;
+        public int PoppedCount => _poppedCount;
+        public int PopTarget => _targetPops;
+
         protected override void Awake()
         {
             base.Awake();
@@ -50,6 +58,10 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M24_TargetElimination
             _poppedCount = 0;
             _spawnTimer = 0.2f;
 
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, StageTarget.Length - 1);
+            _targetPops = StageTarget[idx];
+            _spawnInterval = StageSpawn[idx];
+
             foreach (var t in _pool)
             {
                 if (t != null) t.gameObject.SetActive(false);
@@ -59,6 +71,18 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M24_TargetElimination
             SetProgress(0f);
         }
 
+        protected override string GetStageInstruction(int stage)
+        {
+            int idx = Mathf.Clamp(stage - 1, 0, StageTarget.Length - 1);
+            switch (stage)
+            {
+                case 1: return $"Этап 1/3. Лопните {StageTarget[idx]} пузырей. Красные бомбы [X] — штраф −2.";
+                case 2: return $"Этап 2/3. Пузырей больше ({StageTarget[idx]}), пузыри чаще, а клик по бомбе [X] сразу сбрасывает этап.";
+                case 3: return $"Этап 3/3. {StageTarget[idx]} пузырей, максимальный темп. Любая бомба [X] — сброс.";
+                default: return _instruction;
+            }
+        }
+
         public override void ResetMechanic()
         {
             Initialize();
@@ -66,7 +90,7 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M24_TargetElimination
 
         private void Update()
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
 
             _spawnTimer -= Time.unscaledDeltaTime;
             if (_spawnTimer <= 0f)
@@ -81,7 +105,8 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M24_TargetElimination
             if (_spawnContainer == null) return;
 
             PoppableTarget target = GetOrCreateTarget();
-            bool isHazard = UnityEngine.Random.value < 0.25f;
+            int idx = Mathf.Clamp(CurrentStage - 1, 0, StageHazardChance.Length - 1);
+            bool isHazard = UnityEngine.Random.value < StageHazardChance[idx];
             float randomX = UnityEngine.Random.Range(-220f, 220f);
             Vector2 startPos = new Vector2(randomX, -180f);
             float speed = UnityEngine.Random.Range(90f, 160f);
@@ -110,11 +135,20 @@ namespace KBP.URDT.TestPoligon.Mechanics2D.M24_TargetElimination
 
         private void HandleTargetPopped(PoppableTarget target)
         {
-            if (_isCompleted) return;
+            if (_isCompleted || IsInTransition) return;
 
             if (target.IsHazardBomb)
             {
-                // Взрыв бомбы [X]
+                if (CurrentStage >= 2)
+                {
+                    if (_instructionText != null)
+                    {
+                        _instructionText.text = "<color=#FF3333>Клик по бомбе [X]! Этап сброшен.</color>";
+                    }
+                    FailStage("клик по бомбе [X]");
+                    return;
+                }
+                // Взрыв бомбы [X] на этапе 1 — штраф прогресса
                 _poppedCount = Mathf.Max(0, _poppedCount - 2);
                 UpdateUI();
                 float prog = Mathf.Clamp01((float)_poppedCount / _targetPops);
