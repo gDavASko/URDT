@@ -585,6 +585,9 @@ export class UniversalExplorer {
       // A transition (stage cleared or fail restart) is in progress: wait until the new board is ready.
       for (let w = 0; w < 20 && obs.inTransition; w++) { await sleep(250); obs = await this.observe(); }
       const r = this.reward(before, obs);
+      // A stage change or fail restart rebuilt the board: facts about the OLD board (tried, placed) must not be
+      // written into the fresh memory — e.g. the last item of a stage is back in the tray on the next stage.
+      const boardChanged = obs.fails > before.fails || obs.stage > before.stage;
       if (obs.fails > before.fails) {
         // The level punished this action and rebuilt the board: remember the cause, forget attempts on the old board.
         this.failCauses.add(canonicalKey(c.key));
@@ -601,8 +604,10 @@ export class UniversalExplorer {
       }
       // Progress fell (a fail reset the board or a stage restarted): placements are gone, everything is movable again.
       if (obs.progress < before.progress - 1e-3) this.committed.clear();
-      const t = this.tried.get(c.key) ?? { n: 0, best: -Infinity };
-      this.tried.set(c.key, { n: t.n + 1, best: Math.max(t.best, r) });
+      if (!boardChanged) {
+        const t = this.tried.get(c.key) ?? { n: 0, best: -Infinity };
+        this.tried.set(c.key, { n: t.n + 1, best: Math.max(t.best, r) });
+      }
       this.note(c.label, r > 0 ? `reward +${r.toFixed(1)} (progress ${before.progress.toFixed(2)}→${obs.progress.toFixed(2)})` : r < 0 ? `penalty ${r.toFixed(1)}` : 'no effect');
       if (r > 0) {
         fruitlessInTier = 0;
@@ -611,8 +616,8 @@ export class UniversalExplorer {
           this.failCauses.delete(canonicalKey(c.key));
         }
         // Repeat a tap only if it moved real progress; a tap that just changes a counter (spawn, draw) is not a strategy.
-        if ((c.kind === 'tap' || c.kind === 'mash') && obs.progress > before.progress + 1e-3) this.rewardedTaps.add(c.key.split(':')[1]);
-        if ((c.kind === 'drag' || c.kind === 'dwell_drag') && c.meta && obs.progress > before.progress) this.committed.add(String(c.meta.item));
+        if (!boardChanged && (c.kind === 'tap' || c.kind === 'mash') && obs.progress > before.progress + 1e-3) this.rewardedTaps.add(c.key.split(':')[1]);
+        if (!boardChanged && (c.kind === 'drag' || c.kind === 'dwell_drag') && c.meta && obs.progress > before.progress) this.committed.add(String(c.meta.item));
         if ((c.kind === 'drag' || c.kind === 'dwell_drag') && c.meta) {
           const it = before.snap.get(String(c.meta.item)), tg = before.snap.get(String(c.meta.target));
           if (it && tg) this.induceRule(it, tg);

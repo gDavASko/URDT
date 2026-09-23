@@ -42,7 +42,9 @@ const RECONNECT_BACKOFF_MS = [500, 1000, 2000];
 
 export class UrdtWireClient extends EventEmitter {
   public readonly url: string;
-  private readonly token: string;
+  private token: string;
+  /** Tokens tried in turn when none was configured: the package auto-start default, then the test polygon's. */
+  private readonly tokens: string[];
   private readonly projectId: string;
   private readonly defaultTimeoutMs: number;
   private readonly heartbeatMs: number;
@@ -60,7 +62,9 @@ export class UrdtWireClient extends EventEmitter {
   constructor(options: WireClientOptions = {}) {
     super();
     this.url = options.url ?? process.env.URDT_URL ?? 'ws://127.0.0.1:7777/';
-    this.token = options.token ?? process.env.URDT_TOKEN ?? 'urdt-test-poligon';
+    const explicit = options.token ?? process.env.URDT_TOKEN;
+    this.tokens = explicit ? [explicit] : ['urdt-local', 'urdt-test-poligon'];
+    this.token = this.tokens[0];
     this.projectId = options.projectId ?? process.env.URDT_PROJECT ?? 'urdt-core-agent';
     this.defaultTimeoutMs = options.defaultTimeoutMs ?? 10000;
     this.heartbeatMs = options.heartbeatMs ?? 1000;
@@ -89,6 +93,8 @@ export class UrdtWireClient extends EventEmitter {
       } catch (err) {
         lastError = err;
         this.dropSocket();
+        // A rejected handshake may just be the other default token: rotate before backing off.
+        if (this.tokens.length > 1) this.token = this.tokens[(this.tokens.indexOf(this.token) + 1) % this.tokens.length];
         const delay = RECONNECT_BACKOFF_MS[Math.min(this.reconnectAttempt++, RECONNECT_BACKOFF_MS.length - 1)];
         await new Promise(r => setTimeout(r, delay));
       }
