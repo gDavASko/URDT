@@ -23,6 +23,10 @@ export async function laneRunner(ctx: PlaybookContext): Promise<PlaybookResult> 
   let lanes: number[] = [];
   let lastMove = 0;
   let moves = 0;
+  // Response model check: one command must move exactly one lane. Measured after each command.
+  let swipeLen = 140;
+  let pending: { from: number; dir: number; at: number; x0: number } | null = null;
+  let overshoots = 0;
   const seenX: number[] = [];
   while (!ctx.expired()) {
     const snap = await ctx.snapshot();
@@ -40,6 +44,16 @@ export async function laneRunner(ctx: PlaybookContext): Promise<PlaybookResult> 
     if (lanes.length < 2) { await sleep(60); continue; }
     const laneOf = (x: number) => lanes.reduce((best, lx, i) => (Math.abs(lx - x) < Math.abs(lanes[best] - x) ? i : best), 0);
     const cur = laneOf(avatar.center.x);
+    if (pending && Date.now() - pending.at > 260) {
+      const moved = cur - pending.from;
+      if (Math.abs(moved) > 1) {
+        overshoots++;
+        ctx.report('MAJOR', 'CONTROL', `one ${p.control} command moved ${Math.abs(moved)} lanes (lane ${pending.from} → ${cur}); with ${lanes.length} lanes the middle lane${lanes.length > 3 ? 's are' : ' is'} unreachable by a single ${p.control} — coins there cannot be collected`,
+          { control: p.control, from: pending.from, to: cur, lanes: lanes.length, swipePx: swipeLen });
+        if (p.control === 'swipe' && swipeLen > 45) { swipeLen = Math.max(45, Math.round(swipeLen / 2)); ctx.say(`workaround: shorter swipe ${swipeLen}px`); }
+      }
+      pending = null;
+    }
     const ahead = (b: Beacon) => b.center.y - avatar.center.y;
     const danger = new Set(hazards.filter(h => ahead(h) > -20 && ahead(h) < p.dangerPx).map(h => laneOf(h.center.x)));
     const target = coins.filter(c => ahead(c) > -10).sort((a, b) => ahead(a) - ahead(b))
@@ -52,7 +66,7 @@ export async function laneRunner(ctx: PlaybookContext): Promise<PlaybookResult> 
       const dir = Math.sign(want - cur);
       const y = mod.rect.y + mod.rect.h * 0.45;
       if (p.control === 'swipe') {
-        await ctx.motor.drag({ x: mod.center.x, y }, { x: mod.center.x + dir * 140, y }, { durationMs: 110, dwellStartMs: 16, dwellEndMs: 16 }, `SWIPE ${dir > 0 ? 'R' : 'L'}`);
+        await ctx.motor.drag({ x: mod.center.x, y }, { x: mod.center.x + dir * swipeLen, y }, { durationMs: 110, dwellStartMs: 16, dwellEndMs: 16 }, `SWIPE ${dir > 0 ? 'R' : 'L'}`);
       } else if (p.control === 'tap_halves') {
         await ctx.motor.tap({ point: { x: mod.center.x + dir * mod.rect.w * 0.25, y } }, 16);
       } else {
@@ -60,6 +74,7 @@ export async function laneRunner(ctx: PlaybookContext): Promise<PlaybookResult> 
       }
       lastMove = Date.now();
       moves++;
+      pending = { from: cur, dir, at: Date.now(), x0: avatar.center.x };
     } else {
       await sleep(25);
     }

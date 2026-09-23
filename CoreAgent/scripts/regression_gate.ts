@@ -3,6 +3,9 @@
  *
  *   npx tsx scripts/regression_gate.ts --baseline [--smoke M01_SnapToSlot,...]      record the smoke baseline
  *   npx tsx scripts/regression_gate.ts --candidate <name> --modules M33_Arkanoid[,...] [--runs 2]
+ *   npx tsx scripts/regression_gate.ts --check-knowledge      smoke vs baseline; on regression roll the game
+ *                                                             knowledge back to the baseline snapshot and keep the
+ *                                                             rollback only if it fixes the regression
  *
  * Pass = the candidate completes each target module in every run (verified by the success predicate and chosen by
  * the knowledge ranking) AND no smoke module that passed in the baseline fails now. Pass → promoted to core;
@@ -45,8 +48,28 @@ async function smokeRun(tag: string) {
 fs.mkdirSync(path.join(CORE_DIR, 'gate_reports'), { recursive: true });
 if (process.argv.includes('--baseline')) {
   const b = await smokeRun('baseline');
-  fs.writeFileSync(baselineFile, JSON.stringify({ at: new Date().toISOString(), results: b }, null, 2));
-  console.log(`baseline saved: ${Object.values(b).filter(x => x.ok).length}/${smoke.length} ok`);
+  const { store } = await runner.knowledge();
+  const knowledgeSnapshot = store.snapshot('baseline');
+  fs.writeFileSync(baselineFile, JSON.stringify({ at: new Date().toISOString(), knowledgeSnapshot, results: b }, null, 2));
+  console.log(`baseline saved: ${Object.values(b).filter(x => x.ok).length}/${smoke.length} ok, knowledge snapshot ${knowledgeSnapshot}`);
+} else if (process.argv.includes('--check-knowledge')) {
+  const base = fs.existsSync(baselineFile) ? JSON.parse(fs.readFileSync(baselineFile, 'utf-8')) : null;
+  if (!base) { console.error('no baseline: run --baseline first'); process.exit(2); }
+  const { store } = await runner.knowledge();
+  const now = await smokeRun('kcheck');
+  const regressed = Object.entries(now).filter(([m, v]) => base.results[m]?.ok && !v.ok).map(([m]) => m);
+  const report: any = { at: new Date().toISOString(), regressed, rolledBack: false };
+  if (!regressed.length) console.log('knowledge OK: no regression against the baseline');
+  else if (!base.knowledgeSnapshot) console.log(`regressions ${regressed.join(', ')} — baseline has no knowledge snapshot, cannot roll back`);
+  else {
+    const current = store.snapshot('pre-check-rollback');
+    store.rollback(base.knowledgeSnapshot);
+    const fixed: string[] = [];
+    for (const m of regressed) { const r = await play(m, 'kcheck_rollback'); if (r.ok) fixed.push(m); }
+    if (fixed.length) { report.rolledBack = true; report.fixed = fixed; console.log(`knowledge was harmful: rolled back to ${base.knowledgeSnapshot}; fixed ${fixed.join(', ')}`); }
+    else { store.rollback(current); console.log(`regressions ${regressed.join(', ')} are not caused by knowledge (rollback did not help) — knowledge restored`); }
+  }
+  fs.writeFileSync(path.join(CORE_DIR, 'gate_reports', `knowledge-check-${Date.now()}.json`), JSON.stringify(report, null, 2));
 } else {
   const name = arg('candidate');
   const modules = (arg('modules') ?? '').split(',').filter(Boolean);

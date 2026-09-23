@@ -90,7 +90,7 @@ export type Answer = z.infer<typeof AnswerSchema>;
 
 export type Finding = {
   severity: 'CRITICAL' | 'MAJOR' | 'MINOR' | 'INFO';
-  kind: 'GOAL_NOT_REACHED' | 'FORBIDDEN_STATE' | 'CONSOLE_ERROR' | 'STALL' | 'UNOBSERVABLE' | 'UNGUARDED_SHORTCUT' | 'OCCLUDED' | 'LAYOUT'
+  kind: 'GOAL_NOT_REACHED' | 'FORBIDDEN_STATE' | 'CONSOLE_ERROR' | 'STALL' | 'UNOBSERVABLE' | 'UNGUARDED_SHORTCUT' | 'OCCLUDED' | 'LAYOUT' | 'CONTROL'
     | 'INPUT_REJECTED' | 'NAVIGATION' | 'ASSUMPTION' | 'LEARNED';
   message: string;
   evidence?: unknown;

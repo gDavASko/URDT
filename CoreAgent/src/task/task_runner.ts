@@ -20,7 +20,7 @@ import { PLAYBOOKS } from '../l2_tactics/playbooks/index.js';
 import { loadGdd, ScenarioSpec } from '../l3_gdd/gdd_loader.js';
 import { InvariantChecker } from '../l3_gdd/invariant_checker.js';
 import { writeEvidence } from '../l3_gdd/audit_report.js';
-import { UniversalExplorer } from './explorer.js';
+import { UniversalExplorer, canonicalKey } from './explorer.js';
 import { recognizeSkills, motionBetween } from './skill_library.js';
 import { buildBriefing, Briefing } from './briefing.js';
 import { VisionAnalyst, loadVisionConfig } from './vision.js';
@@ -248,10 +248,25 @@ export class TaskRunner {
       step(`hint playbook ${task.hint.playbook}`, `${r.status}: ${r.summary}`);
     }
     if (!(await solvedNow())) {
+      // Known fail causes (bans). Bans observed on another build are demoted to one observation: after the game
+      // code changed they must be re-confirmed before they block anything.
+      const banFact = kb.store.fact(`fail:${task.target.scope}`);
+      const knownBans = failCounts(banFact?.value);
+      if (banFact && banFact.build !== kb.store.build) for (const k of Object.keys(knownBans)) knownBans[k] = Math.min(1, knownBans[k]);
+      // Probation: every run lifts one active ban (in rotation) so that each ban is re-tested sooner or later —
+      // a wrong ban then shows real progress and is removed; a right one fails again and is re-confirmed.
+      const active = Object.keys(knownBans).filter(k => knownBans[k] >= 2).sort();
+      if (active.length) {
+        const pick = active[Math.floor(Math.random() * active.length)];
+        knownBans[pick] = 1;
+        step('knowledge probation', `re-testing learned ban "${pick}" this run (${active.length - 1} bans stay active)`);
+      }
+      let useBans = true;
+      const bansActive = () => useBans && Object.values(knownBans).some(n => n >= 2);
       const explore = async (share: number, label: string) => {
         const ex = new UniversalExplorer(this.d.world, this.d.motor, {
           scopeId: task.target.scope!, success, forbid, doNotTouch: task.doNotTouch, briefing,
-          knownFailCauses: (kb.store.fact(`fail:${task.target.scope}`)?.value as string[] | undefined) ?? [],
+          knownFailCauses: useBans ? knownBans : {},
           consult: this.visionAnalyst() ? async (failedAttempts: string[]) => {
             const uri = await VisionAnalyst.grabHdFrame(this.d.client);
             if (!uri) return null;
@@ -271,7 +286,11 @@ export class TaskRunner {
         });
         const out = await ex.run();
         actions += out.actions;
-        if (ex.failCauseKeys.length) kb.store.putFact(`fail:${task.target.scope}`, ex.failCauseKeys, task.taskId, task.target.scope);
+        // Fail causes are counted across runs; an action that later made real progress is removed (contradiction).
+        const counts = failCounts(kb.store.fact(`fail:${task.target.scope}`)?.value);
+        for (const k of ex.failCausesThisRun) counts[k] = (counts[k] ?? 0) + 1;
+        for (const k of ex.progressKeys) delete counts[k];
+        if (ex.failCausesThisRun.length || ex.progressKeys.size) kb.store.putFact(`fail:${task.target.scope}`, counts, task.taskId, task.target.scope);
         const rules = out.learned.filter(l => l.startsWith('match rule'));
         if (rules.length) kb.store.putFact(`rules:${task.target.scope}`, rules, task.taskId, task.target.scope);
         learned.push(...out.learned);
@@ -311,6 +330,8 @@ export class TaskRunner {
         const tSkill = Date.now();
         const r = sk.custom ? await sk.custom(ctx) : await PLAYBOOKS[sk.skill](ctx);
         step(`skill:${sk.skill}`, `${r.status}: ${r.summary}`);
+        // Defects the skill noticed in how the game responds to input (control defects, impossible states).
+        for (const rep of ctx.reports.splice(0)) findings.push({ severity: rep.severity, kind: rep.kind as Finding['kind'], message: `${task.target.scope}: ${rep.message}`, evidence: rep.evidence });
         // Learn only from the verified outcome (the task's success predicates), never from the skill's own claim.
         const verified = await solvedNow();
         kb.store.record(sk.skill, task.target.scope!, verified, Date.now() - tSkill, task.taskId, task.target.scope!);
@@ -319,7 +340,19 @@ export class TaskRunner {
       }
       if (skills.length && !(await solvedNow())) await restartIfDirty('restart level before exploration');
       if (!(await solvedNow()) && Date.now() < deadline) await explore(0.6, 'universal explorer');
+      // Self-check against harmful knowledge: if the module was not solved while learned bans were in force, the
+      // second pass runs WITHOUT them. Solving it then proves the bans wrong — they are deleted.
+      const bansWereActive = bansActive();
+      if (!(await solvedNow()) && Date.now() < deadline && bansWereActive) {
+        useBans = false;
+        step('knowledge self-check', `not solved with ${Object.values(knownBans).filter(n => n >= 2).length} learned bans — second pass without them`);
+      }
       if (!(await solvedNow()) && Date.now() < deadline) await explore(1, 'explorer (second pass, remaining budget)');
+      if (bansWereActive && !useBans && await solvedNow()) {
+        kb.store.removeFact(`fail:${task.target.scope}`);
+        findings.push({ severity: 'INFO', kind: 'ASSUMPTION', message: `learned bans for ${task.target.scope} were harmful (solved only without them) — removed from the game knowledge` });
+        step('knowledge self-check', 'solved without the learned bans → bans removed');
+      }
     }
     ctx.stopWatch();
 
@@ -678,4 +711,13 @@ export function requirementsMet(req: SkillRequirement, scope: Beacon, parts: Bea
   for (const re of req.beacons ?? []) { const r = new RegExp(re, 'i'); if (!parts.some(b => r.test(b.testId))) return false; }
   for (const re of req.buttons ?? []) { const r = new RegExp(re, 'i'); if (!parts.some(b => b.kind === 'button' && r.test(b.testId))) return false; }
   return (req.scopeGame?.length ?? 0) + (req.beacons?.length ?? 0) + (req.buttons?.length ?? 0) > 0;
+}
+
+/** Fail-cause fact → counts (older facts stored a plain list: each entry counts once). */
+function failCounts(v: unknown): Record<string, number> {
+  const out: Record<string, number> = {};
+  const add = (k: string, n: number) => { const c = canonicalKey(k); out[c] = Math.max(out[c] ?? 0, n); };
+  if (Array.isArray(v)) for (const k of v) add(String(k), 1);
+  else if (v && typeof v === 'object') for (const [k, n] of Object.entries(v as Record<string, number>)) add(k, Number(n) || 0);
+  return out;
 }

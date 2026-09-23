@@ -47,6 +47,15 @@ export class PlaybookContext {
   timeLeft(): number { return this.deadline - Date.now(); }
   expired(): boolean { return Date.now() > this.deadline; }
 
+  /** Defects a skill noticed in the game's response (e.g. one control command moved two lanes). Collected by L3. */
+  readonly reports: Array<{ severity: 'CRITICAL' | 'MAJOR' | 'MINOR' | 'INFO'; kind: string; message: string; evidence?: unknown }> = [];
+
+  report(severity: 'CRITICAL' | 'MAJOR' | 'MINOR' | 'INFO', kind: string, message: string, evidence?: unknown): void {
+    if (this.reports.some(r => r.kind === kind && r.message === message)) return;
+    this.reports.push({ severity, kind, message, evidence });
+    this.say(`REPORT ${severity} ${kind}: ${message}`);
+  }
+
   say(msg: string): void {
     const line = `[${new Date().toISOString().slice(11, 23)}] ${this.scenario.id} | ${msg}`;
     this.log.push(line);

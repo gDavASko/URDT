@@ -11,6 +11,8 @@ process.on('unhandledRejection', e => console.error('[campaign] unhandled reject
 const gddPath = process.argv[2] ?? 'Docs/GDD/URDT_Polygon_Game_GDD.md';
 const minutes = Number(process.argv[3] ?? 120);
 const { runner } = await getRuntime();
+const snap = (await runner.knowledge()).store.snapshot('before-campaign');
+console.error(`[campaign] knowledge snapshot ${snap}`);
 const taskId = `campaign_${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)}`;
 const r: any = await runner.run({
   taskId,

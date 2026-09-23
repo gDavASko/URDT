@@ -118,6 +118,43 @@ export class KnowledgeStore {
     writeJson(this.file('facts.json'), all);
   }
 
+  removeFact(key: string): void {
+    writeJson(this.file('facts.json'), this.facts().filter(f => f.key !== key));
+  }
+
+  // ── Snapshots: the game's learned state can always be rolled back ─────────
+  /** Saves facts, parameters and skill statistics; keeps the last 12 snapshots. Returns the snapshot id. */
+  snapshot(label: string): string {
+    const id = `${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)}_${label.replace(/[^a-z0-9_-]/gi, '_')}`;
+    const dir = this.file(path.join('history', id));
+    fs.mkdirSync(dir, { recursive: true });
+    for (const f of ['facts.json', 'params.json', path.join('skills', 'stats.json')]) {
+      const src = this.file(f);
+      if (fs.existsSync(src)) fs.copyFileSync(src, path.join(dir, path.basename(f)));
+    }
+    const all = fs.readdirSync(this.file('history')).sort();
+    for (const old of all.slice(0, Math.max(0, all.length - 12))) fs.rmSync(this.file(path.join('history', old)), { recursive: true, force: true });
+    return id;
+  }
+
+  snapshots(): string[] {
+    const h = this.file('history');
+    return fs.existsSync(h) ? fs.readdirSync(h).sort() : [];
+  }
+
+  /** Restores facts, parameters and skill statistics from a snapshot (the current state is snapshotted first). */
+  rollback(id: string): boolean {
+    const dir = this.file(path.join('history', id));
+    if (!fs.existsSync(dir)) return false;
+    this.snapshot('before-rollback');
+    for (const [name, dest] of [['facts.json', 'facts.json'], ['params.json', 'params.json'], ['stats.json', path.join('skills', 'stats.json')]] as const) {
+      const src = path.join(dir, name);
+      if (fs.existsSync(src)) fs.copyFileSync(src, this.file(dest));
+      else if (fs.existsSync(this.file(dest))) fs.rmSync(this.file(dest));
+    }
+    return true;
+  }
+
   // ── Tuned parameters (game-scoped) ──────────────────────────────────────
   params(skill: string, module: string): Record<string, unknown> | undefined {
     return readJson<Record<string, Record<string, unknown>>>(this.file('params.json'), {})[`${skill}@${module}`];

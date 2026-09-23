@@ -42,8 +42,9 @@ export interface ExplorerOptions {
   briefing?: Briefing;
   /** Stagnation consult: fresh screenshot + failed attempts → vision plan (rate-limited by the explorer). */
   consult?: (failedAttempts: string[]) => Promise<import('./briefing.js').Plan | null>;
-  /** Action keys that made this module fail in earlier runs (game knowledge): never tried again. */
-  knownFailCauses?: string[];
+  /** Action keys that made this module fail in earlier runs, with how often (game knowledge). Only causes seen at
+   *  least twice are avoided — a single observation can be a mis-attribution and must not ban an action forever. */
+  knownFailCauses?: Record<string, number>;
 }
 
 export interface Observation {
@@ -121,8 +122,14 @@ export class UniversalExplorer {
   public readonly occlusions = new Map<string, string>();
 
   constructor(private readonly world: WorldModel, private readonly motor: MotorCortex, private readonly o: ExplorerOptions) {
-    for (const k of o.knownFailCauses ?? []) this.failCauses.add(k);
+    for (const [k, n] of Object.entries(o.knownFailCauses ?? {})) if (n >= 2) this.failCauses.add(k);
   }
+
+  /** Fail causes observed in THIS run (each counts once toward the game knowledge). */
+  private readonly newFailCauses = new Set<string>();
+  /** Action keys that produced real progress in this run — evidence against them being fail causes. */
+  public readonly progressKeys = new Set<string>();
+  get failCausesThisRun(): string[] { return [...this.newFailCauses]; }
 
   /** Fail causes known now (earlier runs + this run), for the game knowledge store. */
   get failCauseKeys(): string[] { return [...this.failCauses]; }
@@ -204,6 +211,9 @@ export class UniversalExplorer {
     const receptacles = parts.filter(p => (p.kind === 'slot' || p.kind === 'draggable' || p.kind === 'area') && !big(p) && !this.isPlaced(p, true)
       && !(p.kind !== 'slot' && DECOR.test(p.testId) && Object.keys(p.game ?? {}).length === 0));
     for (const it of items) {
+      // A marked defect ([X], IsJunk) is never carried into a receptacle while playing: that is a known fail, not
+      // exploration (rejecting defects is verified separately by the audit probes).
+      if (isJunkish(it)) continue;
       for (const r of receptacles) {
         if (r === it || dist(r.center, it.center) < 30) continue;
         const ruleHit = this.rules.some(rule => eq(val(it, rule.itemKey), val(r, rule.targetKey)));
@@ -536,7 +546,7 @@ export class UniversalExplorer {
         .map(c => ({ c, t: this.tried.get(c.key) }))
         .filter(({ c, t }) => !t || (t.best > 0 && t.n < 25 && (c.kind === 'tap' || c.kind === 'mash')))
         .filter(({ c }) => !(c.kind === 'tap' && this.deadFamily(c.key.slice(4))))
-        .filter(({ c }) => !this.failCauses.has(c.key))
+        .filter(({ c }) => !this.failCauses.has(canonicalKey(c.key)))
         .sort((a, b) => (b.c.prior - (b.t?.n ?? 0) * 2) - (a.c.prior - (a.t?.n ?? 0) * 2));
       // Stuck: look at the screen again (vision) with the list of attempts that did nothing.
       if (this.o.consult && this.o.briefing && fruitlessInTier >= 6 && this.consults < 3 && Date.now() - this.lastConsult > 20000) {
@@ -577,7 +587,8 @@ export class UniversalExplorer {
       const r = this.reward(before, obs);
       if (obs.fails > before.fails) {
         // The level punished this action and rebuilt the board: remember the cause, forget attempts on the old board.
-        this.failCauses.add(c.key);
+        this.failCauses.add(canonicalKey(c.key));
+        this.newFailCauses.add(canonicalKey(c.key));
         this.note(`FAIL after "${c.label}"`, obs.failReason || 'level restarted');
         this.learned.push(`fail cause: ${c.label}${obs.failReason ? ` — "${obs.failReason}"` : ''}`);
         this.resetBoardMemory();
@@ -595,6 +606,10 @@ export class UniversalExplorer {
       this.note(c.label, r > 0 ? `reward +${r.toFixed(1)} (progress ${before.progress.toFixed(2)}→${obs.progress.toFixed(2)})` : r < 0 ? `penalty ${r.toFixed(1)}` : 'no effect');
       if (r > 0) {
         fruitlessInTier = 0;
+        if (obs.progress > before.progress + 1e-3 && obs.fails === before.fails) {
+          this.progressKeys.add(canonicalKey(c.key));
+          this.failCauses.delete(canonicalKey(c.key));
+        }
         // Repeat a tap only if it moved real progress; a tap that just changes a counter (spawn, draw) is not a strategy.
         if ((c.kind === 'tap' || c.kind === 'mash') && obs.progress > before.progress + 1e-3) this.rewardedTaps.add(c.key.split(':')[1]);
         if ((c.kind === 'drag' || c.kind === 'dwell_drag') && c.meta && obs.progress > before.progress) this.committed.add(String(c.meta.item));
@@ -623,8 +638,12 @@ export class UniversalExplorer {
     const it = snap.get(testId);
     if (!it) return null;
     if (!it.rect) return (await this.occluded(testId)) ? null : it.center;
+    const area = (q: { w: number; h: number }) => q.w * q.h;
+    // A container that encloses the item (a tray, a panel) is not something lying on top of it.
+    const encloses = (o: { x: number; y: number; w: number; h: number }) => area(o) > 2.5 * area(it.rect!)
+      && o.x <= it.rect!.x + 2 && o.y <= it.rect!.y + 2 && o.x + o.w >= it.rect!.x + it.rect!.w - 2 && o.y + o.h >= it.rect!.y + it.rect!.h - 2;
     const others = snap.beacons.filter(b => b.testId !== testId && b.kind === 'draggable' && b.visible && b.rect
-      && !b.testId.startsWith(testId + '_label') && rectsOverlap(b.rect, it.rect!));
+      && rectsOverlap(b.rect, it.rect!) && !encloses(b.rect));
     const inside = (p: Point) => others.some(o => rectContains(o.rect!, p, 4));
     if (!others.length) return (await this.occluded(testId)) ? null : it.center;
     const r = it.rect;
@@ -721,4 +740,26 @@ export { rectContains, firstNumber };
 
 function rectsOverlap(a: { x: number; y: number; w: number; h: number }, b: { x: number; y: number; w: number; h: number }): boolean {
   return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+}
+
+/**
+ * The same action gets different keys depending on who proposed it (explorer "drag:A>B", vision plan
+ * "plan:vision:0:drag:A>B", dwell variant "dwell:A>B"). Bans, fail causes and progress evidence use one semantic key
+ * ("what was done to what"), otherwise a ban on one spelling is bypassed by another and contradictions are missed.
+ */
+export function canonicalKey(key: string): string {
+  const v = key.match(/^plan:vision:\d+:([a-z_]+):(.*)$/);
+  if (v) {
+    const [, action, rest] = v;
+    const [obj, target] = rest.split('>');
+    if (action === 'drag' || action === 'move_over') return target ? `drag:${obj}>${target}` : `drag:${obj}`;
+    if (action === 'tap') return `tap:${obj}`;
+    if (action === 'hold') return `hold:${obj}`;
+    return `${action}:${obj}${target ? '>' + target : ''}`;
+  }
+  const d = key.match(/^dwell:(.*)$/);
+  if (d) return `drag:${d[1]}`;
+  const h = key.match(/^(hold|holdlong):([^:]+)(:\d+)?$/);
+  if (h) return `hold:${h[2]}`;
+  return key;
 }

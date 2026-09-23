@@ -67,3 +67,8 @@ node_modules/
 
 # agent-side fallback when a game does not report its knowledge folder
 /CoreAgent/knowledge/unbound/
+
+# scratch copies prepared while Unity was busy
+/Staging/
+# local knowledge snapshots for rollback (per machine)
+/URDT_Knowledge/history/

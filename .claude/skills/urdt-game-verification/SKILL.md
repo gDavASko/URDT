@@ -164,6 +164,17 @@ after a one-time `--baseline`): the candidate must complete every target run and
 regress. Candidates that keep losing (≥6 runs, <20%) or go unused for 30 days are archived automatically; at most 3
 active skills per applicability contract. Versions are immutable (a resubmission is v2, v1 is archived).
 
+**Knowledge cannot silently degrade play** — four independent guards:
+1. *Mis-attribution:* a learned "this action causes a fail" ban blocks the action only after ≥2 observations; an
+   action that later makes real progress is removed from the bans (contradiction).
+2. *Staleness:* the build id is the player build GUID, or in the Editor a fingerprint of the compiled game code;
+   bans learned on other code are demoted to one observation and must be re-confirmed.
+3. *Harmful knowledge:* if a module is not solved while bans are active, the second pass runs without them; solving
+   it then deletes the bans (reported as an INFO finding).
+4. *Drift:* every campaign/baseline snapshots the game knowledge (`URDT_Knowledge/history`, last 12);
+   `scripts/regression_gate.ts --check-knowledge` compares the smoke set with the baseline and, on regression, rolls
+   the knowledge back to the baseline snapshot — kept only if it fixes the regression.
+
 **Never change the game's time scale** to make a real-time mechanic easier: games use unscaled/realtime timers,
 audio and network clocks; a slowed game is not the game the player gets. L3 observes dynamics at normal speed.
 

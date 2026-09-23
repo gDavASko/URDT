@@ -40,8 +40,29 @@ namespace KBP.URDT
 
             ProductName = Application.productName;
             AppVersion = Application.version;
-            string guid = Application.isEditor ? "editor" : Application.buildGUID;
+            // Player: the build GUID. Editor: a fingerprint of the compiled game code (module version ids of the
+            // project's own assemblies change on every recompile), so knowledge learned on older code is re-validated.
+            string guid = Application.isEditor ? "editor-" + CodeFingerprint() : Application.buildGUID;
             BuildId = $"{Application.version}+{(string.IsNullOrEmpty(guid) ? "unknown" : guid)}";
+        }
+        private static string CodeFingerprint()
+        {
+            unchecked
+            {
+                ulong h = 1469598103934665603UL;
+                var names = new System.Collections.Generic.List<string>();
+                foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    string n = a.GetName().Name;
+                    if (a.IsDynamic || n.StartsWith("Unity") || n.StartsWith("System") || n.StartsWith("Mono") || n.StartsWith("mscorlib")
+                        || n.StartsWith("netstandard") || n.StartsWith("nunit") || n.StartsWith("Newtonsoft") || n.StartsWith("Bee.")
+                        || n.StartsWith("JetBrains") || n.StartsWith("ExCSS") || n.StartsWith("Microsoft")) continue;
+                    names.Add(n + ":" + a.ManifestModule.ModuleVersionId.ToString("N"));
+                }
+                names.Sort(StringComparer.Ordinal);
+                foreach (string s in names) foreach (char c in s) { h ^= c; h *= 1099511628211UL; }
+                return h.ToString("x16").Substring(0, 10);
+            }
         }
     }
 }
