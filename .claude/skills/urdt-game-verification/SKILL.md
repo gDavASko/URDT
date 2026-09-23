@@ -5,6 +5,9 @@ description: Verify a Unity gameplay module you just built by letting the URDT L
 
 # URDT game verification (meta-AI ↔ L3 agent)
 
+> Setting URDT up in a new project (package install, auto-start, CoreAgent, MCP registration for Claude/Codex/Cursor):
+> `Docs/URDT_AI_Guide.md`.
+
 You are the **meta-AI**: you know what the module should do. URDT's **L3 agent** knows how to *play*:
 it reaches the screen, perceives the game through semantic beacons (never pixels), acts with real
 synthetic input (mouse/touch through Unity Input System + EventSystem, frame-paced), explores unknown

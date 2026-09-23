@@ -263,3 +263,7 @@ Full rule: `llm-wiki/raw/model-and-reasoning-effort-selection.md`; harness copy 
 - AGENTS.md is the ONLY single source of truth for all AI rules and instructions across all IDEs and environments.
 - All other IDE rule files (.cursorrules, GEMINI.md, .windsurfrules, .clinerules, CLAUDE.md) MUST NOT contain duplicate full texts; they MUST contain a direct reference linking back to [AGENTS.md](AGENTS.md).
 <!-- END DavASkoLLMWiki -->
+## URDT for AI agents
+
+How to install, run and use URDT (package + L3 agent) in any Unity project: [Docs/URDT_AI_Guide.md](Docs/URDT_AI_Guide.md).
+Snippet to paste into a game project AGENTS.md/CLAUDE.md: [Docs/URDT_AGENTS_SNIPPET.md](Docs/URDT_AGENTS_SNIPPET.md).
